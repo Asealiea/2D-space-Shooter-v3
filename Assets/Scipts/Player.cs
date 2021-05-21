@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float _multiplier = 5f;
+    [Header("Firing laser Settings")]
+    private float _canFire = -1f;
+    [SerializeField] private float _fireRate = 2f;
+   
+    [Header("Health")]
+    [SerializeField] private int _lives = 3;
 
 
+
+    //for player movement
+    private float _multiplier = 5f; 
+   
+    [Header("Prefabs")]
     [SerializeField] private GameObject _laserPreFab;
 
 
-    // Start is called before the first frame update
+    
+
+
     void Start()
     {
         // take current pos = new pos(0,0,0)
@@ -18,20 +30,17 @@ public class Player : MonoBehaviour
       
     }
 
-    // Update is called once per frame
+   
     void Update()
-    { 
+    {
+        PlayerMovement();   
 
-
-
-
-  
-        PlayerMovement();
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)    //_canFire == true
         {
             Shoot();
+
         }
+   
     }
 
     private void PlayerMovement()
@@ -64,10 +73,19 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
+        _canFire = Time.time + _fireRate;
         Instantiate(_laserPreFab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-
+         
     }
 
+    public void Damage()
+    {
+        _lives--;
+        if (_lives <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
 
 
