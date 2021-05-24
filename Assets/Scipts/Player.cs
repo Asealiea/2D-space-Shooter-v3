@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     [Header("Firing laser Settings")]
     private float _canFire = -1f;
-    [SerializeField] private float _fireRate = 2f;
+    [SerializeField] private float _fireRate = 0.3f;
    
     [Header("Health")]
     [SerializeField] private int _lives = 3;
@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     private void Shoot()
     {
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPreFab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+        Instantiate(_laserPreFab, transform.position + new Vector3(0, 1.2f, 0), Quaternion.identity);
          
     }
 

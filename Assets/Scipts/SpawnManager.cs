@@ -5,15 +5,23 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
 
-    private WaitForSeconds _spawnDelay /*, _spawnDelaybg*/;
+    private WaitForSeconds _spawnDelay;
     [SerializeField] private float delaytime = 1f;
-   // [SerializeField] private float delaytimebg = 1f;
 
-    [SerializeField] private GameObject _enemyPreFab;
     private bool _spawn = true;
-    [SerializeField] private GameObject _enemyContainer;
-   // [SerializeField] private GameObject[] _backgroundScene;
 
+
+    [Header("Game Objects")]
+    [SerializeField] private GameObject _enemyPreFab;
+    [SerializeField] private GameObject _enemyContainer;
+
+
+    /*
+    [Header ("Background Objects")]
+    [SerializeField] private float delaytimebg = 1f;
+    private WaitForSeconds  _spawnDelaybg;
+    [SerializeField] private GameObject[] _backgroundScene;
+    */
 
 
     // Start is called before the first frame update

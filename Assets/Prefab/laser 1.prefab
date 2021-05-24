@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7669491689037185914}
   - component: {fileID: 8695424044677714354}
   - component: {fileID: 116548794180675359}
-  - component: {fileID: 7193682989717147486}
+  - component: {fileID: 2288716145213158846}
   m_Layer: 0
-  m_Name: laser
+  m_Name: laser 1
   m_TagString: Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b030d335857201646be69703e678d6e5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.0047169924, g: 0.95979506, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -130,7 +130,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7193682989717147486
+--- !u!114 &2288716145213158846
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,7 +139,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7349280921438142016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f85193e2e08aaa45a53c909d7560b78, type: 3}
+  m_Script: {fileID: 11500000, guid: 1355bfe0458704447921ca2ad52b4d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fireSpeed: 10
