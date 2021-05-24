@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+
+
     [SerializeField] private float _speed = 4;
    
 
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
 
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -25,26 +29,27 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-          
-            Player player = other.transform.GetComponent<Player>();
-            if (player != null)
-            {
-                player.Damage();
-            }
-            Destroy(this.gameObject);
-        }
-        if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            //add points
-            Destroy(this.gameObject);
-        }
-    }
+     private void OnTriggerEnter(Collider other)
+     {
+         if (other.CompareTag("Player"))
+         {
+
+             Player player = other.transform.GetComponent<Player>();
+             if (player != null)
+             {
+                 player.Damage();
+             }
+             Destroy(this.gameObject);
+         }
+         if (other.CompareTag("Laser"))
+         {
+             Destroy(other.gameObject);
+             //add points
+             Destroy(this.gameObject);
+         }
+     }
 
 
+   
 
 }

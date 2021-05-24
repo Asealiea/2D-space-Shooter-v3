@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
    
     [Header("Prefabs")]
     [SerializeField] private GameObject _laserPreFab;
+    [SerializeField] private SpawnManager _spawnManager;
 
 
     
@@ -27,6 +28,10 @@ public class Player : MonoBehaviour
     {
         // take current pos = new pos(0,0,0)
         transform.position = Vector3.zero;
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Player: SpawnManager is null");
+        }
       
     }
 
@@ -83,6 +88,7 @@ public class Player : MonoBehaviour
         _lives--;
         if (_lives <= 0)
         {
+            _spawnManager.StopSpawning();
             Destroy(this.gameObject);
         }
     }

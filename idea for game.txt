@@ -1,0 +1,5 @@
+spawn random objects in the back ground to give it the illusion of moving forward.
+
+fill a list with sprites, 
+pick a random number including a blank one, 
+after spwaning it and have it moving slowly down
