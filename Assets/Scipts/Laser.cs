@@ -6,13 +6,7 @@ public class Laser : MonoBehaviour
 {
     [SerializeField] private float _fireSpeed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       // transform.Translate(Vector3.up);
-    }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.up * _fireSpeed * Time.deltaTime);

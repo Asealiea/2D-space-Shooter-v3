@@ -7,17 +7,17 @@ public class Enemy : MonoBehaviour
 
 
     [SerializeField] private float _speed = 4;
-   
 
-    // Start is called before the first frame update
+    private Player _player;
+  
+    
     void Start()
     {
         transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
+        _player = GameObject.Find("Player").GetComponent<Player>();
 
     }
     
-
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -34,18 +34,24 @@ public class Enemy : MonoBehaviour
          if (other.CompareTag("Player"))
          {
 
-             Player player = other.transform.GetComponent<Player>();
-             if (player != null)
+            // Player player = other.transform.GetComponent<Player>();
+             if (_player != null)
              {
-                 player.Damage();
+                 _player.Damage();
              }
              Destroy(this.gameObject);
          }
+
          if (other.CompareTag("Laser"))
          {
-             Destroy(other.gameObject);
-             //add points
-             Destroy(this.gameObject);
+            
+            if (_player != null)
+            {
+                _player.AddScore(10);
+            }
+          
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
          }
      }
 

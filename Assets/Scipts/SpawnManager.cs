@@ -6,14 +6,18 @@ public class SpawnManager : MonoBehaviour
 {
 
     private WaitForSeconds _spawnDelay;
-    [SerializeField] private float delaytime = 1f;
+    [SerializeField] private float _delaytime = 1f;
 
     private bool _spawn = true;
+    private float _randomWait;
+    private int _powerID;
 
 
     [Header("Game Objects")]
     [SerializeField] private GameObject _enemyPreFab;
     [SerializeField] private GameObject _enemyContainer;
+    [SerializeField] private GameObject[] _powerUpContainer;
+  
 
 
     /*
@@ -27,14 +31,18 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    
+        _spawnDelay = new WaitForSeconds(_delaytime);
         
-        _spawnDelay = new WaitForSeconds(delaytime);
       //  _spawnDelaybg = new WaitForSeconds(delaytimebg);
-        if (_enemyPreFab == null)
-        {
-            Debug.LogError("SpawnManager:No Enemy Prefab");
-        }
+
+        NullCheck();
+
+
         StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnPowerUpRoutine());
+
+
        // StartCoroutine(BackGroundObjects());
     }
 /*
@@ -43,7 +51,7 @@ public class SpawnManager : MonoBehaviour
         while (_spawn == true)
         {
             yield return _spawnDelaybg;
-            int randomBg = Random.Range(0, _backgroundScene.Length + 1);
+            int randomBg = Random.Range(0, _backgroundScene.Length);
             Instantiate(_backgroundScene[randomBg], transform.position, Quaternion.identity);
            
         }
@@ -61,9 +69,32 @@ public class SpawnManager : MonoBehaviour
         
     }
 
+    IEnumerator SpawnPowerUpRoutine()
+    {
+        yield return new WaitForSeconds(3f);
+        while (_spawn == true)
+        {
+            Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
+            _powerID = Random.Range(0, _powerUpContainer.Length);
+            Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
+            _randomWait = (Random.Range(5f, 10f));
+            yield return new WaitForSeconds(_randomWait);
+        }
+    }
+
     public void StopSpawning()
     {
         _spawn = false;
     }
 
+    public void NullCheck()
+    {
+        if (_enemyPreFab == null)
+            Debug.LogError("SpawnManager:Enemy PreFab is null");
+        if (_enemyContainer == null)
+            Debug.LogError("SpawnManager:Enemy Container is null");
+        if (_powerUpContainer == null)
+            Debug.LogError("SpawnManager:PowerUp Container is null");
+
+    }
 }
