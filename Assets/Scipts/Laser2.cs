@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Laser2 : MonoBehaviour
 {
-    private float _fireSpeed = 10f;
+    private float _fireSpeed = 20f;
  
 
 
     void Update()
     {
         transform.Translate(Vector3.up * _fireSpeed * Time.deltaTime);
-        if (transform.position.y >= 8)
+        if (transform.position.y >= 10)
         {
             if (transform.parent != null)
             {

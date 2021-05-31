@@ -15,17 +15,25 @@ public class Enemy : MonoBehaviour
     {
         transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
         _player = GameObject.Find("Player").GetComponent<Player>();
-
+        if (_player == null)
+        {
+            Debug.Log("Enemy: Player is null");
+        }
+       
     }
     
     void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        if (transform.position.y <= -5.5f)
+        if (transform.position.y <= -5.5f && _player != null)
         {
             float _randomX = Random.Range(-9f, 9f);
             transform.position = new Vector3(_randomX,8f, 0);
+        }
+        else if (transform.position.y <= -5.5f && _player == null)
+        {
+            Destroy(this.gameObject);
         }
     }
 
@@ -54,7 +62,7 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject);
          }
      }
-
+ 
 
    
 

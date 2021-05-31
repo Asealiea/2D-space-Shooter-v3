@@ -6,46 +6,35 @@ public class Player : MonoBehaviour
 {
     //for player movement
     private float _multiplier = 5f;
+    //powerUps
     private bool _hasTripleShot;
     private float _speedPowerUp = 1;
     [SerializeField] private bool _hasShield;
-
+    //score
     [SerializeField] private int _score;
 
-    [Header("Firing laser Settings")]
+    [Header("Laser Settings")]
     private float _canFire = -1f;
     [SerializeField] private float _fireRate = 0.3f;
    
     [Header("Health")]
     [SerializeField] private int _lives = 3;
 
-
-
-  
-
-   
-    [Header("Prefabs")]
+    [Header("References")]
     [SerializeField] private GameObject _laserPreFab;
-    [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private GameObject _tripleShotPreFab;
     [SerializeField] private GameObject _shields;
+    [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private UIManager _uiManager;
-
-
-    
 
 
     void Start()
     {
         // take current pos = new pos(0,0,0)
         transform.position = Vector3.zero;
-
         NullChecks();
-        
 
-      
     }
-
    
     void Update()
     {
@@ -113,9 +102,11 @@ public class Player : MonoBehaviour
         }
         _lives--;
         _uiManager.UpdateLives(_lives);
+
         if (_lives <= 0)
         {
             _spawnManager.StopSpawning();
+            _uiManager.GameOver(); // call the game over
             Destroy(this.gameObject);
         }
     }
