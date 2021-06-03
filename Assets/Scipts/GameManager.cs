@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private bool _gameOver = false;
+    [SerializeField] private GameObject _spawnManager;
 
     // Update is called once per frame
     void Update()
@@ -26,6 +27,11 @@ public class GameManager : MonoBehaviour
     public void RestartLevel()
     {
         SceneManager.LoadScene(1);//First game level
+    }
+
+    public void StartGame()
+    {
+        _spawnManager.SetActive(true);
     }
     
 }

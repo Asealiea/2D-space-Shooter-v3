@@ -17,14 +17,17 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemyPreFab;
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject[] _powerUpContainer;
-  
+
 
 
     /*
     [Header ("Background Objects")]
-    [SerializeField] private float delaytimebg = 1f;
+    [SerializeField] private float delaytimebg = 4f;
     private WaitForSeconds  _spawnDelaybg;
+    [SerializeField] private float delaytimebgSmall = 2f;
+    private WaitForSeconds  _spawnDelaybgSmall;
     [SerializeField] private GameObject[] _backgroundScene;
+    [SerializeField] private GameObject[] _smallBackGroundScene;
     */
 
 
@@ -33,8 +36,9 @@ public class SpawnManager : MonoBehaviour
     {
     
         _spawnDelay = new WaitForSeconds(_delaytime);
-        
-      //  _spawnDelaybg = new WaitForSeconds(delaytimebg);
+
+        //  _spawnDelaybg = new WaitForSeconds(delaytimebg);
+        //  _spawnDelaybgSmall = new WaitForSeconds(delaytimebgSmall);
 
         NullCheck();
 
@@ -43,7 +47,8 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerUpRoutine());
 
 
-       // StartCoroutine(BackGroundObjects());
+        // StartCoroutine(BackGroundObjects());
+        //StartCoroutine(SmallBackgroundObjects());
     }
 /*
     IEnumerator BackGroundObjects()
@@ -53,20 +58,27 @@ public class SpawnManager : MonoBehaviour
             yield return _spawnDelaybg;
             int randomBg = Random.Range(0, _backgroundScene.Length);
             Instantiate(_backgroundScene[randomBg], transform.position, Quaternion.identity);
-           
         }
     }
-    */
+     
+    IEnumerator SmallBackgroundObjects()
+    {
+        while (_spawn == true)
+        {
+            yield return _spawnDelaybg;
+            int randomBg = Random.Range(0, _smallBackGroundScene.Length);
+            Instantiate(_smallBackGroundScene[randomBg], transform.position, Quaternion.identity);
+        }
+    } */
+    
     IEnumerator SpawnRoutine()
     {
         while (_spawn == true)
         {
             yield return _spawnDelay;
-
             GameObject newEnemy = Instantiate(_enemyPreFab, transform.position, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
         }
-        
     }
 
     IEnumerator SpawnPowerUpRoutine()

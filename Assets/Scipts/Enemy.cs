@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    //[SerializeField] private Animator _anim;
 
 
     [SerializeField] private float _speed = 4;
-
     private Player _player;
+
+    [SerializeField] private GameObject _explosion;
   
     
     void Start()
     {
         transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
         _player = GameObject.Find("Player").GetComponent<Player>();
+       // _anim = GetComponent<Animator>();
+        
         if (_player == null)
-        {
             Debug.Log("Enemy: Player is null");
-        }
+        
+       // if (_anim == null)
+       //     Debug.Log("Enemy: Animator is null");
        
     }
     
@@ -41,28 +46,38 @@ public class Enemy : MonoBehaviour
      {
          if (other.CompareTag("Player"))
          {
-
             // Player player = other.transform.GetComponent<Player>();
              if (_player != null)
              {
                  _player.Damage();
              }
-             Destroy(this.gameObject);
+            //_anim.SetTrigger("OnEnemyDeath");
+            Instantiate(_explosion, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        //Destroy(this.gameObject, 2.7f);// add delay to the destory
+
+            
          }
 
-         if (other.CompareTag("Laser"))
+
+        if (other.CompareTag("Laser"))
          {
             
             if (_player != null)
             {
                 _player.AddScore(10);
             }
-          
             Destroy(other.gameObject);
-            Destroy(this.gameObject);
-         }
+            //_anim.SetTrigger("OnEnemyDeath"); trigger not needed either.
+            
+            Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
+            Destroy(this.gameObject);// no delay needed for this.
+            //Destroy(this.gameObject, 2.7f);//add delay to destory
+        }
+         
      }
  
+           
 
    
 

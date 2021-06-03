@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _shields;
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private UIManager _uiManager;
+    [SerializeField] private GameObject _playerDamageLeft, _playerDamageRight;
+
 
 
     void Start()
@@ -103,12 +105,42 @@ public class Player : MonoBehaviour
         _lives--;
         _uiManager.UpdateLives(_lives);
 
-        if (_lives <= 0)
+
+
+        switch (_lives)
+        {
+            case 0:
+                _spawnManager.StopSpawning();
+                _uiManager.GameOver();
+                Destroy(this.gameObject);
+                break;
+            case 1:
+                _playerDamageRight.SetActive(true);
+                break;
+            case 2:
+                _playerDamageLeft.SetActive(true);
+                _playerDamageRight.SetActive(false);
+                break;
+
+            default:
+                _playerDamageRight.SetActive(false);
+                _playerDamageLeft.SetActive(false);
+                break;
+        }
+
+        /*
+            if (_lives <= 0)
         {
             _spawnManager.StopSpawning();
             _uiManager.GameOver(); // call the game over
-            Destroy(this.gameObject);
+            //instantiate explosion 
+            Destroy(this.gameObject);//add delay to destory
         }
+        
+            */
+
+
+
     }
 
     public void TripleShotActive()

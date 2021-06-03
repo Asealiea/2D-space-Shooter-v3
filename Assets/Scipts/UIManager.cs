@@ -98,6 +98,7 @@ public class UIManager : MonoBehaviour
     public void RestartGameButton()
     {
         _gameManager.RestartLevel();
+        Time.timeScale = 1;
     }
 
     public void ExitGameButton()
