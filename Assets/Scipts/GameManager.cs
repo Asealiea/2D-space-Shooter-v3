@@ -34,4 +34,8 @@ public class GameManager : MonoBehaviour
         _spawnManager.SetActive(true);
     }
     
+    public void Menu()
+    {
+        SceneManager.LoadScene(0);//menu screen
+    }
 }

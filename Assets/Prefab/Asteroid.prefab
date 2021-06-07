@@ -135,3 +135,4 @@ MonoBehaviour:
   _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
     type: 3}
   _spinningSpeed: 10
+  _gameManager: {fileID: 0}

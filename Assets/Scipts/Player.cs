@@ -8,7 +8,11 @@ public class Player : MonoBehaviour
     private float _multiplier = 5f;
     //powerUps
     private bool _hasTripleShot;
+    private bool _hasSpeed;
+    private int _tripleShotCount;
+    private int _speedUpCount;
     private float _speedPowerUp = 1;
+    private WaitForSeconds _coolDown;
     [SerializeField] private bool _hasShield;
     //score
     [SerializeField] private int _score;
@@ -27,6 +31,9 @@ public class Player : MonoBehaviour
     [SerializeField] private SpawnManager _spawnManager;
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private GameObject _playerDamageLeft, _playerDamageRight;
+    [SerializeField] private GameObject _playerDeath;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _laserSound;
 
 
 
@@ -35,7 +42,14 @@ public class Player : MonoBehaviour
         // take current pos = new pos(0,0,0)
         transform.position = Vector3.zero;
         NullChecks();
+        //wait for seconds 5f
+        _coolDown = new WaitForSeconds(5f);
 
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+            Debug.Log("Player: AudioSource is null");
+        else
+            _audioSource.clip = _laserSound;
     }
    
     void Update()
@@ -91,7 +105,8 @@ public class Player : MonoBehaviour
         else
         {
             Instantiate(_laserPreFab, transform.position + new Vector3(0, 1.2f, 0), Quaternion.identity);
-        }   
+        }
+        _audioSource.Play(0);//play the audio clip.
     }
 
     public void Damage()
@@ -112,6 +127,8 @@ public class Player : MonoBehaviour
             case 0:
                 _spawnManager.StopSpawning();
                 _uiManager.GameOver();
+                Instantiate(_playerDeath, transform.position, Quaternion.identity);
+                //instaniate the death explosion
                 Destroy(this.gameObject);
                 break;
             case 1:
@@ -138,42 +155,50 @@ public class Player : MonoBehaviour
         }
         
             */
-
-
-
     }
 
     public void TripleShotActive()
     {
-        _hasTripleShot = true;
-        //obtained tripleshots + 1
-        StartCoroutine(TripleShotCoolDown());
+        _tripleShotCount ++;
+      
+        if (!_hasTripleShot)
+        {
+            _hasTripleShot = true;
+            StartCoroutine(TripleShotCoolDown());
+        }
     }
-
+    
     IEnumerator TripleShotCoolDown()
     {
-        /*
-         * while obtained tripleshots  is greater then 0
-         * wait for seconds 
-         * 
-         * afterwards revert back to false.
-          */
-        yield return new WaitForSeconds(5f);
+        while (_tripleShotCount >=0)
+        {
+            yield return new WaitForSeconds(3f);
+            _tripleShotCount--;
+        }
         _hasTripleShot = false;
     }
-
+    
     public void SpeedActive()
     {
-        //speed up player.
         _speedPowerUp = 2f;
-        StartCoroutine(SpeedCoolDown());
+        _speedUpCount++;
+        if (!_hasSpeed)
+        {
+            _hasSpeed = true;
+            StartCoroutine(SpeedCoolDown());
+        }
     }
 
     IEnumerator SpeedCoolDown()
     {
-        yield return new WaitForSeconds(5f);
-        _speedPowerUp = 1f;
-        //revert speed back to normal.
+        while (_speedUpCount >=0)
+        {
+            yield return _coolDown;
+            _speedUpCount--;
+        }
+       
+        _speedPowerUp = 1;
+        _hasSpeed = false;
     }
 
     public void ShieldsActive()
@@ -202,6 +227,9 @@ public class Player : MonoBehaviour
             Debug.LogError("Player: TripleShot is null");
         if (_laserPreFab == null)
             Debug.LogError("Player: Laser is null");
+        if (_laserSound == null)
+            Debug.Log("Player: Laser audio is null;");
+        
   
     }
 

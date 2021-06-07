@@ -101,6 +101,11 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void MenuButton()
+    {
+        _gameManager.Menu();
+    }
+
     public void ExitGameButton()
     {
 #if UNITY_EDITOR

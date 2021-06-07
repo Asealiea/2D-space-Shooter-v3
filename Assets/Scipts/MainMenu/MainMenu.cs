@@ -8,17 +8,7 @@ using UnityEditor;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
     public void ExitGameButton()
 
     {
@@ -32,5 +22,6 @@ public class MainMenu : MonoBehaviour
     public void StartGameButton()
     {
         SceneManager.LoadScene(1); //First level
+        Time.timeScale = 1;
     }
 }

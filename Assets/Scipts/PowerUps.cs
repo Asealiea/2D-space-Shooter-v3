@@ -8,14 +8,14 @@ public class PowerUps : MonoBehaviour
     [SerializeField] private float _speed = 3f;
 
     [SerializeField] private int _powerUpID; //0 = triple shot, 1 = speed, 2 = Shield;
-  
+    [SerializeField] private AudioClip _powerUpClip;
+
+     
     void Update()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         if (transform.position.y <= -4.5f)
-        {
             Destroy(this.gameObject);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -23,6 +23,7 @@ public class PowerUps : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
+            AudioSource.PlayClipAtPoint(_powerUpClip, transform.position);
             if (player != null)
             {
                 switch (_powerUpID)
