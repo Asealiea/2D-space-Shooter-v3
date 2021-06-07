@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(1);//First level
         }
+
     }
 
     public void GameOver()

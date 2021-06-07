@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     //for player movement
     private float _multiplier = 5f;
+    private float _shiftSpeed = 1f;
     //powerUps
     private bool _hasTripleShot;
     private bool _hasSpeed;
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _playerDeath;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _laserSound;
+    [SerializeField] private GameObject _thrustersRight, _thrustersLeft;
 
 
 
@@ -59,9 +61,34 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)    //_canFire == true
         {
             Shoot();
+        }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            ThrustersOn();
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            ThrustersOff();
         }
    
+    }
+
+    private void ThrustersOn()
+    {
+            _shiftSpeed = 1.5f;
+            _thrustersLeft.transform.localScale = new Vector3(0.3f, 1, 1);
+            _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.592f, 0);
+            _thrustersRight.transform.localScale = new Vector3(0.3f, 1, 1);
+            _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.592f, 0); 
+    }
+    private void ThrustersOff()
+    { 
+            _shiftSpeed = 1;
+            _thrustersLeft.transform.localScale = new Vector3(0.15f, .5f, 0);
+            _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.22f, 0f);
+            _thrustersRight.transform.localScale = new Vector3(0.15f, .5f, 0);
+            _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.22f, 0f);        
     }
 
     private void PlayerMovement()
@@ -73,7 +100,7 @@ public class Player : MonoBehaviour
         // transform.Translate(Vector3.up * _verticalInput * (_multiplier +_speedPowerUp) * Time.deltaTime);
 
         Vector3 Direction = new Vector3(_horizontalInput, _verticalInput, 0);
-        transform.Translate(Direction * (_multiplier * _speedPowerUp) * Time.deltaTime);
+        transform.Translate(Direction * (_multiplier* _shiftSpeed * _speedPowerUp) * Time.deltaTime);
 
         if (transform.position.y >= 0)
         {
