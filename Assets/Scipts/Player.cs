@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [Header("Laser Settings")]
     private float _canFire = -1f; //delay before firing again
     [SerializeField] private float _fireRate = 0.3f;// how fast we can fire
+    [SerializeField] private int _ammoCount = 15;
    
     [Header("Health")]
     [SerializeField] private int _lives = 3;//total lives
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip _laserSound;
     [SerializeField] private GameObject _thrustersRight, _thrustersLeft;
     [SerializeField] private Renderer _shieldsRenderer;
+    [SerializeField] private AudioClip _ammoEmptyClip;
   
 
 
@@ -61,9 +63,14 @@ public class Player : MonoBehaviour
     {
         PlayerMovement();   
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)    //_canFire == true
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0)    //_canFire == true
         {
             Shoot();
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && _ammoCount <= 0)
+        {
+            _audioSource.clip = _ammoEmptyClip;
+            _audioSource.Play();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -127,16 +134,20 @@ public class Player : MonoBehaviour
     private void Shoot()
     {
         _canFire = Time.time + _fireRate;
-
+        _audioSource.clip = _laserSound;
         if (_hasTripleShot == true)
         {
             Instantiate(_tripleShotPreFab, transform.position, Quaternion.identity);
+
         }
         else
         {
             Instantiate(_laserPreFab, transform.position + new Vector3(0, 1.2f, 0), Quaternion.identity);
+           
         }
         _audioSource.Play(0);//play the audio clip.
+        _ammoCount--;
+        _uiManager.UpdateAmmo(_ammoCount);
     }
 
     public void Damage()
