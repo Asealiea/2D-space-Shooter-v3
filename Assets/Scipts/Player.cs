@@ -5,25 +5,27 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     //for player movement
-    private float _multiplier = 5f;
-    private float _shiftSpeed = 1f;
+    private float _multiplier = 5f; //basic movement
+    private float _shiftSpeed = 1f; //multiplier that changes if shift is held
+    [SerializeField] private float _shiftSpeedBoost = 1.75f; //speed boost from shift
     //powerUps
-    private bool _hasTripleShot;
-    private bool _hasSpeed;
-    private int _tripleShotCount;
-    private int _speedUpCount;
-    private float _speedPowerUp = 1;
-    private WaitForSeconds _coolDown;
-    [SerializeField] private bool _hasShield;
+    private bool _hasTripleShot; //checks if we have triple shot power up
+    private bool _hasSpeed; //checks to see if we have speed power up
+    private int _tripleShotCount; // amount of triple shot power ups we have
+    private int _speedUpCount; //amount of speed power ups we have
+    private float _speedPowerUp = 1; // speed boost from speed power up
+    private WaitForSeconds _coolDown; //cooldown for power ups
+    [SerializeField] private bool _hasShield; //if we have a shield or not
+    [SerializeField] private int _shieldCount; // count for sheilds
     //score
-    [SerializeField] private int _score;
+    [SerializeField] private int _score; // players score
 
     [Header("Laser Settings")]
-    private float _canFire = -1f;
-    [SerializeField] private float _fireRate = 0.3f;
+    private float _canFire = -1f; //delay before firing again
+    [SerializeField] private float _fireRate = 0.3f;// how fast we can fire
    
     [Header("Health")]
-    [SerializeField] private int _lives = 3;
+    [SerializeField] private int _lives = 3;//total lives
 
     [Header("References")]
     [SerializeField] private GameObject _laserPreFab;
@@ -36,17 +38,18 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _laserSound;
     [SerializeField] private GameObject _thrustersRight, _thrustersLeft;
+    [SerializeField] private Renderer _shieldsRenderer;
+  
 
 
 
     void Start()
     {
-        // take current pos = new pos(0,0,0)
+        _shieldsRenderer = _shields.GetComponent<Renderer>();
         transform.position = Vector3.zero;
         NullChecks();
-        //wait for seconds 5f
         _coolDown = new WaitForSeconds(5f);
-
+        
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
             Debug.Log("Player: AudioSource is null");
@@ -76,7 +79,7 @@ public class Player : MonoBehaviour
 
     private void ThrustersOn()
     {
-            _shiftSpeed = 1.5f;
+            _shiftSpeed = _shiftSpeedBoost;
             _thrustersLeft.transform.localScale = new Vector3(0.3f, 1, 1);
             _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.592f, 0);
             _thrustersRight.transform.localScale = new Vector3(0.3f, 1, 1);
@@ -140,8 +143,22 @@ public class Player : MonoBehaviour
     {
         if (_hasShield == true)
         {
-            _shields.SetActive(false);
-            _hasShield = false;
+            switch (_shieldCount)
+            {
+                case 1: // last hit, remove shields
+                    _shields.SetActive(false);
+                    _hasShield = false;
+                    break;
+                case 2:// taken 1 hit
+                    _shieldCount--;
+                    _shieldsRenderer.material.color = Color.red;
+                    break;
+                case 3: //have fresh shield
+                    _shieldCount--;
+                    _shieldsRenderer.material.color = Color.green;
+                    break;
+            }
+            
             return;
         }
         _lives--;
@@ -231,6 +248,8 @@ public class Player : MonoBehaviour
     public void ShieldsActive()
     {
         _hasShield = true;
+        _shieldsRenderer.material.color = Color.white;
+        _shieldCount = 3;
         _shields.SetActive(true);
         // deploy the shields.
     }
@@ -247,6 +266,7 @@ public class Player : MonoBehaviour
         if (other.CompareTag("ELaser"))
         {
             Damage();
+            Destroy(other.gameObject);
         }
     }
 
