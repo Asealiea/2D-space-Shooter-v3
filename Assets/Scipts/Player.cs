@@ -215,6 +215,14 @@ public class Player : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("ELaser"))
+        {
+            Damage();
+        }
+    }
+
     private void NullChecks()
     {
         if (_spawnManager == null)

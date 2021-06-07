@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
 
     [SerializeField] private GameObject _explosion;
+    [SerializeField] private GameObject _enemyLaser;
   
     
     void Start()
@@ -21,6 +22,7 @@ public class Enemy : MonoBehaviour
         
         if (_player == null)
             Debug.Log("Enemy: Player is null");
+        StartCoroutine(ShootEnemy());
         
        // if (_anim == null)
        //     Debug.Log("Enemy: Animator is null");
@@ -76,6 +78,16 @@ public class Enemy : MonoBehaviour
         }
          
      }
+
+    IEnumerator ShootEnemy()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(3f, 7f));
+            Instantiate(_enemyLaser, transform.position + new Vector3(0f,-1.3f,0f), Quaternion.identity);
+        }
+
+    }
  
            
 
