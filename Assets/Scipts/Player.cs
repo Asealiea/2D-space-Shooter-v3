@@ -64,24 +64,16 @@ public class Player : MonoBehaviour
         PlayerMovement();   
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0)    //_canFire == true
-        {
             Shoot();
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && _ammoCount <= 0)
+        else if (Input.GetKeyDown(KeyCode.Space) && _ammoCount <= 0)
         {
             _audioSource.clip = _ammoEmptyClip;
             _audioSource.Play();
         }
-
         if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
             ThrustersOn();
-        }
         if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
             ThrustersOff();
-        }
-   
     }
 
     private void ThrustersOn()
@@ -92,6 +84,7 @@ public class Player : MonoBehaviour
             _thrustersRight.transform.localScale = new Vector3(0.3f, 1, 1);
             _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.592f, 0); 
     }
+        
     private void ThrustersOff()
     { 
             _shiftSpeed = 1;
@@ -263,6 +256,12 @@ public class Player : MonoBehaviour
         _shieldCount = 3;
         _shields.SetActive(true);
         // deploy the shields.
+    }
+
+    public void ExtraAmmo()
+    {
+        _ammoCount = 15;
+        _uiManager.UpdateAmmo(_ammoCount);
     }
 
     public void AddScore(int addPoints)
