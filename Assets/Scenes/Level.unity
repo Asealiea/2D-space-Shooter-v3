@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d95adadcc6ea7840a584232bce72bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _delaytime: 1
+  _delaytime: 3
   _enemyPreFab: {fileID: 8845806286490972106, guid: a0f1f7f62771c18419831a11264e5254,
     type: 3}
   _enemyContainer: {fileID: 690088564}
@@ -1690,6 +1690,7 @@ MonoBehaviour:
   - {fileID: 5309455351205245291, guid: 74475e39a911829468b299abb3bfba2f, type: 3}
   - {fileID: 1109751200991264306, guid: 8c19192a3a718ad41a0bdeeee3d4c917, type: 3}
   - {fileID: 6608824412449853024, guid: 2c4834dce45d46640aa197ece0b78359, type: 3}
+  - {fileID: 7221198679080065348, guid: d5b8f444c9ecafa4780e03fa410b96f4, type: 3}
 --- !u!4 &880600103
 Transform:
   m_ObjectHideFlags: 0

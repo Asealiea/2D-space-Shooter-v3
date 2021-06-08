@@ -40,6 +40,9 @@ public class PowerUps : MonoBehaviour
                     case 3://Ammo Refill
                         player.ExtraAmmo();
                         break;
+                    case 4://extra Life.
+                        player.ExtraLife();
+                        break;
                 }
             }
             Destroy(this.gameObject);

@@ -143,66 +143,55 @@ public class Player : MonoBehaviour
         _uiManager.UpdateAmmo(_ammoCount);
     }
 
-    public void Damage()
+    public void Damage(int Damage) // 0 = no damage, any thing else for damage;
     {
-        if (_hasShield == true)
+        if (Damage != 0)
         {
-            switch (_shieldCount)
+            if (_hasShield == true)
             {
-                case 1: // last hit, remove shields
-                    _shields.SetActive(false);
-                    _hasShield = false;
-                    break;
-                case 2:// taken 1 hit
-                    _shieldCount--;
-                    _shieldsRenderer.material.color = Color.red;
-                    break;
-                case 3: //have fresh shield
-                    _shieldCount--;
-                    _shieldsRenderer.material.color = Color.green;
-                    break;
+                switch (_shieldCount)
+                {
+                    case 1: // last hit, remove shields
+                        _shields.SetActive(false);
+                        _hasShield = false;
+                        break;
+                    case 2:// taken 1 hit
+                        _shieldCount--;
+                        _shieldsRenderer.material.color = Color.red;
+                        break;
+                    case 3: //have fresh shield
+                        _shieldCount--;
+                        _shieldsRenderer.material.color = Color.green;
+                        break;
+                }
+                return;
             }
-            
-            return;
+            _lives--;
         }
-        _lives--;
-        _uiManager.UpdateLives(_lives);
+            _uiManager.UpdateLives(_lives);
 
+            switch (_lives)
+            {
+                case 0:
+                    _spawnManager.StopSpawning();
+                    _uiManager.GameOver();
+                    Instantiate(_playerDeath, transform.position, Quaternion.identity);
+                    //instaniate the death explosion
+                    Destroy(this.gameObject);
+                    break;
+                case 1:
+                    _playerDamageRight.SetActive(true);
+                    break;
+                case 2:
+                    _playerDamageLeft.SetActive(true);
+                    _playerDamageRight.SetActive(false);
+                    break;
 
-
-        switch (_lives)
-        {
-            case 0:
-                _spawnManager.StopSpawning();
-                _uiManager.GameOver();
-                Instantiate(_playerDeath, transform.position, Quaternion.identity);
-                //instaniate the death explosion
-                Destroy(this.gameObject);
-                break;
-            case 1:
-                _playerDamageRight.SetActive(true);
-                break;
-            case 2:
-                _playerDamageLeft.SetActive(true);
-                _playerDamageRight.SetActive(false);
-                break;
-
-            default:
-                _playerDamageRight.SetActive(false);
-                _playerDamageLeft.SetActive(false);
-                break;
-        }
-
-        /*
-            if (_lives <= 0)
-        {
-            _spawnManager.StopSpawning();
-            _uiManager.GameOver(); // call the game over
-            //instantiate explosion 
-            Destroy(this.gameObject);//add delay to destory
-        }
-        
-            */
+                default:
+                    _playerDamageRight.SetActive(false);
+                    _playerDamageLeft.SetActive(false);
+                    break;
+            }   
     }
 
     public void TripleShotActive()
@@ -264,6 +253,15 @@ public class Player : MonoBehaviour
         _uiManager.UpdateAmmo(_ammoCount);
     }
 
+    public void ExtraLife()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+        }
+        Damage(0); // 0 = no damage
+    }
+
     public void AddScore(int addPoints)
     {
         _score += addPoints;
@@ -275,7 +273,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("ELaser"))
         {
-            Damage();
+            Damage(1);
             Destroy(other.gameObject);
         }
     }

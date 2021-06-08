@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour
             // Player player = other.transform.GetComponent<Player>();
              if (_player != null)
              {
-                 _player.Damage();
+                 _player.Damage(1);
              }
             //_anim.SetTrigger("OnEnemyDeath");
             Instantiate(_explosion, transform.position, Quaternion.identity);
