@@ -5,10 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     //for player movement
+    [Header("Player movement")]
     private float _multiplier = 5f; //basic movement
     private float _shiftSpeed = 1f; //multiplier that changes if shift is held
     [SerializeField] private float _shiftSpeedBoost = 1.75f; //speed boost from shift
     //powerUps
+    [Header("Powerups")]
     private bool _hasTripleShot; //checks if we have triple shot power up
     private bool _hasSpeed; //checks to see if we have speed power up
     private int _tripleShotCount; // amount of triple shot power ups we have
@@ -18,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _hasShield; //if we have a shield or not
     [SerializeField] private int _shieldCount; // count for sheilds
     //score
+    [Header("Score")]
     [SerializeField] private int _score; // players score
 
     [Header("Laser Settings")]
@@ -41,7 +44,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _thrustersRight, _thrustersLeft;
     [SerializeField] private Renderer _shieldsRenderer;
     [SerializeField] private AudioClip _ammoEmptyClip;
-  
+    [SerializeField] private CameraShake _cameraShake;
 
 
 
@@ -58,18 +61,19 @@ public class Player : MonoBehaviour
         else
             _audioSource.clip = _laserSound;
     }
-   
+
     void Update()
     {
-        PlayerMovement();   
+        PlayerMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0)    //_canFire == true
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0)    
             Shoot();
         else if (Input.GetKeyDown(KeyCode.Space) && _ammoCount <= 0)
         {
             _audioSource.clip = _ammoEmptyClip;
             _audioSource.Play();
         }
+        
         if (Input.GetKeyDown(KeyCode.LeftShift))
             ThrustersOn();
         if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -129,29 +133,24 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
         _audioSource.clip = _laserSound;
         if (_hasTripleShot == true)
-        {
-            Instantiate(_tripleShotPreFab, transform.position, Quaternion.identity);
-
-        }
+            Instantiate(_tripleShotPreFab, transform.position, Quaternion.identity);        
         else
-        {
-            Instantiate(_laserPreFab, transform.position + new Vector3(0, 1.2f, 0), Quaternion.identity);
-           
-        }
+            Instantiate(_laserPreFab, transform.position + new Vector3(0, 1.2f, 0), Quaternion.identity);          
         _audioSource.Play(0);//play the audio clip.
         _ammoCount--;
         _uiManager.UpdateAmmo(_ammoCount);
     }
-
-    public void Damage(int Damage) // 0 = no damage, any thing else for damage;
+        
+    public void Damage(bool Damage) // false = no damage, true = damage
     {
-        if (Damage != 0)
+        if (Damage)
         {
             if (_hasShield == true)
             {
                 switch (_shieldCount)
                 {
                     case 1: // last hit, remove shields
+                        _shieldsRenderer.material.color = Color.white;
                         _shields.SetActive(false);
                         _hasShield = false;
                         break;
@@ -176,17 +175,19 @@ public class Player : MonoBehaviour
                     _spawnManager.StopSpawning();
                     _uiManager.GameOver();
                     Instantiate(_playerDeath, transform.position, Quaternion.identity);
+                    _cameraShake.CameraShaker(1);
                     //instaniate the death explosion
                     Destroy(this.gameObject);
                     break;
                 case 1:
                     _playerDamageRight.SetActive(true);
-                    break;
+                    _cameraShake.CameraShaker(1);
+                break;
                 case 2:
                     _playerDamageLeft.SetActive(true);
                     _playerDamageRight.SetActive(false);
+                    _cameraShake.CameraShaker(1);
                     break;
-
                 default:
                     _playerDamageRight.SetActive(false);
                     _playerDamageLeft.SetActive(false);
@@ -240,11 +241,10 @@ public class Player : MonoBehaviour
 
     public void ShieldsActive()
     {
-        _hasShield = true;
-        _shieldsRenderer.material.color = Color.white;
-        _shieldCount = 3;
-        _shields.SetActive(true);
-        // deploy the shields.
+        _hasShield = true; 
+        //_shieldsRenderer.material.color = Color.white; //change the colour to white
+        _shieldCount = 3; // add 3 shields 
+        _shields.SetActive(true); // deploy the shields.
     }
 
     public void ExtraAmmo()
@@ -259,7 +259,7 @@ public class Player : MonoBehaviour
         {
             _lives++;
         }
-        Damage(0); // 0 = no damage
+        Damage(false); // false = no damage
     }
 
     public void AddScore(int addPoints)
@@ -273,7 +273,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("ELaser"))
         {
-            Damage(1);
+            Damage(true);
             Destroy(other.gameObject);
         }
     }
@@ -297,3 +297,6 @@ public class Player : MonoBehaviour
     }
 
 }
+
+
+        

@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     [Header("Pause Menu")]
     [SerializeField] private bool _paused;
     [SerializeField] private GameObject _pauseMenu;
+    [Header("Options Menu")]
+    [SerializeField] private GameObject _optionMenu;
+    [SerializeField] private CameraShake _camera;
+    [SerializeField] private Toggle _cameraShakeToggle;
     [Header("Game Over")]
     private bool _gameOver = false;
     [SerializeField] private Text _gameOverText;
@@ -120,6 +124,31 @@ public class UIManager : MonoBehaviour
 #else
 		    Application.Quit();// quits the game (only works after it's been built)
 #endif
+    }
+
+    public void OptionsButton()
+    {
+        _pauseMenu.SetActive(false);
+        _optionMenu.SetActive(true);
+    }
+
+    public void CameraShakeToggle(bool camera)
+    {
+        if (_cameraShakeToggle.isOn)
+        {
+            _camera.CameraShakeOn(true);
+        }
+        else
+        {
+        _camera.CameraShakeOn(false);
+        }
+
+    }
+
+    public void BackButtonOptions()
+    {
+        _pauseMenu.SetActive(true);
+        _optionMenu.SetActive(false);
     }
 
 

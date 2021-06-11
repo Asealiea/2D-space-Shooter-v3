@@ -147,3 +147,5 @@ MonoBehaviour:
     type: 3}
   _enemyLaser: {fileID: 5852647636540181125, guid: f5abd1c2c8bb8ad479eb6567e02b3a43,
     type: 3}
+  _ammoRefill: {fileID: 6608824412449853024, guid: 2c4834dce45d46640aa197ece0b78359,
+    type: 3}

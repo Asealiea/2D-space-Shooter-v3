@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _enemyLaser;
+    [SerializeField] private GameObject _ammoRefill;
   
     
     void Start()
@@ -26,8 +27,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Enemy: Player is null");
         
         
-        StartCoroutine(ShootEnemy());
-        
+       
        // if (_anim == null)
        //     Debug.Log("Enemy: Animator is null");
        
@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour
             // Player player = other.transform.GetComponent<Player>();
              if (_player != null)
              {
-                 _player.Damage(1);
+                 _player.Damage(true);
              }
             //_anim.SetTrigger("OnEnemyDeath");
             Instantiate(_explosion, transform.position, Quaternion.identity);
@@ -88,28 +88,22 @@ public class Enemy : MonoBehaviour
                 _player.AddScore(10);
             }
             Destroy(other.gameObject);
+
+
+            //spawn an ammo refill on chance
+            int randomDrop = Random.Range(0, 11);
+            if (randomDrop >= 8)
+            {
+                Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+            }
+
+
             //_anim.SetTrigger("OnEnemyDeath"); trigger not needed either.
-            
+
             Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
             Destroy(this.gameObject);// no delay needed for this.
             //Destroy(this.gameObject, 2.7f);//add delay to destory
         }
      }
-         
-            
-
-    IEnumerator ShootEnemy()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(1f, 4f));
-            Instantiate(_enemyLaser, transform.position + new Vector3(0f,-1.3f,0f), Quaternion.identity);
-        }
-
-    }
- 
-           
-
-   
 
 }
