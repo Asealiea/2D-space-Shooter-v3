@@ -66,7 +66,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo(int AmmoCount)
     {
-        _ammoCount.text = "Ammo: " + AmmoCount.ToString();
+        _ammoCount.text = "Ammo: " + AmmoCount.ToString() + "/15";
     }
 
     public void UpdateScore(int PlayerScore)
