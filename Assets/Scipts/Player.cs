@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     private float _multiplier = 5f; //basic movement
     private float _shiftSpeed = 1f; //multiplier that changes if shift is held
     [SerializeField] private float _shiftSpeedBoost = 1.75f; //speed boost from shift
+    [SerializeField] private float _thrusters = 100f; // used to update the thruster bar
+    [SerializeField] private bool _canThrust; //checks if the player can use the thrusters
+    [SerializeField] private bool _thrusterCharging; //checks if the player is already charging thrusters
     //powerUps
     [Header("Powerups")]
     private bool _hasTripleShot; //checks if we have triple shot power up
@@ -74,7 +77,7 @@ public class Player : MonoBehaviour
             _audioSource.Play();
         }
         
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && _canThrust)
             ThrustersOn();
         if (Input.GetKeyUp(KeyCode.LeftShift))
             ThrustersOff();
@@ -82,20 +85,33 @@ public class Player : MonoBehaviour
 
     private void ThrustersOn()
     {
-            _shiftSpeed = _shiftSpeedBoost;
-            _thrustersLeft.transform.localScale = new Vector3(0.3f, 1, 1);
-            _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.592f, 0);
-            _thrustersRight.transform.localScale = new Vector3(0.3f, 1, 1);
-            _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.592f, 0); 
+        _shiftSpeed = _shiftSpeedBoost;
+        _thrustersLeft.transform.localScale = new Vector3(0.3f, 1, 1);
+        _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.592f, 0);
+        _thrustersRight.transform.localScale = new Vector3(0.3f, 1, 1);
+        _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.592f, 0);
+        if (_thrusters > 0)
+        {
+            _thrusters -= 1f;
+            ThursterBar();
+        }
     }
         
     private void ThrustersOff()
-    { 
-            _shiftSpeed = 1;
-            _thrustersLeft.transform.localScale = new Vector3(0.15f, .5f, 0);
-            _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.22f, 0f);
-            _thrustersRight.transform.localScale = new Vector3(0.15f, .5f, 0);
-            _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.22f, 0f);        
+    {
+        _shiftSpeed = 1;
+        _thrustersLeft.transform.localScale = new Vector3(0.15f, .5f, 0);
+        _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.22f, 0f);
+        _thrustersRight.transform.localScale = new Vector3(0.15f, .5f, 0);
+        _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.22f, 0f);
+        if (_thrusters > 0.5f && !_thrusterCharging)
+        {
+            StartCoroutine(ThrusterRecharge());
+        }
+        if (_thrusters <= 0)
+        {
+            StartCoroutine(ThrustersCoolDown());
+        }
     }
 
     private void PlayerMovement()
@@ -175,24 +191,26 @@ public class Player : MonoBehaviour
                     _spawnManager.StopSpawning();
                     _uiManager.GameOver();
                     Instantiate(_playerDeath, transform.position, Quaternion.identity);
-                    _cameraShake.CameraShaker(1);
+                    _cameraShake.CameraShaker(3);
                     //instaniate the death explosion
                     Destroy(this.gameObject);
                     break;
                 case 1:
                     _playerDamageRight.SetActive(true);
-                    _cameraShake.CameraShaker(1);
-                break;
+                    if (Damage)
+                        _cameraShake.CameraShaker(2);
+                    break;
                 case 2:
                     _playerDamageLeft.SetActive(true);
                     _playerDamageRight.SetActive(false);
-                    _cameraShake.CameraShaker(1);
+                    if (Damage)
+                        _cameraShake.CameraShaker(1);
                     break;
                 default:
                     _playerDamageRight.SetActive(false);
                     _playerDamageLeft.SetActive(false);
                     break;
-            }   
+            }    
     }
 
     public void TripleShotActive()
@@ -276,6 +294,32 @@ public class Player : MonoBehaviour
             Damage(true);
             Destroy(other.gameObject);
         }
+    }
+
+    IEnumerator ThrustersCoolDown()
+    {
+        _canThrust = false;
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(ThrusterRecharge());
+    }
+
+    IEnumerator ThrusterRecharge()
+    {
+        _thrusterCharging = true;
+        while (_thrusters < 100)
+        {
+            yield return new WaitForSeconds(0.1f);
+            _thrusters+= 1f;
+            ThursterBar();
+        }
+        _canThrust = true;
+        _thrusterCharging = false;
+
+    }
+
+    private void ThursterBar()
+    {
+        _uiManager.ThrusterUpdate(_thrusters);
     }
 
     private void NullChecks()

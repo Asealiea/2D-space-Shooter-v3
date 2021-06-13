@@ -8,6 +8,8 @@ using UnityEditor;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Thruster Bar")]
+    [SerializeField] private Slider _slider;
     [Header("Score Text")]
     [SerializeField] private Text _scoreText;
     [Header("Ammo Count Text")]
@@ -149,6 +151,11 @@ public class UIManager : MonoBehaviour
     {
         _pauseMenu.SetActive(true);
         _optionMenu.SetActive(false);
+    }
+
+    public void ThrusterUpdate(float Thruster)
+    {
+        _slider.value = Thruster;
     }
 
 

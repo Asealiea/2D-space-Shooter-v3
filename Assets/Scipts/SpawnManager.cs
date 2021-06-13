@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class SpawnManager : MonoBehaviour
 {
@@ -50,27 +53,39 @@ public class SpawnManager : MonoBehaviour
         // StartCoroutine(BackGroundObjects());
         //StartCoroutine(SmallBackgroundObjects());
     }
-/*
-    IEnumerator BackGroundObjects()
+
+    private void Update()
     {
-        while (_spawn == true)
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            yield return _spawnDelaybg;
-            int randomBg = Random.Range(0, _backgroundScene.Length);
-            Instantiate(_backgroundScene[randomBg], transform.position, Quaternion.identity);
+            Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
+            _powerID = Random.Range(0, _powerUpContainer.Length);
+            Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
         }
+#endif
     }
-     
-    IEnumerator SmallBackgroundObjects()
-    {
-        while (_spawn == true)
+    /*
+        IEnumerator BackGroundObjects()
         {
-            yield return _spawnDelaybg;
-            int randomBg = Random.Range(0, _smallBackGroundScene.Length);
-            Instantiate(_smallBackGroundScene[randomBg], transform.position, Quaternion.identity);
+            while (_spawn == true)
+            {
+                yield return _spawnDelaybg;
+                int randomBg = Random.Range(0, _backgroundScene.Length);
+                Instantiate(_backgroundScene[randomBg], transform.position, Quaternion.identity);
+            }
         }
-    } */
-    
+
+        IEnumerator SmallBackgroundObjects()
+        {
+            while (_spawn == true)
+            {
+                yield return _spawnDelaybg;
+                int randomBg = Random.Range(0, _smallBackGroundScene.Length);
+                Instantiate(_smallBackGroundScene[randomBg], transform.position, Quaternion.identity);
+            }
+        } */
+
     IEnumerator SpawnRoutine()
     {
         while (_spawn == true)
