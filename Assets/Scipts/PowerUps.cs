@@ -6,13 +6,14 @@ public class PowerUps : MonoBehaviour
 {
 
     [SerializeField] private float _speed = 3f;
-
-    [SerializeField] private int _powerUpID; //0 = triple shot, 1 = speed, 2 = Shield, 3 = Ammo Refill, 4 = Extra life.
+    [SerializeField] private int _spinningSpeed = 0;
+    [SerializeField] private int _powerUpID; //0 = triple shot, 1 = speed, 2 = Shield, 3 = Ammo Refill, 4 = Extra life, 5 = secondary fire
     [SerializeField] private AudioClip _powerUpClip;
 
      
     void Update()
     {
+        transform.Rotate(0, _spinningSpeed, 0);
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         if (transform.position.y <= -4.5f)
             Destroy(this.gameObject);
@@ -42,6 +43,9 @@ public class PowerUps : MonoBehaviour
                         break;
                     case 4://extra Life.
                         player.ExtraLife();
+                        break;
+                    case 5:
+                        player.SecondaryFire();
                         break;
                 }
             }

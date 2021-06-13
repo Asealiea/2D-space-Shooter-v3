@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
 
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +42,8 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: 0";
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
-            Debug.Log("UIManager: GameManger is null");      
+            Debug.Log("UIManager: GameManger is null");
+    
     }
 
     // Update is called once per frame
@@ -121,11 +123,11 @@ public class UIManager : MonoBehaviour
 
     public void ExitGameButton()
     {
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false; // makes it stop while in test play
-#else
+        #if UNITY_EDITOR
+            EditorApplication.isPlaying = false; // makes it stop while in test play
+        #else
 		    Application.Quit();// quits the game (only works after it's been built)
-#endif
+        #endif
     }
 
     public void OptionsButton()
@@ -142,7 +144,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-        _camera.CameraShakeOn(false);
+            _camera.CameraShakeOn(false);
         }
 
     }

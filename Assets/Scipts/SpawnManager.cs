@@ -102,7 +102,11 @@ public class SpawnManager : MonoBehaviour
         while (_spawn == true)
         {
             Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
-            _powerID = Random.Range(0, _powerUpContainer.Length);
+            if (Random.Range(0,100) > 95)
+            {
+                Instantiate(_powerUpContainer[5], transform.position, Quaternion.identity);
+            }
+            _powerID = Random.Range(0, _powerUpContainer.Length - 1);
             Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
             _randomWait = (Random.Range(5f, 10f));
             yield return new WaitForSeconds(_randomWait);
@@ -124,4 +128,15 @@ public class SpawnManager : MonoBehaviour
             Debug.LogError("SpawnManager:PowerUp Container is null");
 
     }
+
+
+
+
+    /* 
+     * ● Create a new form of projectile. 
+     * You should already have a triple shot. 
+     * Include something new from multi direction shot, to heat seeking shots, etc. 
+     * ● Replaces the standard fire for 5 seconds. 
+     * ● Spawns rarely 
+     */
 }

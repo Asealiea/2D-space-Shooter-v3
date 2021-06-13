@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1282657569292652179}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: BombLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,6 +133,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser SE
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -218,6 +223,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser NW
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -292,6 +302,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoomLaser east
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
@@ -378,6 +393,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser SW
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -462,6 +482,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoomLaser west
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
@@ -548,6 +573,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser NE
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -623,6 +653,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser south
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -697,6 +732,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoomLaser west (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
@@ -783,6 +823,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser SW (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -867,6 +912,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoomLaser SE (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
@@ -953,6 +1003,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser east (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1037,6 +1092,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoomLaser SW (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
@@ -1123,6 +1183,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser south (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1198,6 +1263,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomLaser NE (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1272,6 +1342,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoomLaser north (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349280921438142016, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1780378655741477304, guid: 776b0a86ebaa42e4188f2b6ca1be23cd,
         type: 3}

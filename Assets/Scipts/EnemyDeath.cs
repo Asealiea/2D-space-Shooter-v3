@@ -13,13 +13,10 @@ public class EnemyDeath : MonoBehaviour
     {
         _explsionSource = GetComponent<AudioSource>();
         if (_explsionSource == null)
-        {
             Debug.Log("EnemyDeath: Audio Source is null");
-        }
         else
-        {
             _explsionSource.clip = _explosionClip;
-        }
+        
         _explsionSource.Play();
     }
 

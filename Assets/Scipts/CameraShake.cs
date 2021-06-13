@@ -4,31 +4,22 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
-   [SerializeField] private bool _cameraShakeEnabled = true;
-    private Vector3 _startingPoint;
-    private float _startShaking;
-    private float _stopShaking = 5f;
+   [SerializeField] private bool _cameraShakeEnabled = true; //used to be able to disable the screen shake
+    private Vector3 _startingPoint; //starting point of the camera
+    private float _startShaking; //when to start shaking
+    private float _stopShaking = 5f;//When to stop shaking
+        
 
 
-
-
-
-
-    // Start is called before the first frame update
     void Start()
     {
         _startingPoint = transform.position;
-        
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_cameraShakeEnabled == true)
         {
-           
-
-            
             if (_startShaking > 0)
             {
                 transform.position = _startingPoint + Random.insideUnitSphere * 0.5f;
@@ -38,8 +29,7 @@ public class CameraShake : MonoBehaviour
             {
                 _startShaking = 0;
                 transform.position = _startingPoint;
-            }
-            
+            }   
         }
     }
 
@@ -50,9 +40,9 @@ public class CameraShake : MonoBehaviour
 
     public void CameraShakeOn(bool Camera)
     {
-
         _cameraShakeEnabled = Camera;
     }
+
 
 
 

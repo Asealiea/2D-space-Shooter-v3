@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _thrusters = 100f; // used to update the thruster bar
     [SerializeField] private bool _canThrust; //checks if the player can use the thrusters
     [SerializeField] private bool _thrusterCharging; //checks if the player is already charging thrusters
-    //powerUps
+    
     [Header("Powerups")]
     private bool _hasTripleShot; //checks if we have triple shot power up
     private bool _hasSpeed; //checks to see if we have speed power up
@@ -22,7 +22,9 @@ public class Player : MonoBehaviour
     private WaitForSeconds _coolDown; //cooldown for power ups
     [SerializeField] private bool _hasShield; //if we have a shield or not
     [SerializeField] private int _shieldCount; // count for sheilds
-    //score
+    [SerializeField] private GameObject _secondaryFire;
+    [SerializeField] private bool _hasSecondaryFire;
+   
     [Header("Score")]
     [SerializeField] private int _score; // players score
 
@@ -53,6 +55,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _shieldsRenderer = _shields.GetComponent<Renderer>();
         transform.position = Vector3.zero;
         NullChecks();
@@ -149,7 +152,12 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
         _audioSource.clip = _laserSound;
         if (_hasTripleShot == true)
-            Instantiate(_tripleShotPreFab, transform.position, Quaternion.identity);        
+            Instantiate(_tripleShotPreFab, transform.position, Quaternion.identity);
+        else if (_hasSecondaryFire == true)
+        {
+            Instantiate(_secondaryFire, transform.position, Quaternion.identity);
+            _ammoCount++;
+        }
         else
             Instantiate(_laserPreFab, transform.position + new Vector3(0, 1.2f, 0), Quaternion.identity);          
         _audioSource.Play(0);//play the audio clip.
@@ -211,6 +219,24 @@ public class Player : MonoBehaviour
                     _playerDamageLeft.SetActive(false);
                     break;
             }    
+    }
+    
+    public void SecondaryFire()
+    {
+        //turn on 2ndary fire
+        _hasSecondaryFire = true;
+        _fireRate = 0.75f;
+        StartCoroutine(SecondaryFireCoolDown());
+
+    }
+
+    IEnumerator SecondaryFireCoolDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _hasSecondaryFire = false;
+        _fireRate = 0.3f;
+        //turn off the 2ndary fire
+
     }
 
     public void TripleShotActive()
@@ -336,9 +362,10 @@ public class Player : MonoBehaviour
             Debug.LogError("Player: Laser is null");
         if (_laserSound == null)
             Debug.Log("Player: Laser audio is null;");
-        
-  
+        if (_cameraShake == null)
+            Debug.LogError("Player: Camera Shaker is null");
     }
+
 
 }
 

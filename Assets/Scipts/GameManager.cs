@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _gameOver = false;
     [SerializeField] private GameObject _spawnManager;
 
+
     // Update is called once per frame
     void Update()
     {
