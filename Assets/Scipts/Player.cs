@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     private WaitForSeconds _coolDown; //cooldown for power ups
     [SerializeField] private bool _hasShield; //if we have a shield or not
     [SerializeField] private int _shieldCount; // count for sheilds
+
     [SerializeField] private GameObject _secondaryFire;
     [SerializeField] private bool _hasSecondaryFire;
    
@@ -223,11 +224,9 @@ public class Player : MonoBehaviour
     
     public void SecondaryFire()
     {
-        //turn on 2ndary fire
         _hasSecondaryFire = true;
         _fireRate = 0.75f;
         StartCoroutine(SecondaryFireCoolDown());
-
     }
 
     IEnumerator SecondaryFireCoolDown()
@@ -235,18 +234,20 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f);
         _hasSecondaryFire = false;
         _fireRate = 0.3f;
-        //turn off the 2ndary fire
-
     }
 
     public void TripleShotActive()
     {
-        _tripleShotCount ++;
-      
-        if (!_hasTripleShot)
+        if (_hasSecondaryFire != true)
         {
-            _hasTripleShot = true;
-            StartCoroutine(TripleShotCoolDown());
+            _tripleShotCount ++;
+      
+            if (!_hasTripleShot)
+            {
+                _hasTripleShot = true;
+                StartCoroutine(TripleShotCoolDown());
+            }
+
         }
     }
     

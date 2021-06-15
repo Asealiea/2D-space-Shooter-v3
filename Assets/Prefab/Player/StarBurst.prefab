@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1282657569292652179}
   m_Layer: 4
-  m_Name: BombLaser
+  m_Name: StarBurst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

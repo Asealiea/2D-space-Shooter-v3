@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [Header("Lives")]
     [SerializeField] private Sprite[] _livesSprite;
     [SerializeField] private Image _livesImage;
+    [Header("Waves")]
+    [SerializeField] private Text _waveText;
     [Header("Pause Menu")]
     [SerializeField] private bool _paused;
     [SerializeField] private GameObject _pauseMenu;
@@ -42,7 +44,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: 0";
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
-            Debug.Log("UIManager: GameManger is null");
+            Debug.LogError("UIManager: GameManger is null");
     
     }
 
@@ -158,6 +160,22 @@ public class UIManager : MonoBehaviour
     public void ThrusterUpdate(float Thruster)
     {
         _slider.value = Thruster;
+    }
+
+    public void UpdateWave(string Name)
+    {
+        // update text
+
+        _waveText.text = Name;
+        StartCoroutine(WaveTextCoolDown());
+    }
+    IEnumerator WaveTextCoolDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _waveText.text = "";
+        
+        yield break;
+
     }
 
 
