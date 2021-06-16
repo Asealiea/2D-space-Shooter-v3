@@ -104,8 +104,8 @@ public class SpawnManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P)) // spawn a random power up, only works in editor
         {
             Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
-            _powerID = Random.Range(0, _powerUpContainer.Length);
-            Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
+            //_powerID = Random.Range(0, _powerUpContainer.Length);
+            Instantiate(_powerUpContainer[5], randomX, Quaternion.identity);
         }
 #endif
 

@@ -240,6 +240,7 @@ public class Player : MonoBehaviour
     {
         if (_missileCount < 3)
         {
+          
             _missileCount++;
             _uiManager.UpdateMissile(_missileCount);
         }

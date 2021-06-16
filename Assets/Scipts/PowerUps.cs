@@ -50,6 +50,8 @@ public class PowerUps : MonoBehaviour
                     case 6: // update UIManager to keep this one last.
                         player.SecondaryFire(); // starburst.
                         break;
+                    default:
+                        break;
                 }
             }
             Destroy(this.gameObject);
