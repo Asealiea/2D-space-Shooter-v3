@@ -8,7 +8,8 @@ using UnityEditor;
 public class SpawnManager : MonoBehaviour
 {
 
-    public enum SpawnState { Spawning, Waiting, CoolDown };
+    public enum SpawnState { Spawning, Waiting, Cooldown };
+    public SpawnState state = SpawnState.Cooldown;
 
     [System.Serializable]
     public class Wave
@@ -20,11 +21,10 @@ public class SpawnManager : MonoBehaviour
     }
     public Wave[] waves;
     private int nextWave = 0;
-
-    public float coolDownBetweenWaves = 5f;
+    [SerializeField] private float cooldownBetweenWaves = 5f;
     private float waveCooldown;
     private float searchCooldown = 1f;
-    public SpawnState state = SpawnState.CoolDown;
+
     [SerializeField] private UIManager _uiManager;
 
 
@@ -37,7 +37,7 @@ public class SpawnManager : MonoBehaviour
 
 
     [Header("Game Objects")]
-   // [SerializeField] private GameObject _enemyPreFab;
+    [SerializeField] private GameObject _enemyPreFab;
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject[] _powerUpContainer;
 
@@ -58,41 +58,48 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         NullCheck();
-        waveCooldown = coolDownBetweenWaves;
+        waveCooldown = cooldownBetweenWaves;
         StartCoroutine(SpawnPowerUpRoutine());
         updateUI(waves[nextWave]);
 
 
     }
-/*
-        _spawnDelay = new WaitForSeconds(_delaytime);
-        StartCoroutine(SpawnRoutine());
-        _spawnDelaybg = new WaitForSeconds(delaytimebg);
-        _spawnDelaybgSmall = new WaitForSeconds(delaytimebgSmall);
-         StartCoroutine(BackGroundObjects());
-        StartCoroutine(SmallBackgroundObjects());
-*/
+    /*
+            _spawnDelay = new WaitForSeconds(_delaytime);
+            StartCoroutine(SpawnRoutine());
+            _spawnDelaybg = new WaitForSeconds(delaytimebg);
+            _spawnDelaybgSmall = new WaitForSeconds(delaytimebgSmall);
+             StartCoroutine(BackGroundObjects());
+            StartCoroutine(SmallBackgroundObjects());
+    */
 
     private void Update()
     {
         if (state == SpawnState.Waiting)
         {
-            if (!EnemyIsAlive())
+            if (!EnemyIsAlive()) // same as writing EnemyIsAlive() == false
             {
-                WaveCompleted(); 
+                WaveCompleted();
                 return;
-            }else            
+            }
+            else
+            {
                 return;
+            }
         }
+
         if (waveCooldown <= 0)
         {
             if (state != SpawnState.Spawning && _spawn)
                 StartCoroutine(SpawnWave(waves[nextWave]));
-        }else
+        }
+        else
+        {
             waveCooldown -= Time.deltaTime;
-        
+        }
+      
 
-
+    
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.P)) // spawn a random power up, only works in editor
         {
@@ -103,7 +110,7 @@ public class SpawnManager : MonoBehaviour
 #endif
 
     }
-    /*
+    /* background objects to add in later
         IEnumerator BackGroundObjects()
         {
             while (_spawn == true)
@@ -124,7 +131,7 @@ public class SpawnManager : MonoBehaviour
             }
         } */
         
-/*
+/* Spawn Rotine.
     IEnumerator SpawnRoutine()
     {
         while (_spawn == true)
@@ -143,9 +150,9 @@ public class SpawnManager : MonoBehaviour
         while (_spawn == true)
         {            
             Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
-            if (Random.Range(0,100) > 95)
+            if (Random.Range(0,100) > 90)
             {
-                Instantiate(_powerUpContainer[5], randomX, Quaternion.identity); // star powerup
+                Instantiate(_powerUpContainer[6], randomX, Quaternion.identity); // star powerup
                 yield break;
             }
             else
@@ -186,18 +193,19 @@ public class SpawnManager : MonoBehaviour
         if (_spawn)
         {
 
-            Debug.Log("Wave Completed!");
-            state = SpawnState.CoolDown; 
-            waveCooldown = coolDownBetweenWaves; 
+            //Debug.Log("Wave Completed!");
+            state = SpawnState.Cooldown; 
+            waveCooldown = cooldownBetweenWaves;            
             if (nextWave + 1 > waves.Length - 1)
             {
-                nextWave = 0; // loops waves, will add in a Congrats on winnning later.            
+                nextWave = 0; // loops waves, will add in a Congrats on winnning later.  
+                updateUI(waves[nextWave]);
             }
             else
             {
                 nextWave++;
                 updateUI(waves[nextWave]);
-            }
+            } 
         }
     }
 
@@ -217,8 +225,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnWave(Wave _wave)
     {
-       
-//        Debug.Log("Spawning Wave: " + _wave.name);      
+//        Debug.Log("Spawning Wave: " + _wave.name);             
         state = SpawnState.Spawning;                    
         //Spawn
         for (int i = 0; i < _wave.count; i++)
@@ -233,10 +240,10 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(Transform _enemy)
     {
-        // Spawn Enemy
+//         Spawn Enemy
 //        Debug.Log("Spawning Enemy: " + _enemy.name);
         Transform newEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
-        newEnemy.parent = _enemyContainer.transform;        
+        newEnemy.parent = _enemyContainer.transform;
     }
 
     private void updateUI(Wave _wave)

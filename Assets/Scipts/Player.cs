@@ -51,8 +51,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Renderer _shieldsRenderer;
     [SerializeField] private AudioClip _ammoEmptyClip;
     [SerializeField] private CameraShake _cameraShake;
-
-
+    [SerializeField] private GameObject _hm;
+    private float _canMissile = -1f;
+   [SerializeField] private int _missileCount = 3;
 
     void Start()
     {
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
         _shieldsRenderer = _shields.GetComponent<Renderer>();
         transform.position = Vector3.zero;
         NullChecks();
+        ThrustersOff();
         _coolDown = new WaitForSeconds(5f);
         
         _audioSource = GetComponent<AudioSource>();
@@ -79,6 +81,10 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _ammoEmptyClip;
             _audioSource.Play();
+        }
+        if (Input.GetKeyDown(KeyCode.E)&& Time.time > _canMissile && _missileCount > 0)
+        {
+            MissileFire();
         }
         
         if (Input.GetKey(KeyCode.LeftShift) && _canThrust)
@@ -222,6 +228,23 @@ public class Player : MonoBehaviour
             }    
     }
     
+    private void MissileFire()
+    {
+        _canMissile = Time.time + 2f;
+        Instantiate(_hm, transform.position, Quaternion.identity);
+        _missileCount--;
+        _uiManager.UpdateMissile(_missileCount);
+    }
+
+    public void MissilePayload()
+    {
+        if (_missileCount < 3)
+        {
+            _missileCount++;
+            _uiManager.UpdateMissile(_missileCount);
+        }
+    }
+
     public void SecondaryFire()
     {
         _hasSecondaryFire = true;
@@ -287,7 +310,7 @@ public class Player : MonoBehaviour
     public void ShieldsActive()
     {
         _hasShield = true; 
-        //_shieldsRenderer.material.color = Color.white; //change the colour to white
+        _shieldsRenderer.material.color = Color.white; //change the colour to white
         _shieldCount = 3; // add 3 shields 
         _shields.SetActive(true); // deploy the shields.
     }

@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _scoreText;
     [Header("Ammo Count Text")]
     [SerializeField] private Text _ammoCount;
+    [SerializeField] private Text _missileCount;
     [Header("Lives")]
     [SerializeField] private Sprite[] _livesSprite;
     [SerializeField] private Image _livesImage;
@@ -66,9 +67,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateMissile(int MissileCount)
+    {
+        _missileCount.text = MissileCount.ToString() + "/3";
+    }
+
     public void UpdateAmmo(int AmmoCount)
     {
-        _ammoCount.text = "Ammo: " + AmmoCount.ToString() + "/15";
+        _ammoCount.text =  AmmoCount.ToString() + "/15";
     }
 
     public void UpdateScore(int PlayerScore)

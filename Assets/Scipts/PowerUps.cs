@@ -44,8 +44,11 @@ public class PowerUps : MonoBehaviour
                     case 4://extra Life.
                         player.ExtraLife();
                         break;
-                    case 5:
-                        player.SecondaryFire();
+                    case 5://extra Missile
+                        player.MissilePayload();
+                        break;
+                    case 6: // update UIManager to keep this one last.
+                        player.SecondaryFire(); // starburst.
                         break;
                 }
             }
