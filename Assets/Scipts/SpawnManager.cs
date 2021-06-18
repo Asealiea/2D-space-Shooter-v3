@@ -26,6 +26,7 @@ public class SpawnManager : MonoBehaviour
     private float searchCooldown = 1f;
 
     [SerializeField] private UIManager _uiManager;
+    [SerializeField] private Player _player;
 
 
 
@@ -61,6 +62,7 @@ public class SpawnManager : MonoBehaviour
         waveCooldown = cooldownBetweenWaves;
         StartCoroutine(SpawnPowerUpRoutine());
         updateUI(waves[nextWave]);
+        _player = GameObject.Find("Player").GetComponent<Player>();
 
 
     }
@@ -152,7 +154,7 @@ public class SpawnManager : MonoBehaviour
             Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
             if (Random.Range(0,100) > 90)
             {
-                Instantiate(_powerUpContainer[6], randomX, Quaternion.identity); // star powerup
+                Instantiate(_powerUpContainer[_powerUpContainer.Length], randomX, Quaternion.identity); // star powerup
                 yield break;
             }
             else
@@ -192,7 +194,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (_spawn)
         {
-
+            
             //Debug.Log("Wave Completed!");
             state = SpawnState.Cooldown; 
             waveCooldown = cooldownBetweenWaves;            
@@ -205,6 +207,8 @@ public class SpawnManager : MonoBehaviour
             {
                 nextWave++;
                 updateUI(waves[nextWave]);
+                _player.LongerWaitTime(nextWave / 2 + 3);
+                
             } 
         }
     }

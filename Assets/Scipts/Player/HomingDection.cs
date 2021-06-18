@@ -6,35 +6,34 @@ public class HomingDection : MonoBehaviour
 {
     private bool _found = false;
     private Transform _enemy;
+    [SerializeField] private GameObject _thruster;
+    [SerializeField] private GameObject _missile;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()
     {
-
         if (!_found)
         {
             transform.Translate(Vector3.up * 5 * Time.deltaTime);
+            LowThrusters();
         }
         else
         {
             FollowEnemy(_enemy);
-        }
-        if (transform.position.y >= 10 || transform.position.y <= -10f)
-        {
-            Destroy(this.gameObject);
-        }
-        if (transform.position.x >= 10 || transform.position.x <= -10f)
-        {
-            Destroy(this.gameObject);
+            HighThrusters();
         }
 
+        if (transform.position.y >= 10 || transform.position.y <= -10f)
+            Destroy(this.gameObject);
+        if (transform.position.x >= 10 || transform.position.x <= -10f)
+            Destroy(this.gameObject);
+        if (_missile == null)
+            Destroy(this.gameObject);
     }
+        
+
 
     private void FollowEnemy(Transform Enemytransform)
     {
@@ -44,6 +43,7 @@ public class HomingDection : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Lerp(transform.rotation, q, Time.deltaTime * 20);
+      
             direction.Normalize();
             transform.Translate(direction * 20 * Time.deltaTime);
         }
@@ -64,6 +64,17 @@ public class HomingDection : MonoBehaviour
                 _enemy = other.transform;
             }
         }
+    }
+
+    private void LowThrusters()
+    {
+        _thruster.transform.localScale = new Vector3(0.15f, 0.25f, 0);
+        _thruster.transform.position = transform.position + new Vector3(0f, 0.6f, 0f);
+    }
+    private void HighThrusters()
+    {
+        _thruster.transform.localScale = new Vector3(0.25f, .5f, 0);
+        _thruster.transform.position = transform.position + new Vector3(0f, 0.25f, 0f);
     }
           
          

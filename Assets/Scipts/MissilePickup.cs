@@ -11,7 +11,7 @@ public class MissilePickup : MonoBehaviour
 
     private void Start()
     {
-        _randomMissileAmount = Random.Range(0, 4);
+        _randomMissileAmount = Random.Range(1, 4);
 
         switch (_randomMissileAmount)
         {
@@ -23,7 +23,7 @@ public class MissilePickup : MonoBehaviour
                 int randomside = Random.Range(0, 2);
                 if (randomside == 0)
                 {
-                _missile2.SetActive(true);
+                _missile2.SetActive(true);  
                 _missile3.SetActive(false);
                 }
                 else

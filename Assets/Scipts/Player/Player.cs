@@ -22,9 +22,11 @@ public class Player : MonoBehaviour
     private WaitForSeconds _coolDown; //cooldown for power ups
     [SerializeField] private bool _hasShield; //if we have a shield or not
     [SerializeField] private int _shieldCount; // count for sheilds
-
     [SerializeField] private GameObject _secondaryFire;
     [SerializeField] private bool _hasSecondaryFire;
+    [SerializeField] private GameObject _homingMissile;
+    private float _canMissile = -1f;
+    [SerializeField] private int _missileCount = 3;
    
     [Header("Score")]
     [SerializeField] private int _score; // players score
@@ -51,12 +53,18 @@ public class Player : MonoBehaviour
     [SerializeField] private Renderer _shieldsRenderer;
     [SerializeField] private AudioClip _ammoEmptyClip;
     [SerializeField] private CameraShake _cameraShake;
-    [SerializeField] private GameObject _hm;
-    private float _canMissile = -1f;
-   [SerializeField] private int _missileCount = 3;
+
+
+    //repair system
+    private bool _repairing;
+    private Coroutine RepairingIE;
+    private float _extraWait = 3;
+
+
 
     void Start()
     {
+       
         _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _shieldsRenderer = _shields.GetComponent<Renderer>();
         transform.position = Vector3.zero;
@@ -73,19 +81,34 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        PlayerMovement();
+        if (!_repairing)
+        {
+            PlayerMovement();
+        }
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0)    
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0 && !_repairing)    
             Shoot();
         else if (Input.GetKeyDown(KeyCode.Space) && _ammoCount <= 0)
         {
             _audioSource.clip = _ammoEmptyClip;
             _audioSource.Play();
         }
-        if (Input.GetKeyDown(KeyCode.E)&& Time.time > _canMissile && _missileCount > 0)
+       
+        if (Input.GetKeyDown(KeyCode.E)&& Time.time > _canMissile && _missileCount > 0 && !_repairing)
         {
             MissileFire();
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // repair ship but can't move
+            if (_lives < 3 && !_repairing)
+            {
+                _repairing = true;                
+                RepairingIE = StartCoroutine(Repearing());
+            }
+        }
+          
         
         if (Input.GetKey(KeyCode.LeftShift) && _canThrust)
             ThrustersOn();
@@ -93,6 +116,8 @@ public class Player : MonoBehaviour
             ThrustersOff();
     }
 
+    #region Movement
+    #region Thrusters
     private void ThrustersOn()
     {
         _shiftSpeed = _shiftSpeedBoost;
@@ -124,6 +149,32 @@ public class Player : MonoBehaviour
         }
     }
 
+    IEnumerator ThrustersCoolDown()
+    {
+        _canThrust = false;
+        yield return new WaitForSeconds(5f);
+        StartCoroutine(ThrusterRecharge());
+    }
+
+    IEnumerator ThrusterRecharge()
+    {
+        _thrusterCharging = true;
+        while (_thrusters < 100)
+        {
+            yield return new WaitForSeconds(0.1f);
+            _thrusters+= 1f;
+            ThursterBar();
+        }
+        _canThrust = true;
+        _thrusterCharging = false;
+
+    }
+
+    private void ThursterBar()
+    {
+        _uiManager.ThrusterUpdate(_thrusters);
+    }
+    #endregion
     private void PlayerMovement()
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -154,6 +205,8 @@ public class Player : MonoBehaviour
 
     }
 
+    #endregion 
+
     private void Shoot()
     {
         _canFire = Time.time + _fireRate;
@@ -174,6 +227,13 @@ public class Player : MonoBehaviour
         
     public void Damage(bool Damage) // false = no damage, true = damage
     {
+        if (_repairing)
+        {
+            StopCoroutine(RepairingIE);
+            _repairing = false;
+
+        }
+
         if (Damage)
         {
             if (_hasShield == true)
@@ -227,39 +287,42 @@ public class Player : MonoBehaviour
                     break;
             }    
     }
-    
+    #region PowerUps
+    #region missiles
+
     private void MissileFire()
     {
         _canMissile = Time.time + 2f;
-        Instantiate(_hm, transform.position, Quaternion.identity);
+        Instantiate(_homingMissile, transform.position, Quaternion.identity);
         _missileCount--;
-        _uiManager.UpdateMissile(_missileCount);
+        _uiManager.UpdateMissile(_missileCount); // this line added 
     }
 
     public void MissilePayload()
     {
         if (_missileCount < 3)
-        {
-          
+        {          
             _missileCount++;
-            _uiManager.UpdateMissile(_missileCount);
+            _uiManager.UpdateMissile(_missileCount); // this line added 
         }
     }
-
+    #endregion
+    #region SecondaryFire
     public void SecondaryFire()
     {
         _hasSecondaryFire = true;
         _fireRate = 0.75f;
         StartCoroutine(SecondaryFireCoolDown());
     }
-
+    
     IEnumerator SecondaryFireCoolDown()
     {
         yield return new WaitForSeconds(5f);
         _hasSecondaryFire = false;
         _fireRate = 0.3f;
     }
-
+    #endregion
+    #region TripleShot
     public void TripleShotActive()
     {
         if (_hasSecondaryFire != true)
@@ -284,7 +347,8 @@ public class Player : MonoBehaviour
         }
         _hasTripleShot = false;
     }
-    
+    #endregion
+    #region SpeedBoost
     public void SpeedActive()
     {
         _speedPowerUp = 2f;
@@ -307,7 +371,7 @@ public class Player : MonoBehaviour
         _speedPowerUp = 1;
         _hasSpeed = false;
     }
-
+    #endregion
     public void ShieldsActive()
     {
         _hasShield = true; 
@@ -315,7 +379,8 @@ public class Player : MonoBehaviour
         _shieldCount = 3; // add 3 shields 
         _shields.SetActive(true); // deploy the shields.
     }
-
+    #endregion
+    #region Picksups
     public void ExtraAmmo()
     {
         _ammoCount = 15;
@@ -330,7 +395,7 @@ public class Player : MonoBehaviour
         }
         Damage(false); // false = no damage
     }
-
+    #endregion
     public void AddScore(int addPoints)
     {
         _score += addPoints;
@@ -345,32 +410,6 @@ public class Player : MonoBehaviour
             Damage(true);
             Destroy(other.gameObject);
         }
-    }
-
-    IEnumerator ThrustersCoolDown()
-    {
-        _canThrust = false;
-        yield return new WaitForSeconds(5f);
-        StartCoroutine(ThrusterRecharge());
-    }
-
-    IEnumerator ThrusterRecharge()
-    {
-        _thrusterCharging = true;
-        while (_thrusters < 100)
-        {
-            yield return new WaitForSeconds(0.1f);
-            _thrusters+= 1f;
-            ThursterBar();
-        }
-        _canThrust = true;
-        _thrusterCharging = false;
-
-    }
-
-    private void ThursterBar()
-    {
-        _uiManager.ThrusterUpdate(_thrusters);
     }
 
     private void NullChecks()
@@ -391,8 +430,26 @@ public class Player : MonoBehaviour
             Debug.LogError("Player: Camera Shaker is null");
     }
 
+    #region Repair
+    public void LongerWaitTime(int timer)
+    {
+        _extraWait = timer;
+        
+    }
+
+    IEnumerator Repearing()
+    {
+        yield return new WaitForSeconds(_extraWait);    
+        ExtraLife();
+        _repairing = false;
+        
+        yield break;
+    }
+
+    #endregion
+
+
 
 }
 
 
-        
