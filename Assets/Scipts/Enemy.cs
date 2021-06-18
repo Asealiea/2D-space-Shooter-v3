@@ -75,6 +75,11 @@ public class Enemy : MonoBehaviour
              {
                  _player.Damage(true);
              }
+            int randomDrop = Random.Range(0, 11);
+            if (randomDrop >= 7)
+            {
+                Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+            }
             //_anim.SetTrigger("OnEnemyDeath");
             Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
@@ -88,18 +93,13 @@ public class Enemy : MonoBehaviour
                 _player.AddScore(10);
             }
             Destroy(other.gameObject);
-
-
             //spawn an ammo refill on chance
             int randomDrop = Random.Range(0, 11);
-            if (randomDrop >= 8)
+            if (randomDrop >= 7)
             {
                 Instantiate(_ammoRefill, transform.position, Quaternion.identity);
             }
-
-
             //_anim.SetTrigger("OnEnemyDeath"); trigger not needed either.
-
             Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
             Destroy(this.gameObject);// no delay needed for this.
             //Destroy(this.gameObject, 2.7f);//add delay to destory
