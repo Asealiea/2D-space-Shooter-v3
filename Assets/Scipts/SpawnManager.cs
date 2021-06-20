@@ -66,7 +66,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerUpRoutine());
         updateUI(waves[nextWave]);
         _player = GameObject.Find("Player").GetComponent<Player>();
-
+       // Time.timeScale = 100;
 
     }
     /*
@@ -135,54 +135,56 @@ public class SpawnManager : MonoBehaviour
                 Instantiate(_smallBackGroundScene[randomBg], transform.position, Quaternion.identity);
             }
         } */
-        
-/* Spawn Rotine.
-    IEnumerator SpawnRoutine()
-    {
-        while (_spawn == true)
-        {
-            yield return _spawnDelay;
-            Transform newEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
-            newEnemy.parent = _enemyContainer.transform;
 
-        }
-    }
-*/
-
-    IEnumerator SpawnPowerUpRoutine()
-    {
-        yield return new WaitForSeconds(3f);
-        while (_spawn == true)
+    /* Spawn Rotine.
+        IEnumerator SpawnRoutine()
         {
-            Debug.Log("Spawns");
-            Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
-          
-            _randomID = Random.Range(0, 1001);
-            if (_randomID >= 850 && _total > 3 || _total == 10)// star burst
+            while (_spawn == true)
             {
-                _powerID = 6;
-                Instantiate(_powerUpContainer[6], randomX, Quaternion.identity); // star powerup
-                Debug.Log(_powerID + " Above 850  :   " + _powerUpContainer[6].name);
-                _total = 5;
+                yield return _spawnDelay;
+                Transform newEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
+                newEnemy.parent = _enemyContainer.transform;
+
             }
-            else if (_randomID < 850 && _randomID >= 550 && _total > 1) //extra lifes and extra Missiles.
-            {
-                _powerID = Random.Range(4, 6);
-                Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
-                Debug.Log(_powerID + " between 550 and 849  :  " + _powerUpContainer[_powerID].name);
-                _total = 0;
-            }
-            else
-            {
-                _powerID = Random.Range(0, _powerUpContainer.Length - 3); // triple shot, speed, shields and Ammo;
-                Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
-                Debug.Log(_powerID + " between 0 and 749  :   " + _powerUpContainer[_powerID].name);
-                _total++;
-            }
-            _randomWait = (Random.Range(1f, 2f));
-            yield return new WaitForSeconds(_randomWait);      
         }
-    }
+    */
+
+      IEnumerator SpawnPowerUpRoutine()
+      {
+          yield return new WaitForSeconds(3f);
+          while (_spawn == true)
+          {
+              //Debug.Log("Spawns");
+              Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
+
+              _randomID = Random.Range(0, 1001);
+              if (_randomID >= 850 && _total > 3 || _total == 10)// star burst
+              {
+                  _powerID = 6;
+                  Instantiate(_powerUpContainer[6], randomX, Quaternion.identity); // star powerup
+                  //Debug.Log(_powerID + " Above 850  :   " + _powerUpContainer[6].name);
+                  _total = 5;
+              }
+              else if (_randomID < 850 && _randomID >= 550 && _total > 1) //extra lifes and extra Missiles.
+              {
+                  _powerID = Random.Range(4, 6);
+                  Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
+                  //Debug.Log(_powerID + " between 550 and 849  :  " + _powerUpContainer[_powerID].name);
+                  _total = 0;
+              }
+              else
+              {
+                  _powerID = Random.Range(0, _powerUpContainer.Length - 3); // triple shot, speed, shields and Ammo;
+                  Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
+                  //Debug.Log(_powerID + " between 0 and 749  :   " + _powerUpContainer[_powerID].name);
+                  _total++;
+              }
+              _randomWait = (Random.Range(5f, 10f));
+              yield return new WaitForSeconds(_randomWait);      
+          }
+      } 
+
+
 
     public void StopSpawning()
     {
@@ -250,8 +252,11 @@ public class SpawnManager : MonoBehaviour
         //Spawn
         for (int i = 0; i < _wave.count; i++)
         {
-            SpawnEnemy(_wave.enemy); 
-            yield return new WaitForSeconds(1f / _wave.spawnRate); 
+            if (_spawn)
+            {
+                SpawnEnemy(_wave.enemy); 
+                yield return new WaitForSeconds(1f / _wave.spawnRate); 
+            }
         }
         state = SpawnState.Waiting;                    
         yield break;

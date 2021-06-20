@@ -9,8 +9,11 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float _speed = 4;
     private Player _player;
-    private float _canFire = -1f;
+    private float _canFire = 1f;
     private float _fireRate;
+
+    [SerializeField] private int _enemyID = 0;
+    [SerializeField] private Animator _anim;
 
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _enemyLaser;
@@ -21,21 +24,44 @@ public class Enemy : MonoBehaviour
     {
         transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _anim = GetComponent<Animator>();
        // _anim = GetComponent<Animator>();
         
         if (_player == null)
             Debug.LogError("Enemy: Player is null");
-        
-        
-       
-       // if (_anim == null)
-       //     Debug.Log("Enemy: Animator is null");
+
+
+        _enemyID = Random.Range(0, 5);
+        if (_anim == null)
+            Debug.Log("Enemy: Animator is null");
        
     }
     
     void Update()
     {
-        EnemyMovement();
+        switch (_enemyID)
+        {
+            case 0: //normal movement
+                _anim.enabled = false; 
+                EnemyMovement();
+                break;
+            case 1: //arching side to side
+                _anim.SetTrigger("SidewaysMovement");
+                if (_player == null)
+                    Destroy(this.gameObject);
+                break;
+            case 2://moves in a sinwave kind of movement across screen
+                _anim.SetTrigger("SinWaveMovement");
+                if (_player == null)
+                    Destroy(this.gameObject);               
+                break; 
+
+            default:
+                _anim.enabled = false;
+                EnemyMovement();
+                break;
+        }
+       
 
         if (Time.time > _canFire)    //_canFire == true
         {
@@ -45,7 +71,7 @@ public class Enemy : MonoBehaviour
 
     private void EnemyShoot()
     {
-        _fireRate = Random.Range(3f, 7f);
+        _fireRate = Random.Range(2f, 4f);
         _canFire = Time.time + _fireRate;
         Instantiate(_enemyLaser, transform.position + new Vector3(0f, -1.3f, 0f), Quaternion.identity);
 

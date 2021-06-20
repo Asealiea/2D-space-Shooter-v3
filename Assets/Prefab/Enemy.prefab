@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 85005885094651288}
   - component: {fileID: 8558706800864231231}
   - component: {fileID: 4316536614660216687}
+  - component: {fileID: 1094368759}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -143,9 +144,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2.5
+  _enemyID: 0
+  _anim: {fileID: 0}
   _explosion: {fileID: 3646643969222925789, guid: 711fe134435305d4695020af666b19ce,
     type: 3}
   _enemyLaser: {fileID: 5852647636540181125, guid: f5abd1c2c8bb8ad479eb6567e02b3a43,
     type: 3}
   _ammoRefill: {fileID: 6608824412449853024, guid: 2c4834dce45d46640aa197ece0b78359,
     type: 3}
+--- !u!95 &1094368759
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8845806286490972106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 92af307a517ba364fb3430dd2c39d61d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
