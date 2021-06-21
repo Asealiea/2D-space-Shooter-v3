@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Enemy: Player is null");
 
 
-        _enemyID = Random.Range(0, 5);
+       // _enemyID = Random.Range(0, 5);
         if (_anim == null)
             Debug.Log("Enemy: Animator is null");
        
@@ -54,18 +54,26 @@ public class Enemy : MonoBehaviour
                 _anim.SetTrigger("SinWaveMovement");
                 if (_player == null)
                     Destroy(this.gameObject);               
-                break; 
+                break;
+            case 3: // ramer
+                //ram player when it gets close enough.
+                _anim.enabled = false;
+                break;
+            case 4: //mine layer
+                //mine layer
+                break;
+
 
             default:
                 _anim.enabled = false;
                 EnemyMovement();
                 break;
         }
-       
 
-        if (Time.time > _canFire)    //_canFire == true
+        if (_enemyID != 3)
         {
-            EnemyShoot();
+            if (Time.time > _canFire)    //_canFire == true
+                EnemyShoot();            
         }
     }
 
