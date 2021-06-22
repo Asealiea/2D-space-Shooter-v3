@@ -7,9 +7,13 @@ public class Laser : MonoBehaviour
     [SerializeField] private float _fireSpeed;
 
 
+
     void Update()
     {
+  
         transform.Translate(Vector3.up * _fireSpeed * Time.deltaTime);
+ 
+        
         if (transform.position.y >= 8)
         {
             if (transform.parent != null)
@@ -23,4 +27,5 @@ public class Laser : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
 }
