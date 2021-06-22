@@ -291,5 +291,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564375923496bdc43b3a696484f199f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mine: 0
+  _ram: 0
+  _missiles: 1
+  _playerFound: 0
   _thruster: {fileID: 1176418213}
-  _missile: {fileID: 690389920607206220}
+  _coreComponent: {fileID: 690389920607206220}
+  _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
+    type: 3}

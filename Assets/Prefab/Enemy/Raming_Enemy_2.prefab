@@ -31,8 +31,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7161357464154511158}
+  m_Children: []
   m_Father: {fileID: 7161357464548335061}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
@@ -197,12 +196,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7161357464154511153}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.0100002, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 0, y: 1.0100002, z: 0}
   m_LocalScale: {x: 0.2, y: 0.56, z: 1}
   m_Children: []
-  m_Father: {fileID: 7161357462903391915}
-  m_RootOrder: 0
+  m_Father: {fileID: 7161357464548335061}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &7161357464154511156
 SpriteRenderer:
@@ -302,6 +301,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7161357462903391915}
+  - {fileID: 7161357464154511158}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -319,9 +319,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mine: 0
   _ram: 1
+  _missiles: 0
   _playerFound: 0
   _thruster: {fileID: 7161357464154511153}
-  _missile: {fileID: 7161357462903391910}
+  _coreComponent: {fileID: 7161357462903391910}
   _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
     type: 3}
 --- !u!58 &7161357464548335063

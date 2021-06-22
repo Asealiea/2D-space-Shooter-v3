@@ -63,9 +63,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mine: 1
   _ram: 0
+  _missiles: 0
   _playerFound: 0
   _thruster: {fileID: 0}
-  _missile: {fileID: 2360398199076266809}
+  _coreComponent: {fileID: 2360398199076266809}
   _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
     type: 3}
 --- !u!1 &2360398199076266809
@@ -80,6 +81,7 @@ GameObject:
   - component: {fileID: 2360398199076266814}
   - component: {fileID: 2360398199076266815}
   - component: {fileID: 9134427751502257567}
+  - component: {fileID: 739937929660183002}
   m_Layer: 0
   m_Name: Homing_Mine
   m_TagString: ELaser
@@ -187,3 +189,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &739937929660183002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360398199076266809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c8f26dcf31a8d4ba2fcbde6d4e0c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

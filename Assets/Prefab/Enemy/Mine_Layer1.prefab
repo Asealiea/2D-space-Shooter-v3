@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3889825694335436472}
   m_Layer: 0
   m_Name: Mine_Layer1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10c6dde22abd4a48b7a2014dc211362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 3
   _enemyID: 2
   _anim: {fileID: 0}
   _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,

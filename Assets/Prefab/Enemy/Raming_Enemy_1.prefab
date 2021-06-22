@@ -30,6 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3673817978920340969}
+  - {fileID: 3673817980068426396}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48,7 +49,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 3
 --- !u!114 &3673817978683186661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,9 +64,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mine: 0
   _ram: 1
+  _missiles: 0
   _playerFound: 0
   _thruster: {fileID: 3673817980068426397}
-  _missile: {fileID: 3673817978920340951}
+  _coreComponent: {fileID: 3673817978920340951}
   _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
     type: 3}
 --- !u!1 &3673817978920340951
@@ -84,7 +86,7 @@ GameObject:
   - component: {fileID: 3673817978920340950}
   m_Layer: 0
   m_Name: Raming_enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,8 +101,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -1, w: -0.0000001872535}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 3673817980068426396}
+  m_Children: []
   m_Father: {fileID: 3673817978683186683}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.00002}
@@ -212,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10c6dde22abd4a48b7a2014dc211362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 0
   _enemyID: 3
   _anim: {fileID: 0}
   _explosion: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
@@ -229,7 +230,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3673817978920340951}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 92af307a517ba364fb3430dd2c39d61d, type: 2}
   m_CullingMode: 0
@@ -265,12 +266,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3673817980068426397}
-  m_LocalRotation: {x: -0, y: -0, z: 0.0000002533197, w: -1}
-  m_LocalPosition: {x: -0.06, y: -0.84999985, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0.00000044057322}
+  m_LocalPosition: {x: 0.060000315, y: 0.84999985, z: 0}
   m_LocalScale: {x: 0.2, y: 0.56, z: 1}
   m_Children: []
-  m_Father: {fileID: 3673817978920340969}
-  m_RootOrder: 0
+  m_Father: {fileID: 3673817978683186683}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &3673817980068426386
 SpriteRenderer:

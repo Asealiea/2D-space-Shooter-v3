@@ -22,10 +22,13 @@ public class Enemy : MonoBehaviour
     
     void Start()
     {
-        transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
+        if (_enemyID != 3)
+        {
+            transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
+        }
+        
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
-       // _anim = GetComponent<Animator>();
         
         if (_player == null)
             Debug.LogError("Enemy: Player is null");
@@ -47,6 +50,7 @@ public class Enemy : MonoBehaviour
                 break;
             case 1: //arching side to side
                 _anim.SetTrigger("SidewaysMovement");
+                _fireRate = 2f;
                 if (_player == null)
                     Destroy(this.gameObject);
                 break;
@@ -66,7 +70,7 @@ public class Enemy : MonoBehaviour
 
             default:
                 _anim.enabled = false;
-                EnemyMovement();
+               // EnemyMovement();
                 break;
         }
 
@@ -85,10 +89,10 @@ public class Enemy : MonoBehaviour
 
     }
 
+
     private void EnemyMovement()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
         if (transform.position.y <= -5.5f && _player != null)
         {
             float _randomX = Random.Range(-9f, 9f);
@@ -98,6 +102,7 @@ public class Enemy : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
     }
 
      private void OnTriggerEnter2D(Collider2D other)
