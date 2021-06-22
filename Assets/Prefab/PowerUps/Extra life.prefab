@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3689413905906613750}
   m_Layer: 0
   m_Name: Extra life
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _spinningSpeed: 0
   _powerUpID: 4
   _powerUpClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
 --- !u!61 &-5750944186307729767

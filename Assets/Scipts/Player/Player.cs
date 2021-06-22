@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _homingMissile;
     private float _canMissile = -1f;
     [SerializeField] private int _missileCount = 3;
+    [SerializeField] private bool _magnet = false;
    
     [Header("Score")]
     [SerializeField] private int _score; // players score
@@ -84,6 +85,11 @@ public class Player : MonoBehaviour
     {
         if (!_repairing)
             PlayerMovement();
+
+        if (Input.GetKeyDown(KeyCode.C) && !_magnet)
+        {
+            StartCoroutine(PowerupMagnet());
+        }
                 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0 && !_repairing)    
             Shoot();
@@ -302,7 +308,7 @@ public class Player : MonoBehaviour
 
     public void MissilePayload()
     {
-        if (_missileCount < 3)
+        if (_missileCount < 100)
         {          
             _missileCount++;
             _uiManager.UpdateMissile(_missileCount); // this line added 
@@ -430,6 +436,32 @@ public class Player : MonoBehaviour
             _lives++;
         }
         Damage(false); // false = no damage
+    }
+
+    IEnumerator PowerupMagnet()
+    {
+        _magnet = true;
+        GameObject[] PowerupsToGet = GameObject.FindGameObjectsWithTag("Powerup");
+        if (PowerupsToGet.Length == 0)
+        {
+            StartCoroutine(MagnetCoolDown(2f));
+            yield break;
+        }
+
+        foreach (var powerup in PowerupsToGet)
+        {
+            PowerUps powerupScript = powerup.GetComponent<PowerUps>();
+            powerupScript.Magnet(this.transform);
+        }
+        StartCoroutine(MagnetCoolDown(5f));
+        yield break;
+    }
+
+    IEnumerator MagnetCoolDown(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _magnet = false;
+        yield break;
     }
 
     #endregion

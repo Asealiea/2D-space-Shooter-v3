@@ -285,6 +285,7 @@ MonoBehaviour:
   _homingMissile: {fileID: 3467994841858796804, guid: e9a73bcb2d09c504aa5ae77eb034a885,
     type: 3}
   _missileCount: 3
+  _magnet: 0
   _score: 0
   _fireRate: 0.3
   _ammoCount: 15
@@ -2827,7 +2828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &880600102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2862,7 +2863,7 @@ MonoBehaviour:
     _enemy: []
     _count: 
     spawnRate: 1
-  cooldownBetweenWaves: 5
+  cooldownBetweenWaves: 50000
   _uiManager: {fileID: 290696101}
   _player: {fileID: 0}
   _enemyContainer: {fileID: 690088564}
