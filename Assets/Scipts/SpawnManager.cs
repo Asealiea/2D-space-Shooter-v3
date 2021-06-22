@@ -15,12 +15,11 @@ public class SpawnManager : MonoBehaviour
     public class Wave
     {
         public string name;
-        public GameObject enemy;
-        public int count;
-        public float spawnRate;
-
         public GameObject[] _enemy;
+      //  public GameObject enemy;
         public int[] _count;
+     //   public int count;
+        public float spawnRate;
     }
     public Wave[] waves;
     private int nextWave = 0;
@@ -163,21 +162,21 @@ public class SpawnManager : MonoBehaviour
               _randomID = Random.Range(0, 1001);
               if (_randomID >= 850 && _total > 3 || _total == 10)// star burst
               {
-                  _powerID = 6;
-                  Instantiate(_powerUpContainer[6], randomX, Quaternion.identity); // star powerup
+                  _powerID = 7;
+                  Instantiate(_powerUpContainer[_powerUpContainer.Length - 1], randomX, Quaternion.identity); // star powerup
                   //Debug.Log(_powerID + " Above 850  :   " + _powerUpContainer[6].name);
-                  _total = 5;
+                  _total = 1;
               }
               else if (_randomID < 850 && _randomID >= 550 && _total > 1) //extra lifes and extra Missiles.
               {
-                  _powerID = Random.Range(4, 6);
+                  _powerID = Random.Range(4, 7);
                   Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
                   //Debug.Log(_powerID + " between 550 and 849  :  " + _powerUpContainer[_powerID].name);
                   _total = 0;
               }
               else
               {
-                  _powerID = Random.Range(0, _powerUpContainer.Length - 3); // triple shot, speed, shields and Ammo;
+                  _powerID = Random.Range(0, _powerUpContainer.Length - 4); // triple shot, speed, shields and Ammo;
                   Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
                   //Debug.Log(_powerID + " between 0 and 749  :   " + _powerUpContainer[_powerID].name);
                   _total++;
@@ -247,21 +246,6 @@ public class SpawnManager : MonoBehaviour
         }
         return true; 
     }
-    IEnumerator TestEnum(Wave _wave)
-    {
-        state = SpawnState.Spawning;
-        for (int q = 0; q < _wave._enemy.Length; q++)
-        {
-            for (int i = 0; i < _wave._count[q]; i++)
-            {
-                SpawnEnemy(_wave._enemy[q]);
-                yield return new WaitForSeconds(1f);
-            }
-
-        }
-        state = SpawnState.Waiting;
-        yield break;
-    }
 
     IEnumerator SpawnWave(Wave _wave)
     {
@@ -269,12 +253,15 @@ public class SpawnManager : MonoBehaviour
 //        Debug.Log("Spawning Wave: " + _wave.name);             
         state = SpawnState.Spawning;
         //Spawn
-        for (int q = 0; q < _wave._enemy.Length; q++)
+        if (_spawn)
         {
-            for (int i = 0; i < _wave._count[q]; i++)
+            for (int q = 0; q < _wave._enemy.Length; q++)
             {
-                SpawnEnemy(_wave._enemy[q]);
-                yield return new WaitForSeconds(1f / _wave.spawnRate);
+                for (int i = 0; i < _wave._count[q]; i++)
+                {
+                    SpawnEnemy(_wave._enemy[q]);
+                    yield return new WaitForSeconds(1f / _wave.spawnRate);
+                }
             }
         }
       /*  for (int i = 0; i < _wave.count; i++)
@@ -285,14 +272,7 @@ public class SpawnManager : MonoBehaviour
                 yield return new WaitForSeconds(1f / _wave.spawnRate); 
             }
         } */
-       /* for (int i = 0; i < _wave.count[i]; i++)
-        {
-            if (_spawn)
-            {
-                SpawnEnemy(_wave.enemy);
-                yield return new WaitForSeconds(1f / _wave.spawnRate);
-            }
-        } */
+
         state = SpawnState.Waiting;                    
         yield break;
 

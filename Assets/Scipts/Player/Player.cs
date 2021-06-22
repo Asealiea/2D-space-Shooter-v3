@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     //for player movement
     [Header("Player movement")]
+    private float _negative = 1f;
     private float _multiplier = 5f; //basic movement
     private float _shiftSpeed = 1f; //multiplier that changes if shift is held
     [SerializeField] private float _shiftSpeedBoost = 1.75f; //speed boost from shift
@@ -82,10 +83,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (!_repairing)
-        {
             PlayerMovement();
-        }
-
+                
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoCount > 0 && !_repairing)    
             Shoot();
         else if (Input.GetKeyDown(KeyCode.Space) && _ammoCount <= 0)
@@ -95,10 +94,8 @@ public class Player : MonoBehaviour
         }
        
         if (Input.GetKeyDown(KeyCode.E)&& Time.time > _canMissile && _missileCount > 0 && !_repairing)
-        {
             MissileFire();
-        }
-
+                
         if (Input.GetKeyDown(KeyCode.R))
         {
             // repair ship but can't move
@@ -108,8 +105,7 @@ public class Player : MonoBehaviour
                 RepairingIE = StartCoroutine(Repearing());
             }
         }
-          
-        
+                  
         if (Input.GetKey(KeyCode.LeftShift) && _canThrust)
             ThrustersOn();
         if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -117,7 +113,9 @@ public class Player : MonoBehaviour
     }
 
     #region Movement
+
     #region Thrusters
+
     private void ThrustersOn()
     {
         _shiftSpeed = _shiftSpeedBoost;
@@ -174,7 +172,9 @@ public class Player : MonoBehaviour
     {
         _uiManager.ThrusterUpdate(_thrusters);
     }
+
     #endregion
+
     private void PlayerMovement()
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -184,7 +184,7 @@ public class Player : MonoBehaviour
         // transform.Translate(Vector3.up * _verticalInput * (_multiplier +_speedPowerUp) * Time.deltaTime);
 
         Vector3 Direction = new Vector3(_horizontalInput, _verticalInput, 0);
-        transform.Translate(Direction * (_multiplier* _shiftSpeed * _speedPowerUp) * Time.deltaTime);
+        transform.Translate(Direction * (_multiplier* _shiftSpeed * _negative * _speedPowerUp) * Time.deltaTime);
 
         if (transform.position.y >= 0)
         {
@@ -287,7 +287,9 @@ public class Player : MonoBehaviour
                     break;
             }    
     }
+
     #region PowerUps
+
     #region missiles
 
     private void MissileFire()
@@ -306,8 +308,11 @@ public class Player : MonoBehaviour
             _uiManager.UpdateMissile(_missileCount); // this line added 
         }
     }
+
     #endregion
+
     #region SecondaryFire
+
     public void SecondaryFire()
     {
         _hasSecondaryFire = true;
@@ -322,7 +327,9 @@ public class Player : MonoBehaviour
         _fireRate = 0.3f;
     }
     #endregion
+
     #region TripleShot
+
     public void TripleShotActive()
     {
         if (_hasSecondaryFire != true)
@@ -347,8 +354,11 @@ public class Player : MonoBehaviour
         }
         _hasTripleShot = false;
     }
+
     #endregion
+
     #region SpeedBoost
+
     public void SpeedActive()
     {
         _speedPowerUp = 2f;
@@ -371,7 +381,9 @@ public class Player : MonoBehaviour
         _speedPowerUp = 1;
         _hasSpeed = false;
     }
+
     #endregion
+
     public void ShieldsActive()
     {
         _hasShield = true; 
@@ -379,8 +391,32 @@ public class Player : MonoBehaviour
         _shieldCount = 3; // add 3 shields 
         _shields.SetActive(true); // deploy the shields.
     }
+
+    #region NegativePowerup
+
+    public void NegativePowerUp()
+    {
+        _hasShield = false;
+        _shieldCount = 0;
+        _shields.SetActive(false);
+        Damage(true);
+        _negative = 0.3f;
+        StartCoroutine(NegativePowerUpCoolDown());
+    }
+
+    IEnumerator NegativePowerUpCoolDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _negative = 1f;
+        yield break;
+    }
+
     #endregion
+
+    #endregion
+
     #region Picksups
+
     public void ExtraAmmo()
     {
         _ammoCount = 15;
@@ -395,7 +431,9 @@ public class Player : MonoBehaviour
         }
         Damage(false); // false = no damage
     }
+
     #endregion
+
     public void AddScore(int addPoints)
     {
         _score += addPoints;
@@ -431,6 +469,7 @@ public class Player : MonoBehaviour
     }
 
     #region Repair
+
     public void LongerWaitTime(int timer)
     {
         _extraWait = timer;

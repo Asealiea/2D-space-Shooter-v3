@@ -47,7 +47,10 @@ public class PowerUps : MonoBehaviour
                     case 5://extra Missile
                         player.MissilePayload();
                         break;
-                    case 6: //keep this one last.
+                    case 6: // negative power up aka powerdown
+                        player.NegativePowerUp();
+                        break;
+                    case 7: //keep this one last.
                         player.SecondaryFire(); // starburst.
                         break;
                     default:
