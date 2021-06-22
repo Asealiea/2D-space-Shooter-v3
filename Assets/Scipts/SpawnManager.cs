@@ -15,9 +15,12 @@ public class SpawnManager : MonoBehaviour
     public class Wave
     {
         public string name;
-        public Transform enemy;
+        public GameObject enemy;
         public int count;
         public float spawnRate;
+
+        public GameObject[] _enemy;
+        public int[] _count;
     }
     public Wave[] waves;
     private int nextWave = 0;
@@ -95,7 +98,7 @@ public class SpawnManager : MonoBehaviour
 
         if (waveCooldown <= 0)
         {
-            if (state != SpawnState.Spawning && _spawn)
+            if (state != SpawnState.Spawning && _spawn)           
                 StartCoroutine(SpawnWave(waves[nextWave]));
         }
         else
@@ -244,31 +247,64 @@ public class SpawnManager : MonoBehaviour
         }
         return true; 
     }
+    IEnumerator TestEnum(Wave _wave)
+    {
+        state = SpawnState.Spawning;
+        for (int q = 0; q < _wave._enemy.Length; q++)
+        {
+            for (int i = 0; i < _wave._count[q]; i++)
+            {
+                SpawnEnemy(_wave._enemy[q]);
+                yield return new WaitForSeconds(1f);
+            }
+
+        }
+        state = SpawnState.Waiting;
+        yield break;
+    }
 
     IEnumerator SpawnWave(Wave _wave)
     {
+       
 //        Debug.Log("Spawning Wave: " + _wave.name);             
-        state = SpawnState.Spawning;                    
+        state = SpawnState.Spawning;
         //Spawn
-        for (int i = 0; i < _wave.count; i++)
+        for (int q = 0; q < _wave._enemy.Length; q++)
+        {
+            for (int i = 0; i < _wave._count[q]; i++)
+            {
+                SpawnEnemy(_wave._enemy[q]);
+                yield return new WaitForSeconds(1f / _wave.spawnRate);
+            }
+        }
+      /*  for (int i = 0; i < _wave.count; i++)
         {
             if (_spawn)
             {
                 SpawnEnemy(_wave.enemy); 
                 yield return new WaitForSeconds(1f / _wave.spawnRate); 
             }
-        }
+        } */
+       /* for (int i = 0; i < _wave.count[i]; i++)
+        {
+            if (_spawn)
+            {
+                SpawnEnemy(_wave.enemy);
+                yield return new WaitForSeconds(1f / _wave.spawnRate);
+            }
+        } */
         state = SpawnState.Waiting;                    
         yield break;
-        
+
     }
 
-    void SpawnEnemy(Transform _enemy)
+    void SpawnEnemy(GameObject _enemy)
     {
-//         Spawn Enemy
-//        Debug.Log("Spawning Enemy: " + _enemy.name);
-        Transform newEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
-        newEnemy.parent = _enemyContainer.transform;
+        //         Spawn Enemy
+        //        Debug.Log("Spawning Enemy: " + _enemy.name);
+
+        GameObject newEnemy = Instantiate(_enemy, new Vector3(0,8,0), Quaternion.identity);
+        newEnemy.transform.parent = _enemyContainer.transform;
     }
 
     private void updateUI(Wave _wave)

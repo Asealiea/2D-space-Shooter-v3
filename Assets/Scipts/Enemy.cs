@@ -6,25 +6,36 @@ public class Enemy : MonoBehaviour
 {
     //[SerializeField] private Animator _anim;
 
-
+    [SerializeField] private bool _hasShields = true;
     [SerializeField] private float _speed = 4;
     private Player _player;
-    private float _canFire = 1f;
+  [SerializeField]  private float _canFire = 2f;
     private float _fireRate;
 
     [SerializeField] private int _enemyID = 0;
+    [SerializeField] private int _leftOrRight;
     [SerializeField] private Animator _anim;
 
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _enemyLaser;
     [SerializeField] private GameObject _ammoRefill;
-  
+
+    [SerializeField] private GameObject _shields;
+
+
+
+
     
-    void Start()
+    void Awake()
     {
+ 
         if (_enemyID != 3)
         {
             transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
+        }
+        if (_enemyID == 2)
+        {
+            _leftOrRight = Random.Range(1, 3);
         }
         
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -32,6 +43,10 @@ public class Enemy : MonoBehaviour
         
         if (_player == null)
             Debug.LogError("Enemy: Player is null");
+        if (_shields == null)
+            Debug.LogError("Enemy: Shields is null");
+        
+        
 
 
        // _enemyID = Random.Range(0, 5);
@@ -55,7 +70,12 @@ public class Enemy : MonoBehaviour
                     Destroy(this.gameObject);
                 break;
             case 2://moves in a sinwave kind of movement across screen
+         
                 _anim.SetTrigger("SinWaveMovement");
+                if (_leftOrRight == 1)
+                    _anim.SetTrigger("SinWaveLeft");
+                else
+                    _anim.SetTrigger("SinWaveRight");
                 if (_player == null)
                     Destroy(this.gameObject);               
                 break;
@@ -109,39 +129,61 @@ public class Enemy : MonoBehaviour
      {
          if (other.CompareTag("Player"))
          {
-            // Player player = other.transform.GetComponent<Player>();
-             if (_player != null)
-             {
-                 _player.Damage(true);
-             }
-            int randomDrop = Random.Range(0, 11);
-            if (randomDrop >= 7)
+            if (!_hasShields)
             {
-                Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+                // Player player = other.transform.GetComponent<Player>();
+                 if (_player != null)
+                 {
+                     _player.Damage(true);
+                 }
+                int randomDrop = Random.Range(0, 11);
+                if (randomDrop >= 7)
+                {
+                    Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+                }
+                //_anim.SetTrigger("OnEnemyDeath");
+                Instantiate(_explosion, transform.position, Quaternion.identity);
+                Destroy(this.gameObject);
+                //Destroy(this.gameObject, 2.7f);// add delay to the destory
             }
-            //_anim.SetTrigger("OnEnemyDeath");
-            Instantiate(_explosion, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
-        //Destroy(this.gameObject, 2.7f);// add delay to the destory
+            else
+            {
+                _hasShields = false;
+                _shields.SetActive(false);
+                if (_player != null)
+                {
+                    _player.Damage(true);
+                }
+            }
          }
 
         if (other.CompareTag("Laser"))
          {
-            if (_player != null)
+            if (!_hasShields)
             {
-                _player.AddScore(10);
+                if (_player != null)
+                {
+                    _player.AddScore(10);
+                }
+                Destroy(other.gameObject);
+                //spawn an ammo refill on chance
+                int randomDrop = Random.Range(0, 11);
+                if (randomDrop >= 7)
+                {
+                    Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+                }
+                //_anim.SetTrigger("OnEnemyDeath"); trigger not needed either.
+                Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
+                Destroy(this.gameObject);// no delay needed for this.
+                //Destroy(this.gameObject, 2.7f);//add delay to destory
+
             }
-            Destroy(other.gameObject);
-            //spawn an ammo refill on chance
-            int randomDrop = Random.Range(0, 11);
-            if (randomDrop >= 7)
+            else
             {
-                Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+                _hasShields = false;
+                _shields.SetActive(false);
+                Destroy(other.gameObject);
             }
-            //_anim.SetTrigger("OnEnemyDeath"); trigger not needed either.
-            Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
-            Destroy(this.gameObject);// no delay needed for this.
-            //Destroy(this.gameObject, 2.7f);//add delay to destory
         }
      }
 
