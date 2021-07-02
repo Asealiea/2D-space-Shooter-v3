@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 3673817978683186662}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children:
   - {fileID: 3673817978920340969}
   - {fileID: 3673817980068426396}
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10c6dde22abd4a48b7a2014dc211362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hasShields: 1
+  _dodger: 0
   _speed: 0
   _canFire: 2
   _enemyID: 3
@@ -326,6 +326,7 @@ MonoBehaviour:
     type: 3}
   _ammoRefill: {fileID: 6608824412449853024, guid: 2c4834dce45d46640aa197ece0b78359,
     type: 3}
+  _hasShields: 0
   _shields: {fileID: 512646193929178407}
 --- !u!95 &3673817978920340950
 Animator:

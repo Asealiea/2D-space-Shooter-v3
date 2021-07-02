@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1594101312}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 9183692611049545212}
   - component: {fileID: 9183692611049545214}
   - component: {fileID: 9183692611049545215}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Damage_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 9183692611449644236}
   - component: {fileID: 9183692611449644237}
   - component: {fileID: 9183692611449644242}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: LeftGun
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -227,10 +227,11 @@ MonoBehaviour:
   _gunExplode: {fileID: 9183692611049545213}
   _gunHealth: 0
   _player: {fileID: 0}
-  _canFire: 6
+  _canFire: 4
   _laser: {fileID: 5852647636540181125, guid: f5abd1c2c8bb8ad479eb6567e02b3a43, type: 3}
   _boss: {fileID: 9183692611945483084}
   _gunSide: 1
+  _bossNumber: 1
 --- !u!1 &9183692611839349706
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +244,7 @@ GameObject:
   - component: {fileID: 9183692611839349702}
   - component: {fileID: 9183692611839349703}
   - component: {fileID: 9183692611839349700}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: RightGun
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -327,10 +328,11 @@ MonoBehaviour:
   _gunExplode: {fileID: 9183692612097254219}
   _gunHealth: 0
   _player: {fileID: 0}
-  _canFire: 8
+  _canFire: 6
   _laser: {fileID: 5852647636540181125, guid: f5abd1c2c8bb8ad479eb6567e02b3a43, type: 3}
   _boss: {fileID: 9183692611945483084}
   _gunSide: 2
+  _bossNumber: 1
 --- !u!1 &9183692611945483095
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +348,7 @@ GameObject:
   - component: {fileID: 9183692611945483091}
   - component: {fileID: 9183692611945483088}
   - component: {fileID: 9183692611945483084}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,6 +543,11 @@ MonoBehaviour:
   _cameraShake: {fileID: 0}
   _laserTransform: {fileID: 1594101312}
   _anim: {fileID: 0}
+  _bossID: 0
+  _starfall: {fileID: 4711438120820645816, guid: b9af63bde48091c4bb0f844a27404750,
+    type: 3}
+  _leftGunTrans: {fileID: 0}
+  _rightGunTrans: {fileID: 0}
 --- !u!1 &9183692612097254219
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,7 +559,7 @@ GameObject:
   - component: {fileID: 9183692612097254218}
   - component: {fileID: 9183692612097254212}
   - component: {fileID: 9183692612097254213}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Damage_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,6 +663,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
         type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -755,6 +767,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mini_Explosion
       objectReference: {fileID: 0}
+    - target: {fileID: 3827357642077419840, guid: 242a286e4dab1514b8b57a136b733b38,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3827357642077419869, guid: 242a286e4dab1514b8b57a136b733b38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -844,6 +861,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
         type: 3}
@@ -946,6 +968,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mini_Explosion (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3827357642077419840, guid: 242a286e4dab1514b8b57a136b733b38,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3827357642077419869, guid: 242a286e4dab1514b8b57a136b733b38,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1025,6 +1052,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Explosion (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
         type: 3}

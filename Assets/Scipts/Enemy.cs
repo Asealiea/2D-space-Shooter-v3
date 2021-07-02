@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    //[SerializeField] private Animator _anim;
     [SerializeField] private bool _dodger;
-    [SerializeField] private bool _hasShields = false;
     [SerializeField] private float _speed = 4;
     private Player _player;
-  [SerializeField]  private float _canFire = 2f;
+    [SerializeField]  private float _canFire = 2f;
     private float _fireRate;
 
     [SerializeField] private int _enemyID = 0;
@@ -21,35 +19,47 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private GameObject _ammoRefill;
 
+
+    [SerializeField] private bool _hasShields = false;
     [SerializeField] private GameObject _shields;
+
     private Vector3 Direction;
 
 
 
 
     
-    void Awake()
+    void Start()
     {
  
         if (_enemyID < 3)
-            transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
+        {
+            transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);           
+        }
 
         if (_enemyID == 2)
             _leftOrRight = Random.Range(1, 3);
-        
+
+ 
         _player = GameObject.Find("Player").GetComponent<Player>();
+        
         _anim = GetComponent<Animator>();
 
         
         if (_player == null)
+        {
             Debug.LogError("Enemy: Player is null");
+            Destroy(this.gameObject);
+        }
         if (_shields == null)
             Debug.LogError("Enemy: Shields is null");
-        
-        
 
 
-       // _enemyID = Random.Range(0, 5);
+        if (_enemyID == 4)
+        {
+            transform.position = new Vector3(Random.Range(-7f, 7f), 5.5f, 0f);
+        }
+
         if (_anim == null)
             Debug.Log("Enemy: Animator is null");
        
@@ -109,6 +119,10 @@ public class Enemy : MonoBehaviour
         {
             if (Time.time >= _canFire)    //_canFire == true
                 EnemyShoot();            
+        }
+        if (_player == null)
+        {
+            Destroy(this.gameObject);
         }
     }
 
@@ -189,7 +203,7 @@ public class Enemy : MonoBehaviour
 
         if (other.CompareTag("Laser"))
          {
-            if (!_hasShields)
+            if (!_hasShields) //if they don't have a shield
             {
                 if (_player != null)
                 {
@@ -198,17 +212,14 @@ public class Enemy : MonoBehaviour
                 Destroy(other.gameObject);
                 //spawn an ammo refill on chance
                 int randomDrop = Random.Range(0, 11);
-                if (randomDrop >= 7)
+                if (randomDrop >= 6)
                 {
                     Instantiate(_ammoRefill, transform.position, Quaternion.identity);
                 }
-                //_anim.SetTrigger("OnEnemyDeath"); trigger not needed either.
                 Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
-                Destroy(this.gameObject);// no delay needed for this.
-                //Destroy(this.gameObject, 2.7f);//add delay to destory
-
+                Destroy(this.gameObject);// no delay needed for this.               
             }
-            else
+            else //if they do have a shield.
             {
                 _hasShields = false;
                 _shields.SetActive(false);

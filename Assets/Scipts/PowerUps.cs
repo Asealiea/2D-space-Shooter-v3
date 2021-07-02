@@ -11,6 +11,7 @@ public class PowerUps : MonoBehaviour
     [SerializeField] private AudioClip _powerUpClip;
     [SerializeField] private Transform _mag;
 
+
      
     void Update()
     {
@@ -20,10 +21,11 @@ public class PowerUps : MonoBehaviour
             _spinningSpeed = 0;
             Vector3 direction = _mag.position - transform.position;
             direction.Normalize();
-            transform.Translate(direction * _speed * Time.deltaTime);
+            transform.Translate(direction * (_speed * 2) * Time.deltaTime);
 
             return;
         }
+
         transform.Rotate(0, _spinningSpeed, 0);
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         if (transform.position.y <= -4.5f)

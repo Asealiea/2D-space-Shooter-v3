@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HomingDetection : MonoBehaviour
 {
+    private Quaternion _defaultQuaternion;
+    private int _count;
     private Vector3 _ramDirection;
     [SerializeField] private bool _mine = false;
     [SerializeField] private bool _ram = false;
@@ -23,6 +25,7 @@ public class HomingDetection : MonoBehaviour
         if (_ram)
         {
             transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);
+            _defaultQuaternion = transform.rotation;
         }
     }
 
@@ -79,7 +82,7 @@ public class HomingDetection : MonoBehaviour
         
     }
         
-    private void FollowPlayer(Transform Playertransform)
+    private void FollowPlayer(Transform Playertransform) //mine 
     {    
         if (_player != null)
         {
@@ -94,16 +97,47 @@ public class HomingDetection : MonoBehaviour
         }
     }
 
-    private void RamPlayer()
+    private void RamPlayer() //ramer
     {
-        float angle = Mathf.Atan2(_ramDirection.y, _ramDirection.x) * Mathf.Rad2Deg -270;
-        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Lerp(transform.rotation, q, Time.deltaTime * 20);
-        _ramDirection.Normalize();
-        transform.Translate(_ramDirection * 5 * Time.deltaTime);
+    
+        // get the players pos
+        if (_count == 0)
+        {
+            _ramDirection = _player.position - transform.position;
+            _count = 1;
+        }
+
+        //face the player
+        if (transform.position.y >= _player.position.y && _count == 1)
+        {
+            float angle = Mathf.Atan2(_ramDirection.y, _ramDirection.x) * Mathf.Rad2Deg - 270;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Lerp(transform.rotation, q, Time.deltaTime * 2);
+            if (_playerFound)
+            {
+                _ramDirection.Normalize();
+                transform.Translate(_ramDirection * 5 * Time.deltaTime);
+            }
+        }
+        else
+        {
+            _playerFound = false;
+        }
+
+
+        //ram the player.
+        if (!_playerFound)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, _defaultQuaternion , Time.deltaTime * 20);
+
+            _count = 0;
+        }
+
+
+
     }
 
-    private void FollowEnemy(Transform Enemytransform)
+    private void FollowEnemy(Transform Enemytransform) //missiles
     {
         if (_enemy != null)
         {            
@@ -123,7 +157,6 @@ public class HomingDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
- 
 
         if (other.CompareTag("Enemy"))
         {
@@ -133,15 +166,13 @@ public class HomingDetection : MonoBehaviour
                 _enemy = other.transform;
             }
         }
+
         if (other.CompareTag("Player"))
         {
             _playerFound = true;
             _player = other.transform;            
-            _ramDirection = _player.position - transform.position;
+            
         }
-
-
-    
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -160,7 +191,6 @@ public class HomingDetection : MonoBehaviour
             _thruster.transform.localScale = new Vector3(0.15f, 0.25f, 0);
             _thruster.transform.position = transform.position + new Vector3(0f, 0.6f, 0f);
         }
-   
     }
 
     private void HighThrusters(bool Missile)
@@ -170,10 +200,8 @@ public class HomingDetection : MonoBehaviour
             _thruster.transform.localScale = new Vector3(0.25f, .5f, 0);
             _thruster.transform.position = transform.position + new Vector3(0f, 0.25f, 0f);
         }
-        else
-        {
-           return;
-        }
+        else        
+           return;        
     }
 
     IEnumerator MineDestory()
@@ -182,7 +210,7 @@ public class HomingDetection : MonoBehaviour
         Instantiate(_explosion, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
-          
-         
+
+
 
 }

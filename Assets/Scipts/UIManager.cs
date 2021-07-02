@@ -32,6 +32,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartText;
     [SerializeField] private GameManager _gameManager;
+    //magnet.
+    [SerializeField] private GameObject _magnet;
+    [SerializeField] private GameObject _tutorialMenu;
 
 
 
@@ -69,12 +72,12 @@ public class UIManager : MonoBehaviour
 
     public void UpdateMissile(int MissileCount)
     {
-        _missileCount.text = MissileCount.ToString() + "/3";
+        _missileCount.text = MissileCount.ToString() + "/5";
     }
 
     public void UpdateAmmo(int AmmoCount)
     {
-        _ammoCount.text =  AmmoCount.ToString() + "/15";
+        _ammoCount.text =  AmmoCount.ToString() + "/30";
     }
 
     public void UpdateScore(int PlayerScore)
@@ -116,6 +119,7 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1;
         _pauseMenu.SetActive(false);
+        _paused = false;
     }
 
     public void RestartGameButton()
@@ -142,6 +146,7 @@ public class UIManager : MonoBehaviour
     {
         _pauseMenu.SetActive(false);
         _optionMenu.SetActive(true);
+        _tutorialMenu.SetActive(false);
     }
 
     public void CameraShakeToggle(bool camera)
@@ -183,6 +188,25 @@ public class UIManager : MonoBehaviour
         yield break;
 
     }
+
+    public void MagnetOn()
+    {
+        _magnet.SetActive(true);
+    }
+
+    public void MagnetOff()
+    {
+        _magnet.SetActive(false);
+    }
+
+    public void TutorialButton()
+    {
+        _pauseMenu.SetActive(false);
+        _optionMenu.SetActive(false);
+        _tutorialMenu.SetActive(true);
+    }
+
+    
 
 
 

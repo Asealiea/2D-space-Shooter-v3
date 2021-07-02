@@ -8,41 +8,26 @@ public class Dodger : MonoBehaviour
     private bool left = false;
     private int _count;
     private bool _moving;
+    [SerializeField] GameObject _core;
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (_core == null)
+            Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
-
         if (other.CompareTag("Laser"))
-        {
-
-            //if too close to right side move left
-            //if too close to left side move right
-            //if not  close to the left or right side, move in random left or right direction
-            
+        {       
             if (left)
-            {
-           
-                
-                StartCoroutine(MoveLeft());
-              
-            }
+                StartCoroutine(MoveLeft());           
             else 
-            {
-                
                 StartCoroutine(MoveRight());
-      
-            } 
-
-       
         }
     }
+       
     IEnumerator MoveLeft()
     {
         if (!_moving)

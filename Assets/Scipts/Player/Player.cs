@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _homingMissile;
     private float _canMissile = -1f;
     [SerializeField] private int _missileCount = 3;
+
     [SerializeField] private bool _magnet = false;
    
     [Header("Score")]
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Renderer _shieldsRenderer;
     [SerializeField] private AudioClip _ammoEmptyClip;
     [SerializeField] private CameraShake _cameraShake;
+    [SerializeField] private Animator _anim;
 
 
     //repair system
@@ -79,6 +81,10 @@ public class Player : MonoBehaviour
             Debug.Log("Player: AudioSource is null");
         else
             _audioSource.clip = _laserSound;
+        _anim = GetComponent<Animator>();
+       
+        
+        
     }
 
     void Update()
@@ -86,7 +92,7 @@ public class Player : MonoBehaviour
         if (!_repairing)
             PlayerMovement();
 
-        if (Input.GetKeyDown(KeyCode.C) && !_magnet)
+        if (Input.GetKeyDown(KeyCode.C) && !_magnet && !_repairing)
         {
             StartCoroutine(PowerupMagnet());
         }
@@ -112,7 +118,7 @@ public class Player : MonoBehaviour
             }
         }
                   
-        if (Input.GetKey(KeyCode.LeftShift) && _canThrust)
+        if (Input.GetKey(KeyCode.LeftShift) && _canThrust && !_repairing)
             ThrustersOn();
         if (Input.GetKeyUp(KeyCode.LeftShift))
             ThrustersOff();
@@ -126,9 +132,11 @@ public class Player : MonoBehaviour
     {
         _shiftSpeed = _shiftSpeedBoost;
         _thrustersLeft.transform.localScale = new Vector3(0.3f, 1, 1);
-        _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.592f, 0);
+        _thrustersLeft.transform.position = transform.position + new Vector3(-0.15f, -0.95f, 0);
+        //_thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.592f, 0); old
         _thrustersRight.transform.localScale = new Vector3(0.3f, 1, 1);
-        _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.592f, 0);
+        _thrustersRight.transform.position = transform.position + new Vector3(0.15f, -0.95f, 0);
+       // _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.592f, 0); old
         if (_thrusters > 0)
         {
             _thrusters -= 1f;
@@ -140,9 +148,10 @@ public class Player : MonoBehaviour
     {
         _shiftSpeed = 1;
         _thrustersLeft.transform.localScale = new Vector3(0.15f, .5f, 0);
-        _thrustersLeft.transform.position = transform.position + new Vector3(-0.25f, -1.22f, 0f);
+        _thrustersLeft.transform.position = transform.position + new Vector3(-0.15f, -0.725f, 0f);
         _thrustersRight.transform.localScale = new Vector3(0.15f, .5f, 0);
-        _thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.22f, 0f);
+        _thrustersRight.transform.position = transform.position + new Vector3(0.15f, -0.725f, 0f);
+        //_thrustersRight.transform.position = transform.position + new Vector3(0.25f, -1.22f, 0f); old
         if (_thrusters > 0.5f && !_thrusterCharging)
         {
             StartCoroutine(ThrusterRecharge());
@@ -185,6 +194,7 @@ public class Player : MonoBehaviour
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
         float _verticalInput = Input.GetAxis("Vertical");
+        _anim.SetFloat("Turning", _horizontalInput);
 
         // transform.Translate(Vector3.right * _horizontalInput * (_multiplier +_speedPowerUp) * Time.deltaTime);
         // transform.Translate(Vector3.up * _verticalInput * (_multiplier +_speedPowerUp) * Time.deltaTime);
@@ -303,15 +313,15 @@ public class Player : MonoBehaviour
         _canMissile = Time.time + 2f;
         Instantiate(_homingMissile, transform.position, Quaternion.identity);
         _missileCount--;
-        _uiManager.UpdateMissile(_missileCount); // this line added 
+        _uiManager.UpdateMissile(_missileCount); 
     }
 
     public void MissilePayload()
     {
-        if (_missileCount < 100)
+        if (_missileCount < 5)
         {          
             _missileCount++;
-            _uiManager.UpdateMissile(_missileCount); // this line added 
+            _uiManager.UpdateMissile(_missileCount);
         }
     }
 
@@ -425,7 +435,11 @@ public class Player : MonoBehaviour
 
     public void ExtraAmmo()
     {
-        _ammoCount = 15;
+        _ammoCount += 10;
+        if (_ammoCount >= 30)
+        {
+            _ammoCount = 30;
+        }
         _uiManager.UpdateAmmo(_ammoCount);
     }
 
@@ -444,6 +458,7 @@ public class Player : MonoBehaviour
         GameObject[] PowerupsToGet = GameObject.FindGameObjectsWithTag("Powerup");
         if (PowerupsToGet.Length == 0)
         {
+            _uiManager.MagnetOff();
             StartCoroutine(MagnetCoolDown(2f));
             yield break;
         }
@@ -453,15 +468,32 @@ public class Player : MonoBehaviour
             PowerUps powerupScript = powerup.GetComponent<PowerUps>();
             powerupScript.Magnet(this.transform);
         }
+        _uiManager.MagnetOff();
         StartCoroutine(MagnetCoolDown(5f));
         yield break;
     }
 
     IEnumerator MagnetCoolDown(float time)
     {
+        MineDisable();
         yield return new WaitForSeconds(time);
         _magnet = false;
+        _uiManager.MagnetOn();
         yield break;
+    }
+
+    public void MineDisable()
+    {
+        GameObject[] homingMines = GameObject.FindGameObjectsWithTag("Mine");
+        if (homingMines.Length == 0)
+            return;
+                
+        foreach (var hMine in homingMines)
+        { 
+            Mine mine = hMine.GetComponentInChildren<Mine>();
+            if (mine != null)
+                mine.DestroyMine();                       
+        }
     }
 
     #endregion
@@ -498,6 +530,8 @@ public class Player : MonoBehaviour
             Debug.Log("Player: Laser audio is null;");
         if (_cameraShake == null)
             Debug.LogError("Player: Camera Shaker is null");
+        if (_anim == null)
+            Debug.LogError("Player:Anim is null");
     }
 
     #region Repair

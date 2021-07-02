@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2040824369278752244}
   - component: {fileID: 5832114380456533901}
   - component: {fileID: 2298267930102844732}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Skull and Cross bones
   m_TagString: Powerup
   m_Icon: {fileID: 0}

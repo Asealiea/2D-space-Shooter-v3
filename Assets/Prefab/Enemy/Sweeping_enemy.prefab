@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4221163984889805012}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.34, z: 0}
+  m_LocalScale: {x: 1.13, y: 0.76, z: 1}
   m_Children: []
   m_Father: {fileID: 382353729311628821}
   m_RootOrder: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 333b0196b7a764df5a7768ead9b69dbc, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.03568077, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -130,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 6422094785507490399}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children:
   - {fileID: 6211955324192874446}
   m_Father: {fileID: 0}
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10c6dde22abd4a48b7a2014dc211362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hasShields: 1
+  _dodger: 0
   _speed: 4
   _canFire: 2
   _enemyID: 1
@@ -256,6 +256,7 @@ MonoBehaviour:
     type: 3}
   _ammoRefill: {fileID: 6608824412449853024, guid: 2c4834dce45d46640aa197ece0b78359,
     type: 3}
+  _hasShields: 1
   _shields: {fileID: 4221163984889805012}
 --- !u!95 &9056330640138211496
 Animator:

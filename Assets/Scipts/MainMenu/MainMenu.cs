@@ -8,6 +8,8 @@ using UnityEditor;
 
 public class MainMenu : MonoBehaviour
 {
+
+    [SerializeField] private GameObject _tutorialMenu;
  
     public void ExitGameButton()
 
@@ -23,5 +25,14 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(1); //First level
         Time.timeScale = 1;
+    }
+    public void TutorialBack()
+    {
+        _tutorialMenu.SetActive(false);
+    }
+
+    public void TutoritalButton()
+    {
+        _tutorialMenu.SetActive(true);
     }
 }

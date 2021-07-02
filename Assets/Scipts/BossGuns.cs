@@ -13,51 +13,68 @@ public class BossGuns : MonoBehaviour
     [SerializeField] private GameObject _laser; //the laser for the gun to fire.
     [SerializeField] private Boss _boss; //Reference to the boss for use later
     [SerializeField] private int _gunSide; // 1 = left 2= right
+    [SerializeField] private int _bossNumber;
+    private float _rotation;
+    
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        _gunExplode.SetActive(false);
-
-        _gunHealth = 50;
+        _gunExplode.SetActive(false); //used this to make sure it wasn't active when the boss came out
+        _gunHealth = 50; //can be set in the inspector
         //find the player
-        _player = GameObject.Find("Player").GetComponent<Player>();
-
+        _player = GameObject.Find("Player").GetComponent<Player>(); // finds the player to use later
+        if (_gunSide == 1)
+        {
+            _rotation = 15f;
+        }
+        else
+        {
+            _rotation = -15f;
+        }
+        if (_bossNumber == 2)
+        {
+            StartCoroutine(RotatorShoot());
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_gunHealth <= 0)
+        if (_gunHealth <= 0) // if the gun has been destroyed....
         {
-            if (_gunSide == 1)
+            if (_gunSide == 1) //set in the inspector for each side
             {
-                _boss.LeftGun();
+                _boss.LeftGun(); //turns off the guns on the boss
             }
-            else
+            else // when both guns are off you can start attacking the main boss
             {
-                _boss.RightGun();
+                _boss.RightGun();//turns off the guns on the boss
             }
-            _gunExplode.SetActive(true);
-            _gun.SetActive(false);
+            _gunExplode.SetActive(true); //turns on the damage effects
+            _gun.SetActive(false); // turns off the gun so it can't keep shooting.
         }
-        if (_player == null)
+
+        /* if (_player == null) //null check, also 
+         {
+             Debug.LogError("BossGun: Player is null, disabling weapons");
+             _gun.SetActive(false);
+         } */
+        if (_bossNumber == 1)
         {
-            Debug.LogError("BossGun: Player is null, disabling weapons");
-            _gun.SetActive(false);
+            if (_canFire <=  Time.time) //so we don't see a death stream of bullets.            
+                Shoot(); // just a normal shooting method, nothing to see here.            
         }
-        if (_canFire <=  Time.time)
-        {
-            Shoot();
-        }
+
     }
 
     private void Shoot()
     {
-        _fireRate = Random.Range(2.5f, 4f);
-        _canFire = Time.time + _fireRate;
+        _fireRate = Random.Range(2.5f, 4f); //sets a random firerate.
+        _canFire = Time.time + _fireRate; //sets the time to be shoot again.
+
         //find where the player is and shoot towards the player.
         if (_player != null)
         {
@@ -68,9 +85,22 @@ public class BossGuns : MonoBehaviour
         }
     }
 
+
+    IEnumerator RotatorShoot()
+    {
+        while (true)
+        {
+            Instantiate(_laser, transform.position, transform.rotation);
+            yield return new WaitForSeconds(0.25f);
+            transform.Rotate(0, 0, _rotation);
+            Instantiate(_laser, transform.position, transform.rotation) ;
+            yield return new WaitForSeconds(0.25f);
+            transform.Rotate(0, 0, _rotation);
+        }        
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.name);
         if (other.name == "Missile")
         {
             if (_gunHealth >= 10)

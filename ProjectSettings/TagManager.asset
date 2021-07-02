@@ -8,6 +8,7 @@ TagManager:
   - Laser
   - ELaser
   - Powerup
+  - Mine
   layers:
   - Default
   - TransparentFX
