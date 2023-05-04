@@ -67,7 +67,7 @@ public static class BuildCommand
 
         Console.WriteLine($":: {nameof(buildTargetName)} \"{buildTargetName}\" not defined on enum {nameof(BuildTarget)}, using {nameof(BuildTarget.NoTarget)} enum to build");
 
-        return BuildTarget.NoTarget;
+        return BuildTarget.StandaloneWindows;
     }
     
     static BuildTargetGroup GetBuildTargetGroup(BuildTarget buildTarget)
