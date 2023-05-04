@@ -10,7 +10,7 @@ static class BuildCommand
     private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
 
     //////////////////// Main Method ///////////////////////
-    public static void PerformBuild()
+    public static void PerformBuilds()
     {
         Console.WriteLine(":: Performing build");
 
