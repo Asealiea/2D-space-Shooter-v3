@@ -35,11 +35,11 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        NullCheck();
         waveCooldown = cooldownBetweenWaves;
         StartCoroutine(SpawnPowerUpRoutine());
         updateUI(waves[nextWave]);
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        NullCheck();
     }
 
     private void Update()
