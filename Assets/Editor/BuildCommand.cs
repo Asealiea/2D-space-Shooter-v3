@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-static class BuildCommand
+public static class BuildCommand
 {
     private const string IS_DEVELOPMENT_BUILD = "IS_DEVELOPMENT_BUILD";
     private const string BUILD_OPTIONS_ENV_VAR = "BuildOptions";
@@ -90,7 +90,7 @@ static class BuildCommand
 
         Console.WriteLine($":: {nameof(targetGroup)} \"{targetGroup}\" not defined on enum {nameof(BuildTargetGroup)}, using {nameof(BuildTargetGroup.Unknown)} enum to build");
 
-        return BuildTargetGroup.Unknown;
+        return BuildTargetGroup.Standalone;
     }
 
     static bool TryGetEnv(string key, out string value)
