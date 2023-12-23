@@ -25,12 +25,6 @@ public class PowerUps : MonoBehaviour
     private float _movement;
     private float _magMove;
 
-    private void OnEnable()
-    {
-        _movement = _speed * Time.deltaTime;
-        _magMove = (_speed * 2) * Time.deltaTime;
-    }
-
     void Update()
     {
         if (_mag)
@@ -39,12 +33,14 @@ public class PowerUps : MonoBehaviour
             _spinningSpeed = 0;
             Vector3 direction = _mag.position - transform.position;
             direction.Normalize();
+            _magMove = (_speed * 2) * Time.deltaTime;
             transform.Translate(direction * _magMove);
 
             return;
         }
 
         transform.Rotate(0, _spinningSpeed, 0);
+        _movement = _speed * Time.deltaTime;
         transform.Translate(Vector3.down * _movement);
         if (transform.position.y <= -4.5f)
             Destroy(this.gameObject);

@@ -972,6 +972,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shield_PowerUp
       objectReference: {fileID: 0}
+    - target: {fileID: 1109751200991264306, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
         type: 3}
       propertyPath: m_RootOrder
@@ -980,12 +985,12 @@ PrefabInstance:
     - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.88
       objectReference: {fileID: 0}
     - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.74
+      value: 5.39
       objectReference: {fileID: 0}
     - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
         type: 3}

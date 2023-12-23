@@ -569,16 +569,14 @@ public class Player : MonoBehaviour
     public void LongerWaitTime(int timer)
     {
         _extraWait = timer;
-        
     }
 
     IEnumerator Repearing()
     {
-        yield return new WaitForSeconds(_extraWait);    
+        yield return new WaitForSeconds(_extraWait);   
+        lifeSignal.SetValue(true);
         ExtraLife();
         _repairing = false;
-        
-        yield break;
     }
 
     #endregion
