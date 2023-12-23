@@ -98,6 +98,15 @@ MonoBehaviour:
   _spinningSpeed: 0
   _powerUpID: 3
   _powerUpClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  _mag: {fileID: 0}
+  tripleShotSignal: {fileID: 11400000, guid: 5247949775cf6034fa95ec6fe301a753, type: 2}
+  speedSignal: {fileID: 11400000, guid: 037c3e35322422c4fb6205892f2bc734, type: 2}
+  shieldsSignal: {fileID: 11400000, guid: 018e46090e05df94486f98d2ceb28d95, type: 2}
+  ammoSignal: {fileID: 11400000, guid: a7d6937d72d2c80458cf94f7bb5a06de, type: 2}
+  lifeSignal: {fileID: 11400000, guid: 9760c700ffeb80b41be4ad0755d4a78c, type: 2}
+  missileSignal: {fileID: 11400000, guid: 4480e9bb1a1525a438dca211fc135fae, type: 2}
+  negativeSignal: {fileID: 11400000, guid: 8e827b7a4c6cdc64485e0a9a9fbe4dcc, type: 2}
+  superSignal: {fileID: 11400000, guid: 6e4bda07a9f99da41a9bb0525dd9fae5, type: 2}
 --- !u!95 &3449586198322542483
 Animator:
   serializedVersion: 3
@@ -131,6 +140,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

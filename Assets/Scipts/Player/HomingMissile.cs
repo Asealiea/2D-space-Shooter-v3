@@ -11,12 +11,6 @@ public class HomingMissile : MonoBehaviour
     [SerializeField]  private CircleCollider2D _detection;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -77,7 +71,7 @@ public class HomingMissile : MonoBehaviour
                 return false;
             }
         }
-            _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
+        _enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
         _enemyFound = true;
         return true;
     }

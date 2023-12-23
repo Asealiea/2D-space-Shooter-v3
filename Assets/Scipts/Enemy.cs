@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using RSG.Trellis.Signals;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -24,6 +25,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject _shields;
 
     private Vector3 Direction;
+
+    [SerializeField] private IntSignal playerScore;
 
 
 
@@ -178,7 +181,7 @@ public class Enemy : MonoBehaviour
                 // Player player = other.transform.GetComponent<Player>();
                  if (_player != null)
                  {
-                     _player.Damage(true);
+                     _player.Damage();
                  }
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 7)
@@ -196,33 +199,38 @@ public class Enemy : MonoBehaviour
                 _shields.SetActive(false);
                 if (_player != null)
                 {
-                    _player.Damage(true);
+                    _player.Damage();
                 }
             }
          }
 
         if (other.CompareTag("Laser"))
-         {
+        {
             if (!_hasShields) //if they don't have a shield
             {
                 if (_player != null)
                 {
-                    _player.AddScore(10);
+                    playerScore.Increment(10);
                 }
+                //pool instead.
                 Destroy(other.gameObject);
                 //spawn an ammo refill on chance
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 6)
                 {
+                    //pool instead
                     Instantiate(_ammoRefill, transform.position, Quaternion.identity);
                 }
+                //pool explosion?
                 Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
+                //pool instead.
                 Destroy(this.gameObject);// no delay needed for this.               
             }
             else //if they do have a shield.
             {
                 _hasShields = false;
                 _shields.SetActive(false);
+                //instead of deleting, store back in pool
                 Destroy(other.gameObject);
             }
         }

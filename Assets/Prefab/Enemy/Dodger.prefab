@@ -49,6 +49,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -157,6 +158,7 @@ MonoBehaviour:
     type: 3}
   _hasShields: 0
   _shields: {fileID: 8856243349206141084}
+  playerScore: {fileID: 11400000, guid: 521a615a64b8e3643aeb40c5d771db15, type: 2}
 --- !u!95 &8856243348886055205
 Animator:
   serializedVersion: 3
@@ -285,6 +287,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

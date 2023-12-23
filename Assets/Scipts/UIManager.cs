@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using RSG.Trellis.Signals;
 using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_EDITOR
@@ -8,14 +10,19 @@ using UnityEditor;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Thruster Bar")]
+    [Header("Thruster Bar")] 
+    [SerializeField] private IntSignal thruster;
     [SerializeField] private Slider _slider;
     [Header("Score Text")]
     [SerializeField] private Text _scoreText;
+    [SerializeField] private IntSignal playerScore;
     [Header("Ammo Count Text")]
     [SerializeField] private Text _ammoCount;
+    [SerializeField] private IntSignal ammoCount;
     [SerializeField] private Text _missileCount;
-    [Header("Lives")]
+    [SerializeField] private IntSignal missileCount;
+    [Header("Lives")] 
+    [SerializeField] private IntSignal playerLives;
     [SerializeField] private Sprite[] _livesSprite;
     [SerializeField] private Image _livesImage;
     [Header("Waves")]
@@ -36,7 +43,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _magnet;
     [SerializeField] private GameObject _tutorialMenu;
 
+    private void OnEnable()
+    {
+        thruster.AddListener(ThrusterUpdate);
+        playerLives.AddListener(UpdateLives);
+        playerScore.AddListener(UpdateScore);
+        missileCount.AddListener(UpdateMissile);
+        ammoCount.AddListener(UpdateAmmo);
+    }
 
+    private void OnDisable()
+    {
+        
+        thruster.RemoveListener(ThrusterUpdate);
+        playerLives.RemoveListener(UpdateLives);
+        playerScore.RemoveListener(UpdateScore);
+        missileCount.RemoveListener(UpdateMissile);
+        ammoCount.RemoveListener(UpdateAmmo);
+    }
 
 
     // Start is called before the first frame update
@@ -44,7 +68,7 @@ public class UIManager : MonoBehaviour
     {
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
-        UpdateLives(3);
+        //UpdateLives(3);
         _scoreText.text = "Score: 0";
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if (_gameManager == null)
@@ -70,24 +94,24 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateMissile(int MissileCount)
+    private void UpdateMissile()
     {
-        _missileCount.text = MissileCount.ToString() + "/5";
+        _missileCount.text = missileCount.Value + "/5";
     }
 
-    public void UpdateAmmo(int AmmoCount)
+    private void UpdateAmmo()
     {
-        _ammoCount.text =  AmmoCount.ToString() + "/30";
+        _ammoCount.text =  ammoCount.Value + "/30";
     }
 
-    public void UpdateScore(int PlayerScore)
+    private void UpdateScore()
     {
-        _scoreText.text = "Score: " + PlayerScore.ToString();
+        _scoreText.text = "Score: " + playerScore.Value;
     }
 
-    public void UpdateLives(int CurrentLives)
+    private void UpdateLives()
     {
-        _livesImage.sprite = _livesSprite[CurrentLives];
+        _livesImage.sprite = _livesSprite[playerLives.Value];
     }
 
     public void GameOver()
@@ -168,9 +192,9 @@ public class UIManager : MonoBehaviour
         _optionMenu.SetActive(false);
     }
 
-    public void ThrusterUpdate(float Thruster)
+    private void ThrusterUpdate()
     {
-        _slider.value = Thruster;
+        _slider.value = thruster.Value;
     }
 
     public void UpdateWave(string Name)

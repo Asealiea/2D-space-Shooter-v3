@@ -207,6 +207,7 @@ public class HomingDetection : MonoBehaviour
     IEnumerator MineDestory()
     {
         yield return new WaitForSeconds(5f);
+        //pool these both.
         Instantiate(_explosion, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }

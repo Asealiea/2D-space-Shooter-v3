@@ -1,0 +1,21 @@
+{
+    "name": "com.realseriousgames.trellis.Editor.Tests",
+    "rootNamespace": "RSG.Trellis.Tests",
+    "references": [
+        "com.realseriousgames.trellis"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -12,7 +12,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _tutorialMenu;
  
     public void ExitGameButton()
-
     {
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false; // makes it stop while in test play

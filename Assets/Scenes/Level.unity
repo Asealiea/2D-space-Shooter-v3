@@ -430,6 +430,8 @@ GameObject:
   - component: {fileID: 65194173}
   - component: {fileID: 65194168}
   - component: {fileID: 65194174}
+  - component: {fileID: 65194175}
+  - component: {fileID: 65194176}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -496,28 +498,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db15ae47498ded148b2251df80221b37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shiftSpeedBoost: 1.75
-  _thrusters: 100
-  _canThrust: 0
-  _thrusterCharging: 0
-  _hasShield: 0
-  _shieldCount: 0
+  shiftSpeedBoost: 1.75
+  tripleShotSignal: {fileID: 11400000, guid: 5247949775cf6034fa95ec6fe301a753, type: 2}
+  speedSignal: {fileID: 11400000, guid: 037c3e35322422c4fb6205892f2bc734, type: 2}
+  shieldsSignal: {fileID: 11400000, guid: 018e46090e05df94486f98d2ceb28d95, type: 2}
+  ammoSignal: {fileID: 11400000, guid: a7d6937d72d2c80458cf94f7bb5a06de, type: 2}
+  ammoCount: {fileID: 11400000, guid: 0255fb769befaa84f8a7947c5049ea87, type: 2}
+  lifeSignal: {fileID: 11400000, guid: 9760c700ffeb80b41be4ad0755d4a78c, type: 2}
+  missileSignal: {fileID: 11400000, guid: 4480e9bb1a1525a438dca211fc135fae, type: 2}
+  missileCount: {fileID: 11400000, guid: 1cc714a45a75ff7468463ae6dfe3c78e, type: 2}
+  negativeSignal: {fileID: 11400000, guid: 8e827b7a4c6cdc64485e0a9a9fbe4dcc, type: 2}
+  superSignal: {fileID: 11400000, guid: 6e4bda07a9f99da41a9bb0525dd9fae5, type: 2}
+  hasShield: 0
   _secondaryFire: {fileID: 1282657569292652176, guid: 619ef9049b5c6064c80dbbe7cfdccccd,
     type: 3}
-  _hasSecondaryFire: 0
   _homingMissile: {fileID: 3467994841858796804, guid: e9a73bcb2d09c504aa5ae77eb034a885,
     type: 3}
-  _missileCount: 3
   _magnet: 0
-  _score: 0
   _fireRate: 0.3
-  _ammoCount: 15
-  _lives: 3
+  playerLives: {fileID: 11400000, guid: 1d22feec9a626cb4aad8ddbd527c1f5d, type: 2}
   _laserPreFab: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
     type: 3}
   _tripleShotPreFab: {fileID: 795165465969841637, guid: c929e3f3b99300446907f9b2008fdc22,
     type: 3}
-  _shields: {fileID: 197122982}
   _spawnManager: {fileID: 880600102}
   _uiManager: {fileID: 290696101}
   _playerDamageLeft: {fileID: 1284707635}
@@ -526,12 +529,13 @@ MonoBehaviour:
     type: 3}
   _audioSource: {fileID: 0}
   _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _thrustersRight: {fileID: 808035564}
-  _thrustersLeft: {fileID: 1018822776}
-  _shieldsRenderer: {fileID: 0}
+  _shield: {fileID: 11400000, guid: 958cf386efb90d24eb89b0b1714005e8, type: 2}
   _ammoEmptyClip: {fileID: 8300000, guid: 942383b3b644e2146b0fdb3b6afd718d, type: 3}
   _cameraShake: {fileID: 963194230}
   _anim: {fileID: 65194174}
+  thrusting: {fileID: 11400000, guid: 956a3561da4f5b0488fb6b83f71c85ee, type: 2}
+  thrustersUsable: {fileID: 11400000, guid: 3438d5bc874d064468ecdd39f5d412c7, type: 2}
+  thrusterSignal: {fileID: 11400000, guid: 749a91bfb280d084d82ea3c79d81132f, type: 2}
 --- !u!212 &65194171
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -716,6 +720,38 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &65194175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65194167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd76f4a37972df545b6edda37969a9a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shields: {fileID: 197122982}
+  shieldSignal: {fileID: 11400000, guid: 958cf386efb90d24eb89b0b1714005e8, type: 2}
+  renderer: {fileID: 197122984}
+--- !u!114 &65194176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65194167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1c6af8321f07546ab32d14133b45dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thrustersRight: {fileID: 808035564}
+  thrustersLeft: {fileID: 1018822776}
+  thrusterSignal: {fileID: 11400000, guid: 749a91bfb280d084d82ea3c79d81132f, type: 2}
+  thrusterUsable: {fileID: 11400000, guid: 3438d5bc874d064468ecdd39f5d412c7, type: 2}
+  thrusting: {fileID: 11400000, guid: 956a3561da4f5b0488fb6b83f71c85ee, type: 2}
 --- !u!1 &80736569
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,6 +960,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92833341}
   m_CullTransparentMesh: 0
+--- !u!1001 &96102378
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1109751200991264306, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_Name
+      value: Shield_PowerUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903783484276781971, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8c19192a3a718ad41a0bdeeee3d4c917, type: 3}
 --- !u!1 &101193770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,10 +2082,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fdb05470fb9784e854ce9ec01e037e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thruster: {fileID: 11400000, guid: 749a91bfb280d084d82ea3c79d81132f, type: 2}
   _slider: {fileID: 458773411}
   _scoreText: {fileID: 1089451830}
+  playerScore: {fileID: 11400000, guid: 521a615a64b8e3643aeb40c5d771db15, type: 2}
   _ammoCount: {fileID: 1753521602}
+  ammoCount: {fileID: 11400000, guid: 0255fb769befaa84f8a7947c5049ea87, type: 2}
   _missileCount: {fileID: 627896160}
+  missileCount: {fileID: 11400000, guid: 1cc714a45a75ff7468463ae6dfe3c78e, type: 2}
+  playerLives: {fileID: 11400000, guid: 1d22feec9a626cb4aad8ddbd527c1f5d, type: 2}
   _livesSprite:
   - {fileID: 21300000, guid: ba53e111f0125654cabfd4eefaf3a657, type: 3}
   - {fileID: 21300000, guid: 80fba5ece7697c44eacc036539c1b552, type: 3}
@@ -3433,7 +3543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 642266082}
   - component: {fileID: 642266081}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Post Processing Volume testing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4456,12 +4566,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 963194228}
+  volumeTrigger: {fileID: 1056106052}
   volumeLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -4781,6 +4891,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1056106052}
   - component: {fileID: 1056106051}
+  - component: {fileID: 1056106053}
   m_Layer: 0
   m_Name: Main Camera (No post)
   m_TagString: MainCamera
@@ -4845,6 +4956,66 @@ Transform:
   m_Father: {fileID: 963194228}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1056106053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056106050}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeTrigger: {fileID: 1056106052}
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  stopNaNPropagation: 1
+  finalBlitToCameraTarget: 0
+  antialiasingMode: 0
+  temporalAntialiasing:
+    jitterSpread: 0.75
+    sharpness: 0.25
+    stationaryBlending: 0.95
+    motionBlending: 0.85
+  subpixelMorphologicalAntialiasing:
+    quality: 2
+  fastApproximateAntialiasing:
+    fastMode: 0
+    keepAlpha: 0
+  fog:
+    enabled: 1
+    excludeSkybox: 1
+  debugLayer:
+    lightMeter:
+      width: 512
+      height: 256
+      showCurves: 1
+    histogram:
+      width: 512
+      height: 256
+      channel: 3
+    waveform:
+      exposure: 0.12
+      height: 256
+    vectorscope:
+      size: 256
+      exposure: 0.12
+    overlaySettings:
+      linearDepth: 0
+      motionColorIntensity: 4
+      motionGridSize: 64
+      colorBlindnessType: 0
+      colorBlindnessStrength: 1
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
+  m_ShowToolkit: 0
+  m_ShowCustomSorter: 0
+  breakBeforeColorGrading: 0
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
 --- !u!1 &1056856488
 GameObject:
   m_ObjectHideFlags: 0

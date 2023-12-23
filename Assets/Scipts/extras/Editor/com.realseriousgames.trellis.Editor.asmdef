@@ -1,0 +1,16 @@
+{
+    "name": "com.realseriousgames.trellis.Editor",
+    "rootNamespace": "RSG.Trellis.Editor",
+    "references": [
+        "GUID:c5a28a58e683f8c42b490c9f515f69af"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

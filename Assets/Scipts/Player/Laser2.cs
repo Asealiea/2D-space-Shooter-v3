@@ -1,23 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Laser2 : MonoBehaviour
 {
-    private float _fireSpeed = 20f;
- 
+    private const float FireSpeed = 20f;
+    private float _moveSpeed;
 
-
-    void Update()
+    private void OnEnable()
     {
-        transform.Translate(Vector3.up * _fireSpeed * Time.deltaTime);
-        if (transform.position.y >= 10)
+        _moveSpeed = FireSpeed * Time.deltaTime;
+    }
+
+    private void Update()
+    {
+        transform.Translate(Vector3.up * _moveSpeed);
+        
+        if (!(transform.position.y >= 10)) return;
+        
+        if (transform.parent != null)
         {
-            if (transform.parent != null)
-            {
-                Destroy(transform.parent.gameObject);
-            }
-            Destroy(this.gameObject);
+            Destroy(transform.parent.gameObject);
         }
+        Destroy(this.gameObject);
     }
 }
