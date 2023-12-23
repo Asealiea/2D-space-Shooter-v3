@@ -23,8 +23,8 @@ public class MissilePickup : MonoBehaviour
                 int randomside = Random.Range(0, 2);
                 if (randomside == 0)
                 {
-                _missile2.SetActive(true);  
-                _missile3.SetActive(false);
+                    _missile2.SetActive(true);  
+                    _missile3.SetActive(false);
                 }
                 else
                 {

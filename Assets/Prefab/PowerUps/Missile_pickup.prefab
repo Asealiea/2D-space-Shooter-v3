@@ -106,7 +106,7 @@ MonoBehaviour:
   shieldsSignal: {fileID: 0}
   ammoSignal: {fileID: 0}
   lifeSignal: {fileID: 0}
-  missileSignal: {fileID: 0}
+  missileSignal: {fileID: 11400000, guid: 4480e9bb1a1525a438dca211fc135fae, type: 2}
   negativeSignal: {fileID: 0}
   superSignal: {fileID: 0}
 --- !u!61 &1362824654
@@ -336,7 +336,7 @@ MonoBehaviour:
   shieldsSignal: {fileID: 0}
   ammoSignal: {fileID: 0}
   lifeSignal: {fileID: 0}
-  missileSignal: {fileID: 0}
+  missileSignal: {fileID: 11400000, guid: 4480e9bb1a1525a438dca211fc135fae, type: 2}
   negativeSignal: {fileID: 0}
   superSignal: {fileID: 0}
 --- !u!61 &714964992
@@ -492,7 +492,7 @@ MonoBehaviour:
   shieldsSignal: {fileID: 0}
   ammoSignal: {fileID: 0}
   lifeSignal: {fileID: 0}
-  missileSignal: {fileID: 0}
+  missileSignal: {fileID: 11400000, guid: 4480e9bb1a1525a438dca211fc135fae, type: 2}
   negativeSignal: {fileID: 0}
   superSignal: {fileID: 0}
 --- !u!61 &578655221
