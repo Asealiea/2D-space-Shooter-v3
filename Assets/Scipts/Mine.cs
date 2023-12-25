@@ -5,23 +5,31 @@ using UnityEngine;
 public class Mine : MonoBehaviour
 {
     [SerializeField] private GameObject _explosion;
+    private GameObject obj;
 
     public void DestroyMine()
     {
-        Instantiate(_explosion, transform.position, Quaternion.identity);
-        Destroy(this.gameObject);
+        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
+        obj.transform.position = transform.position;
+        obj.transform.rotation = Quaternion.identity;
+        obj.SetActive(true);
+
+        ObjectPool.BackToPool(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         }
-        if (other.CompareTag("Laser"))
-        {
-            Instantiate(_explosion, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
-        }
+
+        if (!other.CompareTag("Laser")) return;
+        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
+        obj.transform.position = transform.position;
+        obj.transform.rotation = Quaternion.identity;
+        obj.SetActive(true);
+
+        ObjectPool.BackToPool(this.gameObject);
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using RSG.Trellis.Signals;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class SpawnManager : MonoBehaviour
@@ -23,7 +26,7 @@ public class SpawnManager : MonoBehaviour
     private float searchCooldown = 1f;
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private Player _player;
-    private bool _spawn = true;
+   // private bool _spawn = true;
     private float _randomWait;
     private int _powerID;
     private int _randomID;
@@ -31,6 +34,7 @@ public class SpawnManager : MonoBehaviour
     [Header("Game Objects")]
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject[] _powerUpContainer;
+    [SerializeField] private BoolSignal spawnSignal;
 
 
     void Start()
@@ -57,7 +61,7 @@ public class SpawnManager : MonoBehaviour
 
         if (waveCooldown <= 0)
         {
-            if (state != SpawnState.Spawning && _spawn)           
+            if (state != SpawnState.Spawning && spawnSignal.Value)           
                 StartCoroutine(SpawnWave(waves[nextWave]));
         }
         else
@@ -67,25 +71,28 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnPowerUpRoutine()
     {
         yield return new WaitForSeconds(3f);
-        while (_spawn == true)
+        while (spawnSignal.Value)
         {
             Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
             _randomID = Random.Range(0, 1001);
             if (_randomID >= 850 && _total > 3 || _total == 10)// star burst
             {
                 _powerID = 7;
+                //TODO
                 Instantiate(_powerUpContainer[_powerUpContainer.Length - 1], randomX, Quaternion.identity); // star powerup                 
                 _total = 1;
             }
             else if (_randomID < 850 && _randomID >= 550 && _total > 1) //extra lifes and extra Missiles.
             {
                 _powerID = Random.Range(4, 7);
+                //TODO
                 Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
                 _total = 0;
             }
             else
             {
                 _powerID = Random.Range(0, _powerUpContainer.Length - 4); // triple shot, speed, shields and Ammo;
+                //TODO
                 Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
                 _total++;
             }
@@ -94,12 +101,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public void StopSpawning()
-    {
-        _spawn = false;
-    }
 
-    public void NullCheck()
+
+    private void NullCheck()
     {
         if (_enemyContainer == null)
             Debug.LogError("SpawnManager:Enemy Container is null");
@@ -114,7 +118,7 @@ public class SpawnManager : MonoBehaviour
     #region Spawn Waves System
     void WaveCompleted()
     {
-        if (_spawn)
+        if (spawnSignal.Value)
         {           
             state = SpawnState.Cooldown; 
             waveCooldown = cooldownBetweenWaves;            
@@ -149,7 +153,7 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnWave(Wave _wave)
     {                
         state = SpawnState.Spawning;
-        if (_spawn)
+        if (spawnSignal.Value)
         {
             for (int q = 0; q < _wave._enemy.Length; q++)
             {
@@ -166,9 +170,10 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(GameObject _enemy)
     {
-        if (_spawn)
+        if (spawnSignal.Value)
         {
             Vector3 random = new Vector3(Random.Range(-9f, 9f), 8, 0);
+            //TODO
             GameObject newEnemy = Instantiate(_enemy, random , Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
 

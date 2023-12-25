@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
@@ -14,25 +11,21 @@ public class Laser : MonoBehaviour
         _moveSpeed = fireSpeed * Time.deltaTime;
     }
 
-    void Update()
+    private void Update()
     {
-  
         transform.Translate(Vector3.up * _moveSpeed);
- 
         
         if (transform.position.y >= 8)
         {
-            if (transform.parent != null)
+            if (transform.CompareTag("Triple Shot"))
             {
-                Destroy(transform.parent.gameObject);
+                ObjectPool.BackToPool(transform.parent.gameObject);
             }
-            //pool instead of destroy
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         }
         if (transform.position.y <= -5.5)
         {
-            //pool instead of destroy
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         }
     }
 

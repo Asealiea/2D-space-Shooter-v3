@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using RSG.Trellis.Signals;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CameraShake : MonoBehaviour
 {
@@ -8,7 +11,7 @@ public class CameraShake : MonoBehaviour
     private Vector3 _startingPoint; //starting point of the camera
     private float _startShaking; //when to start shaking
     private float _stopShaking = 5f;//When to stop shaking
-        
+    [SerializeField] private FloatSignal shakeSignal;
 
 
     void Start()
@@ -18,25 +21,21 @@ public class CameraShake : MonoBehaviour
 
     void Update()
     {
-        if (_cameraShakeEnabled == true)
+        if (!_cameraShakeEnabled) return;
+        
+        if (shakeSignal.Value > 0)
         {
-            if (_startShaking > 0)
-            {
-                transform.position = _startingPoint + Random.insideUnitSphere * 0.5f;
-                _startShaking -= Time.deltaTime * _stopShaking;
-            }
-            else
-            {
-                _startShaking = 0;
-                transform.position = _startingPoint;
-            }   
+            transform.position = _startingPoint + Random.insideUnitSphere * 0.5f;
+            shakeSignal.Decrement(Time.deltaTime * _stopShaking);
+        }
+        else
+        {
+            shakeSignal.SetValue(0);
+            transform.position = _startingPoint;
         }
     }
 
-    public void CameraShaker(int shake)
-    {
-        _startShaking = shake;
-    }
+
 
     public void CameraShakeOn(bool Camera)
     {

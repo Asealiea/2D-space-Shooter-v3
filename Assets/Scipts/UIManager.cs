@@ -11,7 +11,7 @@ using UnityEditor;
 public class UIManager : MonoBehaviour
 {
     [Header("Thruster Bar")] 
-    [SerializeField] private IntSignal thruster;
+    [SerializeField] private FloatSignal thruster;
     [SerializeField] private Slider _slider;
     [Header("Score Text")]
     [SerializeField] private Text _scoreText;
@@ -35,11 +35,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CameraShake _camera;
     [SerializeField] private Toggle _cameraShakeToggle;
     [Header("Game Over")]
-    private bool _gameOver = false;
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartText;
     [SerializeField] private GameManager _gameManager;
+    [SerializeField] private BoolSignal gameOverSignal;
     //magnet.
+    [Header("Magnet")]
+    [SerializeField] private BoolSignal magnetSignal;
     [SerializeField] private GameObject _magnet;
     [SerializeField] private GameObject _tutorialMenu;
 
@@ -50,6 +52,8 @@ public class UIManager : MonoBehaviour
         playerScore.AddListener(UpdateScore);
         missileCount.AddListener(UpdateMissile);
         ammoCount.AddListener(UpdateAmmo);
+        gameOverSignal.AddListener(GameOver);
+        magnetSignal.AddListener(MagnetOn);
     }
 
     private void OnDisable()
@@ -60,11 +64,13 @@ public class UIManager : MonoBehaviour
         playerScore.RemoveListener(UpdateScore);
         missileCount.RemoveListener(UpdateMissile);
         ammoCount.RemoveListener(UpdateAmmo);
+        gameOverSignal.RemoveListener(GameOver);
+        magnetSignal.RemoveListener(MagnetOn);
     }
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
@@ -77,7 +83,7 @@ public class UIManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !_paused)
         {
@@ -114,17 +120,17 @@ public class UIManager : MonoBehaviour
         _livesImage.sprite = _livesSprite[playerLives.Value];
     }
 
-    public void GameOver()
+    private void GameOver()
     {
-        _gameOver = true;
+        if (!gameOverSignal.Value) return;
+
         StartCoroutine(FlashyEnd());
         _restartText.gameObject.SetActive(true);
-        _gameManager.GameOver();
     }
-        
-    IEnumerator FlashyEnd()
+
+    private IEnumerator FlashyEnd()
     {
-        while (_gameOver == true)
+        while (gameOverSignal.Value)
         {
             _gameOverText.color = Color.yellow;
             _gameOverText.gameObject.SetActive(true);
@@ -175,15 +181,7 @@ public class UIManager : MonoBehaviour
 
     public void CameraShakeToggle(bool camera)
     {
-        if (_cameraShakeToggle.isOn)
-        {
-            _camera.CameraShakeOn(true);
-        }
-        else
-        {
-            _camera.CameraShakeOn(false);
-        }
-
+        _camera.CameraShakeOn(_cameraShakeToggle.isOn);
     }
 
     public void BackButtonOptions()
@@ -204,24 +202,18 @@ public class UIManager : MonoBehaviour
         _waveText.text = Name;
         StartCoroutine(WaveTextCoolDown());
     }
-    IEnumerator WaveTextCoolDown()
+
+    private IEnumerator WaveTextCoolDown()
     {
         yield return new WaitForSeconds(5f);
         _waveText.text = "";
-        
-        yield break;
-
     }
 
-    public void MagnetOn()
+    private void MagnetOn()
     {
-        _magnet.SetActive(true);
+        _magnet.SetActive(!magnetSignal.Value);
     }
 
-    public void MagnetOff()
-    {
-        _magnet.SetActive(false);
-    }
 
     public void TutorialButton()
     {

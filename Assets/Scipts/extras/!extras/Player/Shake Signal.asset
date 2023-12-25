@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e9754b26f96477184360bd071a0570b, type: 3}
-  m_Name: Thruster Signal
+  m_Script: {fileID: 11500000, guid: 2d914794763142c88b7b00b21d414a6f, type: 3}
+  m_Name: Shake Signal
   m_EditorClassIdentifier: 
-  initialValue: 1000
+  initialValue: 0

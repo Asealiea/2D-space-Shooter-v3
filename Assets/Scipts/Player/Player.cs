@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using RSG.Trellis.Signals;
 using UnityEngine;
 
@@ -29,6 +27,7 @@ public class Player : MonoBehaviour
     [SerializeField] private IntSignal missileCount;
     [SerializeField] private BoolSignal negativeSignal;
     [SerializeField] private BoolSignal superSignal;
+    [SerializeField] private BoolSignal magnetSignal;
     
     [Space]
     
@@ -40,22 +39,15 @@ public class Player : MonoBehaviour
     private int _speedUpCount; //amount of speed power ups we have
     private float _speedPowerUp = 1; // speed boost from speed power up
     private WaitForSeconds _coolDown; //cooldown for power ups
-    [SerializeField] private GameObject _secondaryFire;
+    //[SerializeField] private GameObject _secondaryFire; //not needed?
     private bool _hasSecondaryFire;
-    [SerializeField] private GameObject _homingMissile;
+    //[SerializeField] private GameObject _homingMissile;
     private float _canMissile = -1f;
-    //[SerializeField] private int _missileCount = 3;
-
-    [SerializeField] private bool _magnet = false;
 
     [Header("Laser Settings")]
-    private float _canFire = -1f; //delay before firing again
-
     [SerializeField] private float _fireRate = 0.3f;// how fast we can fire
-
+    private float _canFire = -1f; //delay before firing again
     private readonly Vector3 _laserOffSet = new Vector3(0, 1.2f, 0);
-    //[SerializeField] private int _ammoCount = 15;
-
 
     [Header("Health")]
     [SerializeField] private IntSignal playerLives;
@@ -65,9 +57,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _tripleShotPreFab;
     [SerializeField] private SpawnManager _spawnManager;
-    [SerializeField] private UIManager _uiManager;
-    [SerializeField] private GameObject _playerDamageLeft, _playerDamageRight;
-    [SerializeField] private GameObject _playerDeath;
+
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _laserSound;
     [SerializeField] private ShieldSignal _shield;
@@ -75,12 +65,11 @@ public class Player : MonoBehaviour
     [SerializeField] private CameraShake _cameraShake;
     [SerializeField] private Animator _anim;
 
-
     //thrusters
     [Header("Thrusters")]
     [SerializeField] private BoolSignal thrusting;
     [SerializeField] private BoolSignal thrustersUsable;
-    [SerializeField] private IntSignal thrusterSignal;
+    [SerializeField] private FloatSignal thrusterSignal;
 
 
     //repair system
@@ -88,11 +77,11 @@ public class Player : MonoBehaviour
     private bool _repairing;
     private Coroutine RepairingIE;
     private float _extraWait = 3;
+    private GameObject obj;
 
 
     private void OnEnable()
     {
-        playerLives.AddListener(UpdateLives);
         tripleShotSignal.AddListener(TripleShotActive);
         speedSignal.AddListener(SpeedActive);
         shieldsSignal.AddListener(ShieldsActive);
@@ -105,7 +94,6 @@ public class Player : MonoBehaviour
 
     private void OnDisable()
     {
-        playerLives.RemoveListener(UpdateLives);
         tripleShotSignal.RemoveListener(TripleShotActive);
         speedSignal.RemoveListener(SpeedActive);
         shieldsSignal.RemoveListener(ShieldsActive);
@@ -137,9 +125,9 @@ public class Player : MonoBehaviour
         if (!_repairing)
             PlayerMovement();
 
-        if (Input.GetKeyDown(KeyCode.C) && !_magnet && !_repairing)
+        if (Input.GetKeyDown(KeyCode.C) && !magnetSignal.Value && !_repairing)
         {
-            StartCoroutine(PowerupMagnet());
+            StartCoroutine(PowerUpMagnet());
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && ammoCount.Value > 0 && !_repairing)
@@ -173,7 +161,7 @@ public class Player : MonoBehaviour
             {
                 thrusting.SetValue(true);
                 _shiftSpeed = shiftSpeedBoost;
-                thrusterSignal.Increment(-1);
+                thrusterSignal.Decrement(0.25f);
             }
 
             if (thrusterSignal.Value <= 0)
@@ -244,14 +232,27 @@ public class Player : MonoBehaviour
         _canFire = Time.time + _fireRate;
         _audioSource.clip = _laserSound;
         if (_hasTripleShot)
-            Instantiate(_tripleShotPreFab, transform.position, Quaternion.identity);
+        {
+            obj = ObjectPool.SharedInstance.GetPooledObject("TripleShotAttack");
+            obj.transform.position = transform.position;
+            obj.transform.rotation = Quaternion.identity;
+            obj.SetActive(true);
+        }
         else if (_hasSecondaryFire)
         {
-            Instantiate(_secondaryFire, transform.position, Quaternion.identity);
+            obj = ObjectPool.SharedInstance.GetPooledObject("SuperAttack");
+            obj.transform.position = transform.position;
+            obj.transform.rotation = Quaternion.identity;
+            obj.SetActive(true);
             ammoCount.Increment(1);
         }
-        else
-            Instantiate(_laserPreFab, transform.position + _laserOffSet, Quaternion.identity);          
+        else 
+        {
+            obj = ObjectPool.SharedInstance.GetPooledObject("Laser");
+            obj.transform.position = transform.position + _laserOffSet;
+            obj.transform.rotation = Quaternion.identity;
+            obj.SetActive(true);
+        }
         _audioSource.Play(0);//play the audio clip.
         ammoCount.Increment(-1);
     }
@@ -264,7 +265,6 @@ public class Player : MonoBehaviour
             _repairing = false;
         }
 
-        //TODO
         if (hasShield)
         {
             switch (_shield.Value)
@@ -283,45 +283,6 @@ public class Player : MonoBehaviour
             return;
         }
         playerLives.Increment(-1);
-
-        switch (playerLives.Value)
-        {
-            case 1:
-                _cameraShake.CameraShaker(2);
-                break;
-            case 2:
-                _cameraShake.CameraShaker(1);
-                break;
-            default:
-                break;
-        }
-      
-    }
-
-    private void UpdateLives()
-    {
-        switch (playerLives.Value)
-        {
-            case 0:
-                _spawnManager.StopSpawning();
-                _uiManager.GameOver();
-                Instantiate(_playerDeath, transform.position, Quaternion.identity);
-                _cameraShake.CameraShaker(3);
-                //instaniate the death explosion
-                Destroy(this.gameObject);
-                break;
-            case 1:
-                _playerDamageRight.SetActive(true);
-                break;
-            case 2:
-                _playerDamageLeft.SetActive(true);
-                _playerDamageRight.SetActive(false);
-                break;
-            default:
-                _playerDamageRight.SetActive(false);
-                _playerDamageLeft.SetActive(false);
-                break;
-        }   
     }
 
     #region PowerUps
@@ -331,7 +292,10 @@ public class Player : MonoBehaviour
     private void MissileFire()
     {
         _canMissile = Time.time + 2f;
-        Instantiate(_homingMissile, transform.position, Quaternion.identity);
+        obj = ObjectPool.SharedInstance.GetPooledObject("MissileAttack");
+        obj.transform.position = transform.position;
+        obj.transform.rotation = Quaternion.identity;
+        obj.SetActive(true);
         missileCount.Increment(-1);
     }
 
@@ -360,8 +324,8 @@ public class Player : MonoBehaviour
         _fireRate = 0.75f;
         StartCoroutine(SecondaryFireCoolDown());
     }
-    
-    IEnumerator SecondaryFireCoolDown()
+
+    private IEnumerator SecondaryFireCoolDown()
     {
         yield return new WaitForSeconds(5f);
         _hasSecondaryFire = false;  
@@ -393,8 +357,8 @@ public class Player : MonoBehaviour
             tripleShotSignal.SetValue(false);
         }
     }
-    
-    IEnumerator TripleShotCoolDown()
+
+    private IEnumerator TripleShotCoolDown()
     {
         while (_tripleShotCount >=0)
         {
@@ -422,7 +386,7 @@ public class Player : MonoBehaviour
         speedSignal.SetValue(false);
     }
 
-    IEnumerator SpeedCoolDown()
+    private IEnumerator SpeedCoolDown()
     {
         while (_speedUpCount >=0)
         {
@@ -456,7 +420,7 @@ public class Player : MonoBehaviour
         StartCoroutine(NegativePowerUpCoolDown());
     }
 
-    IEnumerator NegativePowerUpCoolDown()
+    private IEnumerator NegativePowerUpCoolDown()
     {
         yield return new WaitForSeconds(5f);
         _negative = 1f;
@@ -492,47 +456,39 @@ public class Player : MonoBehaviour
         lifeSignal.SetValue(false);
     }
 
-    IEnumerator PowerupMagnet()
+    private IEnumerator PowerUpMagnet()
     {
-        _magnet = true;
-        GameObject[] PowerupsToGet = GameObject.FindGameObjectsWithTag("Powerup");
-        if (PowerupsToGet.Length == 0)
+        magnetSignal.SetValue(true);
+        PowerUps[] powerUpsToGet = FindObjectsOfType<PowerUps>();
+        if (powerUpsToGet.Length == 0)
         {
-            _uiManager.MagnetOff();
             StartCoroutine(MagnetCoolDown(2f));
             yield break;
         }
 
-        foreach (var powerup in PowerupsToGet)
+        foreach (var powerUp in powerUpsToGet)
         {
-            PowerUps powerupScript = powerup.GetComponent<PowerUps>();
-            powerupScript.Magnet(this.transform);
+            powerUp.Magnet(this.transform);
         }
-        _uiManager.MagnetOff();
         StartCoroutine(MagnetCoolDown(5f));
-        yield break;
     }
 
-    IEnumerator MagnetCoolDown(float time)
+    private IEnumerator MagnetCoolDown(float time)
     {
         MineDisable();
         yield return new WaitForSeconds(time);
-        _magnet = false;
-        _uiManager.MagnetOn();
-        yield break;
+        magnetSignal.SetValue(false);
     }
 
-    public void MineDisable()
+    private void MineDisable()
     {
-        GameObject[] homingMines = GameObject.FindGameObjectsWithTag("Mine");
+        Mine[] homingMines = FindObjectsOfType<Mine>();
         if (homingMines.Length == 0)
             return;
                 
         foreach (var hMine in homingMines)
-        { 
-            Mine mine = hMine.GetComponentInChildren<Mine>();
-            if (mine != null)
-                mine.DestroyMine();                       
+        {
+            hMine.DestroyMine();
         }
     }
 
@@ -540,18 +496,16 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("ELaser")) return;
+        if (!other.CompareTag("EnemyLaser")|| !other.CompareTag("Mine")) return;
         
         Damage();
-        Destroy(other.gameObject);
+        ObjectPool.BackToPool(other.gameObject);
     }
 
     private void NullChecks()
     {
         if (_spawnManager == null)
             Debug.LogError("Player: SpawnManager is null");
-        if (_uiManager == null)
-            Debug.LogError("Player: UI Manager is null");
         if (_tripleShotPreFab == null)
             Debug.LogError("Player: TripleShot is null");
         if (_laserPreFab == null)
@@ -571,7 +525,7 @@ public class Player : MonoBehaviour
         _extraWait = timer;
     }
 
-    IEnumerator Repearing()
+    private IEnumerator Repearing()
     {
         yield return new WaitForSeconds(_extraWait);   
         lifeSignal.SetValue(true);

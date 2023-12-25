@@ -5,8 +5,6 @@ using UnityEngine;
 namespace Asealiea.Waves
 {
 
-
-
     public class WavesManager : MonoBehaviour
     {
 
@@ -45,15 +43,13 @@ namespace Asealiea.Waves
         [Header("Game Objects")]
         [SerializeField] private GameObject _enemyContainer;
 
+        private GameObject obj; //object pooled item
 
 
-        void Start()
+        private void Start()
         {
-           
             NullCheck();
             waveCooldown = cooldownBetweenWaves;
-
-          //  updateUI(waves[nextWave]);
         }
 
         private void Update()
@@ -78,50 +74,38 @@ namespace Asealiea.Waves
                 waveCooldown -= Time.deltaTime;
         }
 
-        public void StopSpawning()
-        {
-            _spawn = false;
-        }
-
-        public void NullCheck()
+        private void NullCheck()
         {
             if (_enemyContainer == null)
                 Debug.LogError("SpawnManager:Enemy Container is null");
-
         }
 
         #region Spawn Waves System
+
         void WaveCompleted()
         {
-            if (_spawn)
+            if (!_spawn) return;
+            
+            state = SpawnState.Cooldown;
+            waveCooldown = cooldownBetweenWaves;
+            if (nextWave + 1 > waves.Length - 1)
             {
-                state = SpawnState.Cooldown;
-                waveCooldown = cooldownBetweenWaves;
-                if (nextWave + 1 > waves.Length - 1)
-                {
-                    nextWave = 0; // loops waves, will add in a Congrats on winnning later.  
-                  //  updateUI(waves[nextWave]);
-                }
-                else
-                {
-                    nextWave++;
-                   // updateUI(waves[nextWave]);
-                }
+                nextWave = 0; // loops waves, will add in a Congrats on winnning later.  
+                //  updateUI(waves[nextWave]);
+            }
+            else
+            {
+                nextWave++;
+                // updateUI(waves[nextWave]);
             }
         }
 
         bool EnemyIsAlive()
         {
             searchCooldown -= Time.deltaTime;
-            if (searchCooldown <= 0f)
-            {
-                searchCooldown = 1f;
-                if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
-                {
-                    return false;
-                }
-            }
-            return true;
+            if (!(searchCooldown <= 0f)) return true;
+            searchCooldown = 1f;
+            return FindObjectsOfType<Enemy>().Length != 0;
         }
 
         IEnumerator SpawnWave(Wave _wave)
@@ -142,22 +126,16 @@ namespace Asealiea.Waves
             yield break;
         }
 
-        void SpawnEnemy(GameObject _enemy)
+        private void SpawnEnemy(GameObject enemy)
         {
-            if (_spawn)
-            {
-                Vector3 random = new Vector3(Random.Range(-9f, 9f), 8, 0);
-                GameObject newEnemy = Instantiate(_enemy, random, Quaternion.identity);
-                newEnemy.transform.parent = _enemyContainer.transform;
-
-            }
+            if (!_spawn) return;
+            
+            Vector3 random = new Vector3(Random.Range(-9f, 9f), 8, 0);
+            obj = ObjectPool.SharedInstance.GetPooledObject(enemy.tag);
+            obj.transform.position = random;
+            obj.transform.rotation = Quaternion.identity;
+            obj.SetActive(true);
         }
-        /*
-        private void updateUI(Wave _wave)
-        {
-            _uiManager.UpdateWave(_wave.name);
-        }
-        */
         #endregion
 
 

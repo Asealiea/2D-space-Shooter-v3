@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1176418215}
   m_Layer: 0
   m_Name: Thruster
-  m_TagString: Untagged
+  m_TagString: MissileAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -114,7 +115,7 @@ GameObject:
   - component: {fileID: 472827832566195960}
   m_Layer: 4
   m_Name: Missile
-  m_TagString: Laser
+  m_TagString: MissileAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,6 +169,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -242,7 +244,7 @@ GameObject:
   - component: {fileID: 3467994841858796801}
   m_Layer: 0
   m_Name: Homing_Missile
-  m_TagString: Untagged
+  m_TagString: MissileAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

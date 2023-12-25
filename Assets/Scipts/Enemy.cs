@@ -28,13 +28,14 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private IntSignal playerScore;
 
+    private GameObject obj;
+    private Vector3 _enemyLaserOffset = new Vector3(0f, -1.3f, 0f);
 
 
 
     
-    void Start()
+    private void Start()
     {
- 
         if (_enemyID < 3)
         {
             transform.position = new Vector3(Random.Range(-9f, 9f), 8f, 0);           
@@ -43,16 +44,14 @@ public class Enemy : MonoBehaviour
         if (_enemyID == 2)
             _leftOrRight = Random.Range(1, 3);
 
- 
         _player = GameObject.Find("Player").GetComponent<Player>();
         
         _anim = GetComponent<Animator>();
-
         
         if (_player == null)
         {
             Debug.LogError("Enemy: Player is null");
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         }
         if (_shields == null)
             Debug.LogError("Enemy: Shields is null");
@@ -68,7 +67,7 @@ public class Enemy : MonoBehaviour
        
     }
     
-    void Update()
+    private void Update()
     {
         switch (_enemyID)
         {
@@ -80,7 +79,7 @@ public class Enemy : MonoBehaviour
                 _anim.SetTrigger("SidewaysMovement");
                 _fireRate = 2f;
                 if (_player == null)
-                    Destroy(this.gameObject);
+                    ObjectPool.BackToPool(this.gameObject);
                 break;
             case 2://moves in a sinwave kind of movement across screen         
                 _anim.SetTrigger("SinWaveMovement");
@@ -89,7 +88,7 @@ public class Enemy : MonoBehaviour
                 else
                     _anim.SetTrigger("SinWaveRight");
                 if (_player == null)
-                    Destroy(this.gameObject);               
+                    ObjectPool.BackToPool(this.gameObject);
                 break;
             case 3: // ramer
                 //ram player when it gets close enough.
@@ -98,7 +97,7 @@ public class Enemy : MonoBehaviour
             case 4: //dodger
                 if (_player == null)
                 {
-                    Destroy(this.gameObject);
+                    ObjectPool.BackToPool(this.gameObject);
                 }
                 else
                 {
@@ -107,7 +106,6 @@ public class Enemy : MonoBehaviour
                     {
                         EnemyFacetoShoot();
                     }
-
                 }
                 break;
 
@@ -125,7 +123,7 @@ public class Enemy : MonoBehaviour
         }
         if (_player == null)
         {
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         }
     }
 
@@ -134,7 +132,11 @@ public class Enemy : MonoBehaviour
     {
         _fireRate = Random.Range(2f, 4f);
         _canFire = Time.time + _fireRate;
-        Instantiate(_enemyLaser, transform.position + new Vector3(0f, -1.3f, 0f), Quaternion.identity);
+
+        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyLaser");
+        obj.transform.position = transform.position + _enemyLaserOffset;
+        obj.transform.rotation = Quaternion.identity;
+        obj.SetActive(true);
     }
 
     private void EnemyFacetoShoot()
@@ -145,8 +147,11 @@ public class Enemy : MonoBehaviour
         Direction = _player.transform.position - transform.position;
         float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 270;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-     //   Instantiate(_enemyLaser, transform.position + new Vector3(0f, -1.3f, 0f), q);
-        Instantiate(_enemyLaser, transform.position, q);
+
+        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyLaser");
+        obj.transform.position = transform.position;
+        obj.transform.rotation = q;
+        obj.SetActive(true);
     }
 
 
@@ -160,7 +165,7 @@ public class Enemy : MonoBehaviour
         }
         else if (transform.position.y <= -5.5f && _player == null)
         {
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         }
     }
 
@@ -178,20 +183,24 @@ public class Enemy : MonoBehaviour
          {
             if (!_hasShields)
             {
-                // Player player = other.transform.GetComponent<Player>();
-                 if (_player != null)
-                 {
-                     _player.Damage();
-                 }
+                if (_player != null)
+                {
+                    _player.Damage();
+                }
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 7)
                 {
-                    Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+                    obj = ObjectPool.SharedInstance.GetPooledObject("AmmoPowerUp");
+                    obj.transform.position = transform.position;
+                    obj.transform.rotation = Quaternion.identity;
+                    obj.SetActive(true);
                 }
-                //_anim.SetTrigger("OnEnemyDeath");
-                Instantiate(_explosion, transform.position, Quaternion.identity);
-                Destroy(this.gameObject);
-                //Destroy(this.gameObject, 2.7f);// add delay to the destory
+                obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
+                obj.transform.position = transform.position;
+                obj.transform.rotation = Quaternion.identity;
+                obj.SetActive(true);
+                
+                ObjectPool.BackToPool(this.gameObject);
             }
             else
             {
@@ -212,26 +221,28 @@ public class Enemy : MonoBehaviour
                 {
                     playerScore.Increment(10);
                 }
-                //pool instead.
-                Destroy(other.gameObject);
+                ObjectPool.BackToPool(other.gameObject);
                 //spawn an ammo refill on chance
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 6)
                 {
-                    //pool instead
-                    Instantiate(_ammoRefill, transform.position, Quaternion.identity);
+                    obj = ObjectPool.SharedInstance.GetPooledObject("AmmoPowerUp");
+                    obj.transform.position = transform.position;
+                    obj.transform.rotation = Quaternion.identity;
+                    obj.SetActive(true);
                 }
-                //pool explosion?
-                Instantiate(_explosion, transform.position, Quaternion.identity); //instantiate the explosion
-                //pool instead.
-                Destroy(this.gameObject);// no delay needed for this.               
+                obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
+                obj.transform.position = transform.position;
+                obj.transform.rotation = Quaternion.identity;
+                obj.SetActive(true);
+
+                ObjectPool.BackToPool(this.gameObject);
             }
             else //if they do have a shield.
             {
                 _hasShields = false;
                 _shields.SetActive(false);
-                //instead of deleting, store back in pool
-                Destroy(other.gameObject);
+                ObjectPool.BackToPool(other.gameObject);
             }
         }
      }

@@ -80,7 +80,8 @@ public class BossGuns : MonoBehaviour
         {
             Vector3 direction = _player.transform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 270;
-            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);           
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);     
+            //TODO
             Instantiate(_laser, transform.position, q);
         }
     }
@@ -90,9 +91,11 @@ public class BossGuns : MonoBehaviour
     {
         while (true)
         {
+            //TODO
             Instantiate(_laser, transform.position, transform.rotation);
             yield return new WaitForSeconds(0.25f);
             transform.Rotate(0, 0, _rotation);
+            //TODO
             Instantiate(_laser, transform.position, transform.rotation) ;
             yield return new WaitForSeconds(0.25f);
             transform.Rotate(0, 0, _rotation);

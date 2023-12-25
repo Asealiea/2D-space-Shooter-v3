@@ -6,7 +6,7 @@ public class Thrusters : MonoBehaviour
 {
     [SerializeField] private GameObject thrustersRight;
     [SerializeField] private GameObject thrustersLeft;
-    [SerializeField] private IntSignal thrusterSignal;
+    [SerializeField] private FloatSignal thrusterSignal;
     [SerializeField] private BoolSignal thrusterUsable;
     [SerializeField] private BoolSignal thrusting;
     
@@ -87,6 +87,7 @@ public class Thrusters : MonoBehaviour
             yield return _delay;
             thrusterSignal.Increment(1);
         }
+        thrusterSignal.SetValue(100f);
 
         thrusterUsable.SetValue(true);
         _thrusterCharging = false;

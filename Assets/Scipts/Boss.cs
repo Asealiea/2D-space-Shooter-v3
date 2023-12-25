@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using RSG.Trellis.Signals;
 using UnityEngine;
 
 public class Boss : MonoBehaviour
@@ -19,6 +20,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private WaitForSeconds _wait;
     [SerializeField] private GameObject _starfall;
     [SerializeField] private Transform _leftGunTrans, _rightGunTrans;
+    [SerializeField] private FloatSignal shakeSignal;
 
     // Start is called before the first frame update
     void Start()
@@ -93,11 +95,12 @@ public class Boss : MonoBehaviour
     IEnumerator BossLaser(Transform Laser)
     {
         _canFire = Time.time + _fireRate; //sets the can fire  to time + firerate to give our cooldown for shooting
+        //TODO
         GameObject newCharge =  Instantiate(_charge, Laser.position, Quaternion.identity); //spawn the charge for the laser
         newCharge.transform.parent = _laserTransform;// parent it to the lasertransform, this is so the charge will follow the boss as it moves
 
         yield return new WaitForSeconds(0.35f);//waits a bit for the charge to well, charge?
-
+//TODO
         GameObject newLaser = Instantiate(_laser, Laser.position + new Vector3(0,-2.3f,0), Quaternion.identity);//spawn the laser
         newLaser.transform.parent = _laserTransform; //makes the laser move with boss.
         yield return new WaitForSeconds(1f); // waiting is key.
@@ -131,20 +134,19 @@ public class Boss : MonoBehaviour
     {
         _anim.enabled = false; //stops the boss from moving
         _explosion1.SetActive(true); //first explosion
-        _cameraShake.CameraShaker(1); //shakes a little
+        shakeSignal.SetValue(1);//shakes a little
         yield return new WaitForSeconds(1f);//waits a bit for the next boom
-        _cameraShake.CameraShaker(2);// more shaky
+        shakeSignal.SetValue(2);// more shaky
         _explosion2.SetActive(true); //second explosion 
         yield return new WaitForSeconds(1f);//waits a bit for the next boom
-        _cameraShake.CameraShaker(3);// even more shaky
+        shakeSignal.SetValue(3);// even more shaky
         _explosion3.SetActive(true); //thrid explosion
         yield return new WaitForSeconds(1f);//waits a bit for the next boom
-        _cameraShake.CameraShaker(4);// more shaky to the extreme!!!!
+        shakeSignal.SetValue(4);// more shaky to the extreme!!!!
+        //TODO
         Instantiate(_explosion4, transform.position, Quaternion.identity);// this spawns the last big explosion
         yield return new WaitForSeconds(0.3f);// gives it a sec before...
         Destroy(this.gameObject); //destroys the boss body
-
-        yield break;
     }
 
     public void LaserRush()
@@ -154,6 +156,7 @@ public class Boss : MonoBehaviour
 
     IEnumerator LaserShower()
     {
+        //TODO
         Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
         Instantiate(_starfall, transform.position, Quaternion.identity);
@@ -169,8 +172,6 @@ public class Boss : MonoBehaviour
         Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
         Instantiate(_starfall, transform.position, Quaternion.identity);
-
-        yield break;
     }
 
 }

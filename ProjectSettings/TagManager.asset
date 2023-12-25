@@ -6,9 +6,28 @@ TagManager:
   tags:
   - Enemy
   - Laser
-  - ELaser
-  - Powerup
   - Mine
+  - EnemyExplosion
+  - EnemyLaser
+  - Dodger
+  - Enemy2
+  - MineLayer
+  - MineLayer2
+  - RammingEnemy
+  - RammingEnemy2
+  - Sweeping
+  - PlayerDeath
+  - TripleShot
+  - SuperAttack
+  - Ammo
+  - Life
+  - Missile
+  - Shields
+  - Negative
+  - Speed
+  - Super
+  - MissileAttack
+  - TripleShotAttack
   layers:
   - Default
   - TransparentFX

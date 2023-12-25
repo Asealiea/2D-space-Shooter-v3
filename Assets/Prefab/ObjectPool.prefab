@@ -1,0 +1,248 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7404194907962535082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7404194907962535085}
+  m_Layer: 0
+  m_Name: ObjectPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7404194907962535085
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7404194907962535082}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7404194908567190278}
+  - {fileID: 7404194908953177513}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7404194908567190279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7404194908567190278}
+  - component: {fileID: 7404194908567190281}
+  m_Layer: 0
+  m_Name: ObjectsToPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7404194908567190278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7404194908567190279}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7404194907962535085}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7404194908567190281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7404194908567190279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d25d7c9b1730944880da6b66aac358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsToPoolList:
+  - name: Enemy
+    amountToPool: 0
+    objectToPool: {fileID: 8845806286490972106, guid: a0f1f7f62771c18419831a11264e5254,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 0
+  - name: EnemyExplosion
+    amountToPool: 0
+    objectToPool: {fileID: 3646643969222925789, guid: 711fe134435305d4695020af666b19ce,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 1
+  - name: EnemyLaser
+    amountToPool: 0
+    objectToPool: {fileID: 5852647636540181125, guid: f5abd1c2c8bb8ad479eb6567e02b3a43,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 2
+  - name: Dodger
+    amountToPool: 0
+    objectToPool: {fileID: 8856243349025666799, guid: ee170e34f4e6cb146b627dfcb3e2bb1c,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 3
+  - name: Enemy2
+    amountToPool: 0
+    objectToPool: {fileID: 6706208846360351405, guid: 2b58aae7a00644b4eb940cac0ecc51ac,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 4
+  - name: MineLayer
+    amountToPool: 0
+    objectToPool: {fileID: 62176465593545975, guid: b44c1253a6eef174da1043bf08f4b985,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 5
+  - name: MineLayer2
+    amountToPool: 0
+    objectToPool: {fileID: 8426213848125517506, guid: b469dbc2af6b10043836a34c2d95a9f3,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 6
+  - name: RammingEnemy
+    amountToPool: 0
+    objectToPool: {fileID: 3673817978683186662, guid: d7cbf1dfc5ba6b5428908b0fd8eeb454,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 7
+  - name: RammingEnemy2
+    amountToPool: 0
+    objectToPool: {fileID: 7161357464548335062, guid: 7210d5c269044aa4e8e8a5f3d5b3d314,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 8
+  - name: Sweeping
+    amountToPool: 0
+    objectToPool: {fileID: 6422094785507490399, guid: 3a047a9e6e890c54ba72c6db629fc395,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 9
+  - name: Mines
+    amountToPool: 0
+    objectToPool: {fileID: 2360398197444038502, guid: 14caf81383463024cbb55f96e768c004,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 10
+  - name: Laser
+    amountToPool: 0
+    objectToPool: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 11
+  - name: PlayerDeath
+    amountToPool: 0
+    objectToPool: {fileID: 2090933624347708408, guid: e557b59f70de87f4f9dc0e409a847fcd,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 12
+  - name: Ammo
+    amountToPool: 0
+    objectToPool: {fileID: 6608824412449853024, guid: 2c4834dce45d46640aa197ece0b78359,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 15
+  - name: Life
+    amountToPool: 0
+    objectToPool: {fileID: 7221198679080065348, guid: d5b8f444c9ecafa4780e03fa410b96f4,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 16
+  - name: Missile
+    amountToPool: 0
+    objectToPool: {fileID: 8253859382422344787, guid: fff498eaea45776429740e29f57fd85c,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 17
+  - name: Shields
+    amountToPool: 0
+    objectToPool: {fileID: 1109751200991264306, guid: 8c19192a3a718ad41a0bdeeee3d4c917,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 18
+  - name: Negative
+    amountToPool: 0
+    objectToPool: {fileID: 544757990574554393, guid: d83a1e31a9f247241b02e67e1c9083f4,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 17
+  - name: Speed
+    amountToPool: 0
+    objectToPool: {fileID: 5309455351205245291, guid: 74475e39a911829468b299abb3bfba2f,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 20
+  - name: Super
+    amountToPool: 0
+    objectToPool: {fileID: 6962981034938721062, guid: f14ba7fb6f33ff5478a16a34c6582eee,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 21
+  - name: TripleShot Pick Up
+    amountToPool: 0
+    objectToPool: {fileID: 4716030605669904980, guid: 0b586812e49bd1546afca99c72936ea4,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 22
+  - name: TripleShot
+    amountToPool: 0
+    objectToPool: {fileID: 795165465969841637, guid: c929e3f3b99300446907f9b2008fdc22,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 13
+  - name: Super Attack
+    amountToPool: 0
+    objectToPool: {fileID: 1282657569292652176, guid: 619ef9049b5c6064c80dbbe7cfdccccd,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 14
+  pooledObjectList: []
+  poolParent: {fileID: 7404194908953177513}
+--- !u!1 &7404194908953177510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7404194908953177513}
+  m_Layer: 0
+  m_Name: PooledObjects(InPlayMode)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7404194908953177513
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7404194908953177510}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7404194907962535085}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

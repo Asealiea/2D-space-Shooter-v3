@@ -14,11 +14,16 @@ public class HomingDetection : MonoBehaviour
     private bool _enemyFound = false;
     private Transform _enemy;
     private Transform _player;
-#if _mine == false
     [SerializeField] private GameObject _thruster;
-#endif
     [SerializeField] private GameObject _coreComponent;
     [SerializeField] private GameObject _explosion;
+    private readonly Vector3 _lowScale = new Vector3(0.15f, 0.25f, 0);
+    private readonly Vector3 _lowPos   = new Vector3(0f, 0.6f, 0f);
+    private readonly Vector3 _highScale = new Vector3(0.25f, .5f, 0);
+    private readonly Vector3 _highPos   = new Vector3(0f, 0.25f, 0f);
+    private float temp;
+    private GameObject obj;
+
 
     private void Start()
     {
@@ -29,67 +34,79 @@ public class HomingDetection : MonoBehaviour
         }
     }
 
-
-    // Update is called once per frame
-    void Update()
+    private void RamAndMine()
     {
-     
-
-        if (_mine || _ram)
+        if (!_playerFound)
         {
-            if (!_playerFound)
+            if (!_mine)
             {
-                if (!_mine)
-                    transform.Translate(Vector3.down * 3 * Time.deltaTime);
-                else
-                    transform.Translate(Vector3.down * 0.01f * Time.deltaTime);
+                temp = 3 * Time.deltaTime;
+                transform.Translate(Vector3.down * temp);
             }
             else
             {
-                if (!_mine)
-                {
-                    HighThrusters(false);
-                    RamPlayer();
-                }
-                else
-                {
-                    FollowPlayer(_player);
-                    StartCoroutine(MineDestory());
-                }
+                temp = 0.01f * Time.deltaTime;
+                transform.Translate(Vector3.down * temp);
             }
+        }
+        else
+        {
+            if (!_mine)
+            {
+                //LowThrusters(true); before it was just returning
+                RamPlayer();
+            }
+            else
+            {
+                FollowPlayer(_player);
+                StartCoroutine(MineDestroy());
+            }
+        }
+    }
+
+    // Update is called once per frame
+
+    private void Update()
+    {
+        if (_mine || _ram)
+        {
+            RamAndMine();
         }
 
         if (!_mine && !_ram)
         {
             if (!_enemyFound)
             {
-                transform.Translate(Vector3.up * 5 * Time.deltaTime);
+                temp = 5 * Time.deltaTime;
+                transform.Translate(Vector3.up * temp);
                 LowThrusters(true);
             }
             else
             {
                 FollowEnemy(_enemy);
-                HighThrusters(true);
+                LowThrusters(false);
             }
         }
         
         if (transform.position.y >= 10 || transform.position.y <= -10f)
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         if (transform.position.x >= 10 || transform.position.x <= -10f)
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         if (_coreComponent == null)
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
         
     }
-        
-    private void FollowPlayer(Transform Playertransform) //mine 
+
+
+    private void FollowPlayer(Transform playerTransform) //mine 
     {    
         if (_player != null)
         {
-            Vector3 direction = Playertransform.position - transform.position;
+            Vector3 direction = playerTransform.position - transform.position;
 
             direction.Normalize();
-            transform.Translate(direction * 4 * Time.deltaTime);   
+            temp = 4 * Time.deltaTime;
+            transform.Translate(direction * temp);   
         }
         else
         {
@@ -116,14 +133,14 @@ public class HomingDetection : MonoBehaviour
             if (_playerFound)
             {
                 _ramDirection.Normalize();
-                transform.Translate(_ramDirection * 5 * Time.deltaTime);
+                temp = 5 * Time.deltaTime;
+                transform.Translate(_ramDirection * temp);
             }
         }
         else
         {
             _playerFound = false;
         }
-
 
         //ram the player.
         if (!_playerFound)
@@ -132,22 +149,20 @@ public class HomingDetection : MonoBehaviour
 
             _count = 0;
         }
-
-
-
     }
 
-    private void FollowEnemy(Transform Enemytransform) //missiles
+    private void FollowEnemy(Transform enemyTransform) //missiles
     {
         if (_enemy != null)
         {            
-            Vector3 direction = Enemytransform.position - transform.position;
+            Vector3 direction = enemyTransform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Lerp(transform.rotation, q, Time.deltaTime * 5);
       
             direction.Normalize();
-            transform.Translate(direction * 20 * Time.deltaTime);
+            temp = 20 * Time.deltaTime;
+            transform.Translate(direction * temp);
         }
         else
         {
@@ -157,7 +172,6 @@ public class HomingDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.CompareTag("Enemy"))
         {
             if (!_enemyFound)
@@ -167,12 +181,9 @@ public class HomingDetection : MonoBehaviour
             }
         }
 
-        if (other.CompareTag("Player"))
-        {
-            _playerFound = true;
-            _player = other.transform;            
-            
-        }
+        if (!other.CompareTag("Player")) return;
+        _playerFound = true;
+        _player = other.transform;
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -183,33 +194,29 @@ public class HomingDetection : MonoBehaviour
         }
     }
 
-
     private void LowThrusters(bool missile)
     {
         if (missile)
         {
-            _thruster.transform.localScale = new Vector3(0.15f, 0.25f, 0);
-            _thruster.transform.position = transform.position + new Vector3(0f, 0.6f, 0f);
+            _thruster.transform.localScale = _lowScale;
+            _thruster.transform.position = transform.position + _lowPos;
         }
-    }
-
-    private void HighThrusters(bool Missile)
-    {
-        if (Missile)
+        else
         {
-            _thruster.transform.localScale = new Vector3(0.25f, .5f, 0);
-            _thruster.transform.position = transform.position + new Vector3(0f, 0.25f, 0f);
+            _thruster.transform.localScale = _highScale;
+            _thruster.transform.position = transform.position + _highPos;
         }
-        else        
-           return;        
     }
 
-    IEnumerator MineDestory()
+    private IEnumerator MineDestroy()
     {
         yield return new WaitForSeconds(5f);
-        //pool these both.
-        Instantiate(_explosion, transform.position, Quaternion.identity);
-        Destroy(this.gameObject);
+        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
+        obj.transform.position = transform.position;
+        obj.transform.rotation = Quaternion.identity;
+        obj.SetActive(true);
+
+        ObjectPool.BackToPool(this.gameObject);
     }
 
 
