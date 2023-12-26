@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 41959806131149806}
   m_Layer: 0
   m_Name: Homing_missile3
-  m_TagString: Untagged
+  m_TagString: Missileup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 840249922394338617}
   m_Layer: 0
   m_Name: Homing_missile1
-  m_TagString: Untagged
+  m_TagString: Missileup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 8285357378156109661}
   m_Layer: 0
   m_Name: Homing_missile2
-  m_TagString: Untagged
+  m_TagString: Missileup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -61,7 +61,7 @@ public class PowerUps : MonoBehaviour
         if (other.CompareTag("EnemyLaser"))
         {
             ObjectPool.BackToPool(other.gameObject);
-            if (/*transform.parent != null &&*/ transform.CompareTag("Missile"))
+            if (/*transform.parent != null &&*/ transform.CompareTag("Missileup"))
             {
                 //Destroy(transform.parent.gameObject); // need for missiles
                 ObjectPool.BackToPool(this.transform.parent.gameObject);
@@ -103,9 +103,10 @@ public class PowerUps : MonoBehaviour
                 break;
         }
         
-        if (transform.parent != null)
+        if (/*transform.parent != null */transform.CompareTag("Missileup"))
         {
             //Destroy(transform.parent.gameObject, 1);
+            ObjectPool.BackToPool(this.transform.parent.gameObject);
         }
 
         _mag = null;
