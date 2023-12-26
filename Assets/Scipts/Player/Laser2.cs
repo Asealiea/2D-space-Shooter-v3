@@ -7,9 +7,11 @@ public class Laser2 : MonoBehaviour
 {
     private const float FireSpeed = 20f;
     private float _moveSpeed;
+    private Vector3 startingPos;
 
     private void OnEnable()
     {
+        startingPos = transform.position;
         _moveSpeed = FireSpeed * Time.deltaTime;
     }
 
@@ -21,8 +23,14 @@ public class Laser2 : MonoBehaviour
         
         if (transform.parent != null)
         {
-            Destroy(transform.parent.gameObject);
+            //Destroy(transform.parent.gameObject);
+            ObjectPool.BackToPool(transform.parent.gameObject);
         }
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+    }
+
+    private void OnDisable()
+    {
+        transform.position = startingPos;
     }
 }
