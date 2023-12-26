@@ -17,7 +17,7 @@ public class Laser : MonoBehaviour
         
         if (transform.position.y >= 8)
         {
-            if (transform.CompareTag("Triple Shot"))
+            if (transform.CompareTag("TripleShotAttack"))
             {
                 ObjectPool.BackToPool(transform.parent.gameObject);
             }

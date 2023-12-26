@@ -43,7 +43,8 @@ public class PowerUps : MonoBehaviour
         _movement = _speed * Time.deltaTime;
         transform.Translate(Vector3.down * _movement);
         if (transform.position.y <= -4.5f)
-            Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
+            //Destroy(this.gameObject);
         
 
 
@@ -57,14 +58,15 @@ public class PowerUps : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("ELaser"))
+        if (other.CompareTag("EnemyLaser"))
         {
-            Destroy(other.gameObject);
-            if (transform.parent != null)
+            ObjectPool.BackToPool(other.gameObject);
+            if (/*transform.parent != null &&*/ transform.CompareTag("Missile"))
             {
-                Destroy(transform.parent.gameObject); // need for missiles
+                //Destroy(transform.parent.gameObject); // need for missiles
+                ObjectPool.BackToPool(this.transform.parent.gameObject);
             }
-            Destroy(this.gameObject);        
+            ObjectPool.BackToPool(this.gameObject);
         }
 
         if (!other.CompareTag("Player")) return;
@@ -103,9 +105,10 @@ public class PowerUps : MonoBehaviour
         
         if (transform.parent != null)
         {
-            Destroy(transform.parent.gameObject, 1);
+            //Destroy(transform.parent.gameObject, 1);
         }
-        
-        Destroy(this.gameObject);
+
+        _mag = null;
+        ObjectPool.BackToPool(this.gameObject);
     }
 }

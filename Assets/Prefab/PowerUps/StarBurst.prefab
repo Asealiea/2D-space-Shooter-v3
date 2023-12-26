@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5816465909149622883}
   m_Layer: 4
   m_Name: StarBurst
-  m_TagString: Powerup
+  m_TagString: Super
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

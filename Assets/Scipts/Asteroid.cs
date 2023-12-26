@@ -40,7 +40,7 @@ public class Asteroid : MonoBehaviour
     {
         if (!other.CompareTag("Laser")) return;
         
-        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "EnemyExplosion");
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "PlayerDeath");
         ObjectPool.BackToPool(other.gameObject);
         _gameManager.StartGame();
         _bg.StartMoving();

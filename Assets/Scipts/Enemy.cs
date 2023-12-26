@@ -184,7 +184,7 @@ public class Enemy : MonoBehaviour
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 7)
                 {
-                    ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "AmmoPowerUp");
+                    ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "Ammo");
                 }
                 ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "EnemyExplosion");
                 ObjectPool.BackToPool(this.gameObject);
@@ -200,7 +200,7 @@ public class Enemy : MonoBehaviour
             }
          }
 
-        if (other.CompareTag("Laser"))
+        if (other.CompareTag("Laser")|| other.CompareTag("Missile"))
         {
             if (!_hasShields) //if they don't have a shield
             {
@@ -213,7 +213,7 @@ public class Enemy : MonoBehaviour
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 6)
                 {
-                    ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "AmmoPowerUp");
+                    ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "Ammo");
                 }
                 ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "EnemyExplosion");
 

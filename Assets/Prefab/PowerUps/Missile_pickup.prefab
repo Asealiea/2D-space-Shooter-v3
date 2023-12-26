@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 1865063436}
   m_Layer: 0
   m_Name: Missile_pickup
-  m_TagString: Powerup
+  m_TagString: Missileup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

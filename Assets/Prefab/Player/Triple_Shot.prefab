@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 795165465969841636}
   m_Layer: 0
   m_Name: Triple_Shot
-  m_TagString: Triple Shot
+  m_TagString: TripleShotAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

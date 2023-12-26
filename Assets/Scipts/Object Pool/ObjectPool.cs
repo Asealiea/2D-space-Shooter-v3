@@ -70,7 +70,7 @@ public class ObjectPool : MonoBehaviour
         return null;
     }
 
-    public GameObject GetPooledObject(string tags)
+    private GameObject GetPooledObject(string tags)
     {
         //if one is not active, use that, else check if another one can be spawned in.
         foreach (var t in pooledObjectList.Where(t => !t.activeInHierarchy && t.CompareTag(tags)))
@@ -97,7 +97,7 @@ public class ObjectPool : MonoBehaviour
     private static GameObject obj;
     public static void SpawnObject(Vector3 position, Quaternion rotation, string objectTag)
     {
-        obj = ObjectPool.SharedInstance.GetPooledObject(objectTag);
+        obj = SharedInstance.GetPooledObject(objectTag);
         obj.transform.position = position;
         obj.transform.rotation = rotation;
         obj.SetActive(true);

@@ -512,10 +512,6 @@ MonoBehaviour:
   superSignal: {fileID: 11400000, guid: 6e4bda07a9f99da41a9bb0525dd9fae5, type: 2}
   magnetSignal: {fileID: 11400000, guid: 2e1383d7d79a12046b5207f2cf7d26ba, type: 2}
   hasShield: 0
-  _secondaryFire: {fileID: 1282657569292652176, guid: 619ef9049b5c6064c80dbbe7cfdccccd,
-    type: 3}
-  _homingMissile: {fileID: 3467994841858796804, guid: e9a73bcb2d09c504aa5ae77eb034a885,
-    type: 3}
   _fireRate: 0.3
   playerLives: {fileID: 11400000, guid: 1d22feec9a626cb4aad8ddbd527c1f5d, type: 2}
   _laserPreFab: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
@@ -4201,16 +4197,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880600101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79244e6d4d7e3004e86290bc6b3661d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - name: 
-    _enemy: []
-    _count: 
-    spawnRate: 0
+  - name: Wave 1
+    _enemy:
+    - {fileID: 8845806286490972106, guid: a0f1f7f62771c18419831a11264e5254, type: 3}
+    _count: 0a000000
+    spawnRate: 0.25
   cooldownBetweenWaves: 5
   _enemyContainer: {fileID: 690088564}
 --- !u!1 &916715666
@@ -9580,6 +9577,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7404194908567190281, guid: 5187695605b05bb41963ef51cb87c2ef,
+        type: 3}
+      propertyPath: itemsToPoolList.Array.data[24].name
+      value: LargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 7404194908567190281, guid: 5187695605b05bb41963ef51cb87c2ef,
+        type: 3}
+      propertyPath: itemsToPoolList.Array.data[24].enumTag
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7404194908567190281, guid: 5187695605b05bb41963ef51cb87c2ef,
+        type: 3}
+      propertyPath: itemsToPoolList.Array.data[24].objectToPool
+      value: 
+      objectReference: {fileID: 3946064074086741380, guid: 65d9ee0ce2325d94ab16481acb1bdd4a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5187695605b05bb41963ef51cb87c2ef, type: 3}
 --- !u!1 &1984739117

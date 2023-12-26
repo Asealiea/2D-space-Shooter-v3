@@ -44,6 +44,7 @@ public class SpawnManager : MonoBehaviour
         _player = FindObjectOfType<Player>();
         NullCheck();
         waveCooldown = cooldownBetweenWaves;
+        //spawnSignal.SetValue(true);
         StartCoroutine(SpawnPowerUpRoutine());
         UpdateUI(waves[nextWave]);
     }
@@ -75,7 +76,7 @@ public class SpawnManager : MonoBehaviour
     private IEnumerator SpawnPowerUpRoutine()
     {
         yield return new WaitForSeconds(3f);
-        while (spawnSignal.Value)
+        while (!spawnSignal.Value)
         {
             Vector3 randomX = new Vector3(Random.Range(-7f, 7f), 8, 0);
             _randomID = Random.Range(0, 1001);

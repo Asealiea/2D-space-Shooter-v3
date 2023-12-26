@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5478911442479942268}
   m_Layer: 4
   m_Name: Ammo_Refill
-  m_TagString: Powerup
+  m_TagString: Ammo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

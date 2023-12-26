@@ -214,6 +214,27 @@ MonoBehaviour:
       type: 3}
     canBeExpanded: 1
     enumTag: 14
+  - name: MissileAttack
+    amountToPool: 0
+    objectToPool: {fileID: 3467994841858796804, guid: e9a73bcb2d09c504aa5ae77eb034a885,
+      type: 3}
+    canBeExpanded: 1
+    enumTag: 17
+  - name: blank
+    amountToPool: 0
+    objectToPool: {fileID: 0}
+    canBeExpanded: 1
+    enumTag: 14
+  - name: blank
+    amountToPool: 0
+    objectToPool: {fileID: 0}
+    canBeExpanded: 1
+    enumTag: 14
+  - name: Blank
+    amountToPool: 0
+    objectToPool: {fileID: 0}
+    canBeExpanded: 1
+    enumTag: 14
   pooledObjectList: []
   poolParent: {fileID: 7404194908953177513}
 --- !u!1 &7404194908953177510

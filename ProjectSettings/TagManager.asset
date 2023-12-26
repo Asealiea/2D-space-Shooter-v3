@@ -28,6 +28,9 @@ TagManager:
   - Super
   - MissileAttack
   - TripleShotAttack
+  - Powerup
+  - LargeExplosion
+  - Missileup
   layers:
   - Default
   - TransparentFX

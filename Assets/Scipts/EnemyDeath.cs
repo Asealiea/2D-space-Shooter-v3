@@ -8,6 +8,7 @@ public class EnemyDeath : MonoBehaviour
     [SerializeField] private float _destroyTimer = 2.7f;
     [SerializeField] private AudioClip _explosionClip;
     [SerializeField] private AudioSource _explsionSource;
+    private float temp;
 
     private void Start()
     {
@@ -20,10 +21,17 @@ public class EnemyDeath : MonoBehaviour
         _explsionSource.Play();
     }
 
-    void Update()
+    private void Update()
     {
-        transform.Translate(Vector3.down* _moveSpeed * Time.deltaTime);
-        Destroy(this.gameObject, _destroyTimer);
+        temp = _moveSpeed * Time.deltaTime;
+        transform.Translate(Vector3.down * temp);
+        StartCoroutine(DelayedTurnOff(_destroyTimer));
+    }
+
+    private IEnumerator DelayedTurnOff(float time)
+    {
+        yield return new WaitForSeconds(_destroyTimer);
+        ObjectPool.BackToPool(this.gameObject);
     }
 
 
