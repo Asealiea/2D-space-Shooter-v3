@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 795165465969841636}
+  - component: {fileID: 359486336618634243}
   m_Layer: 0
   m_Name: Triple_Shot
   m_TagString: TripleShotAttack
@@ -33,6 +34,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &359486336618634243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795165465969841637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f85193e2e08aaa45a53c909d7560b78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireSpeed: 15
 --- !u!1001 &795165465060770847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95,6 +109,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7193682989717147486, guid: 7f4add1f790a1854a81279c6dfcaae40,
+        type: 3}
+      propertyPath: fireSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_Name
@@ -103,7 +122,7 @@ PrefabInstance:
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_TagString
-      value: TripleShotAttack
+      value: Laser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4add1f790a1854a81279c6dfcaae40, type: 3}
@@ -175,6 +194,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7193682989717147486, guid: 7f4add1f790a1854a81279c6dfcaae40,
+        type: 3}
+      propertyPath: fireSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_Name
@@ -183,7 +207,7 @@ PrefabInstance:
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_TagString
-      value: TripleShotAttack
+      value: Laser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4add1f790a1854a81279c6dfcaae40, type: 3}
@@ -255,6 +279,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7193682989717147486, guid: 7f4add1f790a1854a81279c6dfcaae40,
+        type: 3}
+      propertyPath: fireSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_Name
@@ -263,7 +292,7 @@ PrefabInstance:
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_TagString
-      value: TripleShotAttack
+      value: Laser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4add1f790a1854a81279c6dfcaae40, type: 3}

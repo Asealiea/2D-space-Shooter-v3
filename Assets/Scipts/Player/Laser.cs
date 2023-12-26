@@ -6,20 +6,16 @@ public class Laser : MonoBehaviour
     private float _moveSpeed;
 
 
-    private void OnEnable()
-    {
-        _moveSpeed = fireSpeed * Time.deltaTime;
-    }
-
     private void Update()
     {
-        transform.Translate(Vector3.up * _moveSpeed);
-        
+        transform.Translate(fireSpeed * Time.deltaTime * Vector3.up);
+
         if (transform.position.y >= 8)
         {
-            if (transform.CompareTag("TripleShotAttack"))
+            if (transform.parent.CompareTag("TripleShotAttack"))
             {
                 ObjectPool.BackToPool(transform.parent.gameObject);
+                return;
             }
             ObjectPool.BackToPool(this.gameObject);
         }
