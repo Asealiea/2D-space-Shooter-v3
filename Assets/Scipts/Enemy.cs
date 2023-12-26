@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private GameObject _ammoRefill;
 
-
     [SerializeField] private bool _hasShields = false;
     [SerializeField] private GameObject _shields;
 
@@ -28,12 +27,10 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private IntSignal playerScore;
 
-    private GameObject obj;
-    private Vector3 _enemyLaserOffset = new Vector3(0f, -1.3f, 0f);
+    private readonly Vector3 _enemyLaserOffset = new Vector3(0f, -1.3f, 0f);
+    private float temp;
 
 
-
-    
     private void Start()
     {
         if (_enemyID < 3)
@@ -44,7 +41,8 @@ public class Enemy : MonoBehaviour
         if (_enemyID == 2)
             _leftOrRight = Random.Range(1, 3);
 
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        //_player = GameObject.Find("Player").GetComponent<Player>();
+        _player = FindObjectOfType<Player>();
         
         _anim = GetComponent<Animator>();
         
@@ -53,9 +51,11 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Enemy: Player is null");
             ObjectPool.BackToPool(this.gameObject);
         }
-        if (_shields == null)
-            Debug.LogError("Enemy: Shields is null");
 
+        if (_shields == null)
+        {
+            Debug.LogError("Enemy: Shields is null");
+        }
 
         if (_enemyID == 4)
         {
@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
             Debug.Log("Enemy: Animator is null");
        
     }
-    
+
     private void Update()
     {
         switch (_enemyID)
@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
             case 1: //arching side to side
                 _anim.SetTrigger("SidewaysMovement");
                 _fireRate = 2f;
-                if (_player == null)
+                if (_player is null)
                     ObjectPool.BackToPool(this.gameObject);
                 break;
             case 2://moves in a sinwave kind of movement across screen         
@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour
                     _anim.SetTrigger("SinWaveLeft");
                 else
                     _anim.SetTrigger("SinWaveRight");
-                if (_player == null)
+                if (_player is null)
                     ObjectPool.BackToPool(this.gameObject);
                 break;
             case 3: // ramer
@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour
                 _anim.enabled = false;
                 break;
             case 4: //dodger
-                if (_player == null)
+                if (_player is null)
                 {
                     ObjectPool.BackToPool(this.gameObject);
                 }
@@ -121,7 +121,7 @@ public class Enemy : MonoBehaviour
             if (Time.time >= _canFire)    //_canFire == true
                 EnemyShoot();            
         }
-        if (_player == null)
+        if (_player is null)
         {
             ObjectPool.BackToPool(this.gameObject);
         }
@@ -133,10 +133,7 @@ public class Enemy : MonoBehaviour
         _fireRate = Random.Range(2f, 4f);
         _canFire = Time.time + _fireRate;
 
-        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyLaser");
-        obj.transform.position = transform.position + _enemyLaserOffset;
-        obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
+        ObjectPool.SpawnObject(transform.position + _enemyLaserOffset,Quaternion.identity, "EnemyLaser");
     }
 
     private void EnemyFacetoShoot()
@@ -148,30 +145,27 @@ public class Enemy : MonoBehaviour
         float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 270;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyLaser");
-        obj.transform.position = transform.position;
-        obj.transform.rotation = q;
-        obj.SetActive(true);
+        ObjectPool.SpawnObject(transform.position,q, "EnemyLaser");
     }
-
 
     private void EnemyMovement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        temp = _speed * Time.deltaTime;
+        transform.Translate(Vector3.down * temp);
         if (transform.position.y <= -5.5f && _player != null)
         {
             float _randomX = Random.Range(-9f, 9f);
             transform.position = new Vector3(_randomX, 8f, 0);
         }
-        else if (transform.position.y <= -5.5f && _player == null)
+        else if (transform.position.y <= -5.5f && _player is null)
         {
             ObjectPool.BackToPool(this.gameObject);
         }
     }
 
-    private void FacethePlayer(Transform Player)
+    private void FacethePlayer(Transform player)
     {
-        Direction = Player.position - transform.position;
+        Direction = player.position - transform.position;
         float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg - 270;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Lerp(transform.rotation, q, Time.deltaTime * 20);
@@ -190,16 +184,9 @@ public class Enemy : MonoBehaviour
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 7)
                 {
-                    obj = ObjectPool.SharedInstance.GetPooledObject("AmmoPowerUp");
-                    obj.transform.position = transform.position;
-                    obj.transform.rotation = Quaternion.identity;
-                    obj.SetActive(true);
+                    ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "AmmoPowerUp");
                 }
-                obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
-                obj.transform.position = transform.position;
-                obj.transform.rotation = Quaternion.identity;
-                obj.SetActive(true);
-                
+                ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "EnemyExplosion");
                 ObjectPool.BackToPool(this.gameObject);
             }
             else
@@ -226,15 +213,9 @@ public class Enemy : MonoBehaviour
                 int randomDrop = Random.Range(0, 11);
                 if (randomDrop >= 6)
                 {
-                    obj = ObjectPool.SharedInstance.GetPooledObject("AmmoPowerUp");
-                    obj.transform.position = transform.position;
-                    obj.transform.rotation = Quaternion.identity;
-                    obj.SetActive(true);
+                    ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "AmmoPowerUp");
                 }
-                obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
-                obj.transform.position = transform.position;
-                obj.transform.rotation = Quaternion.identity;
-                obj.SetActive(true);
+                ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "EnemyExplosion");
 
                 ObjectPool.BackToPool(this.gameObject);
             }

@@ -93,5 +93,14 @@ public class ObjectPool : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    private static GameObject obj;
+    public static void SpawnObject(Vector3 position, Quaternion rotation, string objectTag)
+    {
+        obj = ObjectPool.SharedInstance.GetPooledObject(objectTag);
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        obj.SetActive(true);
+    }
 }
 

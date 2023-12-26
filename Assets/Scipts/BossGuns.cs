@@ -41,7 +41,7 @@ public class BossGuns : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (_gunHealth <= 0) // if the gun has been destroyed....
         {
@@ -76,27 +76,31 @@ public class BossGuns : MonoBehaviour
         _canFire = Time.time + _fireRate; //sets the time to be shoot again.
 
         //find where the player is and shoot towards the player.
-        if (_player != null)
-        {
-            Vector3 direction = _player.transform.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 270;
-            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);     
-            //TODO
-            Instantiate(_laser, transform.position, q);
-        }
+        if (_player is null) return;
+        
+        Vector3 direction = _player.transform.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 270;
+        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);     
+        
+        ObjectPool.SpawnObject(transform.position,q,"EnemyLaser");
+        //Instantiate(_laser, transform.position, q);
     }
 
 
-    IEnumerator RotatorShoot()
+    private IEnumerator RotatorShoot()
     {
         while (true)
         {
-            //TODO
-            Instantiate(_laser, transform.position, transform.rotation);
+            
+            ObjectPool.SpawnObject(transform.position,transform.rotation,"EnemyLaser");
+            
+            //Instantiate(_laser, transform.position, transform.rotation);
             yield return new WaitForSeconds(0.25f);
             transform.Rotate(0, 0, _rotation);
-            //TODO
-            Instantiate(_laser, transform.position, transform.rotation) ;
+            
+            ObjectPool.SpawnObject(transform.position,transform.rotation,"EnemyLaser");
+            
+            //Instantiate(_laser, transform.position, transform.rotation) ;
             yield return new WaitForSeconds(0.25f);
             transform.Rotate(0, 0, _rotation);
         }        
@@ -104,13 +108,14 @@ public class BossGuns : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "Missile")
+        if (other.CompareTag("Missile"))
         {
             if (_gunHealth >= 10)
             {
                 _gunHealth -= 20;
             }
-            Destroy(other.gameObject);
+            ObjectPool.BackToPool(other.gameObject);
+            //Destroy(other.gameObject);
         }
         else if (other.CompareTag("Laser"))
         {
@@ -118,7 +123,8 @@ public class BossGuns : MonoBehaviour
             {
                 _gunHealth -= 10;
             }
-            Destroy(other.gameObject);
+            ObjectPool.BackToPool(other.gameObject);
+            //Destroy(other.gameObject);
         }
 
     }

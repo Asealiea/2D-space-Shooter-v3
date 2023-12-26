@@ -5,15 +5,10 @@ using UnityEngine;
 public class Mine : MonoBehaviour
 {
     [SerializeField] private GameObject _explosion;
-    private GameObject obj;
 
     public void DestroyMine()
     {
-        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
-        obj.transform.position = transform.position;
-        obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
-
+        ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "EnemyExplosion");
         ObjectPool.BackToPool(this.gameObject);
     }
 
@@ -25,11 +20,7 @@ public class Mine : MonoBehaviour
         }
 
         if (!other.CompareTag("Laser")) return;
-        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
-        obj.transform.position = transform.position;
-        obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
-
+        ObjectPool.SpawnObject(transform.position ,Quaternion.identity, "EnemyExplosion");
         ObjectPool.BackToPool(this.gameObject);
     }
 }

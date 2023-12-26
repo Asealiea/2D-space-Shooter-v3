@@ -22,7 +22,6 @@ public class HomingDetection : MonoBehaviour
     private readonly Vector3 _highScale = new Vector3(0.25f, .5f, 0);
     private readonly Vector3 _highPos   = new Vector3(0f, 0.25f, 0f);
     private float temp;
-    private GameObject obj;
 
 
     private void Start()
@@ -34,35 +33,6 @@ public class HomingDetection : MonoBehaviour
         }
     }
 
-    private void RamAndMine()
-    {
-        if (!_playerFound)
-        {
-            if (!_mine)
-            {
-                temp = 3 * Time.deltaTime;
-                transform.Translate(Vector3.down * temp);
-            }
-            else
-            {
-                temp = 0.01f * Time.deltaTime;
-                transform.Translate(Vector3.down * temp);
-            }
-        }
-        else
-        {
-            if (!_mine)
-            {
-                //LowThrusters(true); before it was just returning
-                RamPlayer();
-            }
-            else
-            {
-                FollowPlayer(_player);
-                StartCoroutine(MineDestroy());
-            }
-        }
-    }
 
     // Update is called once per frame
 
@@ -92,9 +62,39 @@ public class HomingDetection : MonoBehaviour
             ObjectPool.BackToPool(this.gameObject);
         if (transform.position.x >= 10 || transform.position.x <= -10f)
             ObjectPool.BackToPool(this.gameObject);
-        if (_coreComponent == null)
+        if (_coreComponent is null)
             ObjectPool.BackToPool(this.gameObject);
         
+    }
+
+    private void RamAndMine()
+    {
+        if (!_playerFound)
+        {
+            if (!_mine)
+            {
+                temp = 3 * Time.deltaTime;
+                transform.Translate(Vector3.down * temp);
+            }
+            else
+            {
+                temp = 0.10f * Time.deltaTime;
+                transform.Translate(Vector3.down * temp);
+            }
+        }
+        else
+        {
+            if (!_mine)
+            {
+                //LowThrusters(true); before it was just returning
+                RamPlayer();
+            }
+            else
+            {
+                FollowPlayer(_player);
+                StartCoroutine(MineDestroy());
+            }
+        }
     }
 
 
@@ -211,10 +211,8 @@ public class HomingDetection : MonoBehaviour
     private IEnumerator MineDestroy()
     {
         yield return new WaitForSeconds(5f);
-        obj = ObjectPool.SharedInstance.GetPooledObject("EnemyExplosion");
-        obj.transform.position = transform.position;
-        obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
+        
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "EnemyExplosion");
 
         ObjectPool.BackToPool(this.gameObject);
     }

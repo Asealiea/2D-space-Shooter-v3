@@ -11,57 +11,49 @@ public class Dodger : MonoBehaviour
     [SerializeField] GameObject _core;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (_core == null)
-            Destroy(this.gameObject);
+        if (_core is null)
+        {
+            //Destroy(this.gameObject);
+            ObjectPool.BackToPool(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Laser"))
-        {       
-            if (left)
-                StartCoroutine(MoveLeft());           
-            else 
-                StartCoroutine(MoveRight());
-        }
+        if (!other.CompareTag("Laser")) return;
+        
+        StartCoroutine(left ? MoveLeft() : MoveRight());
     }
        
-    IEnumerator MoveLeft()
+    private IEnumerator MoveLeft()
     {
-        if (!_moving)
+        if (_moving) yield break;
+        _moving = true;
+        transform.position = new Vector3(transform.position.x - 2, 5.5f, 0);
+        _count++;
+        yield return new WaitForSeconds(0.5f);
+        if (_count >= 2)
         {
-            _moving = true;
-            transform.position = new Vector3(transform.position.x - 2, 5.5f, 0);
-            _count++;
-            yield return new WaitForSeconds(0.5f);
-            if (_count >= 2)
-            {
-                left = false;
-                _count = 0;
-            }
-            _moving = false;
-            yield break;
-
+            left = false;
+            _count = 0;
         }
+        _moving = false;
     }
 
-    IEnumerator MoveRight()
+    private IEnumerator MoveRight()
     {
-        if (!_moving)
-        {
-            _moving = true;
-            transform.position = new Vector3(transform.position.x + 2, 5.5f, 0);
-            _count++;
-            yield return new WaitForSeconds(0.5f);
-            if (_count >= 2)
-            {         
-                left = true;
-                _count = 0;
-            }
-            _moving = false;
-            yield break;
+        if (_moving) yield break;
+        _moving = true;
+        transform.position = new Vector3(transform.position.x + 2, 5.5f, 0);
+        _count++;
+        yield return new WaitForSeconds(0.5f);
+        if (_count >= 2)
+        {         
+            left = true;
+            _count = 0;
         }
+        _moving = false;
     }
 }

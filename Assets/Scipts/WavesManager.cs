@@ -43,7 +43,6 @@ namespace Asealiea.Waves
         [Header("Game Objects")]
         [SerializeField] private GameObject _enemyContainer;
 
-        private GameObject obj; //object pooled item
 
 
         private void Start()
@@ -131,10 +130,7 @@ namespace Asealiea.Waves
             if (!_spawn) return;
             
             Vector3 random = new Vector3(Random.Range(-9f, 9f), 8, 0);
-            obj = ObjectPool.SharedInstance.GetPooledObject(enemy.tag);
-            obj.transform.position = random;
-            obj.transform.rotation = Quaternion.identity;
-            obj.SetActive(true);
+            ObjectPool.SpawnObject(random,Quaternion.identity, enemy.tag);
         }
         #endregion
 

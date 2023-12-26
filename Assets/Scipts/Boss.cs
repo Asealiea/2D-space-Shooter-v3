@@ -92,17 +92,23 @@ public class Boss : MonoBehaviour
         }
     }
 
-    IEnumerator BossLaser(Transform Laser)
+    private Vector3 laserOffset = new Vector3(0,-2.3f,0);
+    
+    private IEnumerator BossLaser(Transform laser)
     {
         _canFire = Time.time + _fireRate; //sets the can fire  to time + firerate to give our cooldown for shooting
-        //TODO
-        GameObject newCharge =  Instantiate(_charge, Laser.position, Quaternion.identity); //spawn the charge for the laser
-        newCharge.transform.parent = _laserTransform;// parent it to the lasertransform, this is so the charge will follow the boss as it moves
+
+        ObjectPool.SpawnObject(laser.position,Quaternion.identity, _charge.tag);
+        
+        //GameObject newCharge =  Instantiate(_charge, laser.position, Quaternion.identity); //spawn the charge for the laser
+        //newCharge.transform.parent = _laserTransform;// parent it to the lasertransform, this is so the charge will follow the boss as it moves
 
         yield return new WaitForSeconds(0.35f);//waits a bit for the charge to well, charge?
-//TODO
-        GameObject newLaser = Instantiate(_laser, Laser.position + new Vector3(0,-2.3f,0), Quaternion.identity);//spawn the laser
-        newLaser.transform.parent = _laserTransform; //makes the laser move with boss.
+
+        ObjectPool.SpawnObject(laser.position,Quaternion.identity, _laser.tag);
+
+        //GameObject newLaser = Instantiate(_laser, laser.position + laserOffset, Quaternion.identity);//spawn the laser
+        //newLaser.transform.parent = _laserTransform; //makes the laser move with boss.
         yield return new WaitForSeconds(1f); // waiting is key.
         // yield break;       
     }
@@ -143,10 +149,13 @@ public class Boss : MonoBehaviour
         _explosion3.SetActive(true); //thrid explosion
         yield return new WaitForSeconds(1f);//waits a bit for the next boom
         shakeSignal.SetValue(4);// more shaky to the extreme!!!!
-        //TODO
-        Instantiate(_explosion4, transform.position, Quaternion.identity);// this spawns the last big explosion
+
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "LargeExplosion");
+        
+        //Instantiate(_explosion4, transform.position, Quaternion.identity);// this spawns the last big explosion
         yield return new WaitForSeconds(0.3f);// gives it a sec before...
-        Destroy(this.gameObject); //destroys the boss body
+        //Destroy(this.gameObject); //destroys the boss body
+        ObjectPool.BackToPool(this.gameObject);
     }
 
     public void LaserRush()
@@ -154,24 +163,32 @@ public class Boss : MonoBehaviour
         StartCoroutine(LaserShower());
     }
 
-    IEnumerator LaserShower()
+  
+    private IEnumerator LaserShower()
     {
-        //TODO
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
         yield return _wait;
-        Instantiate(_starfall, transform.position, Quaternion.identity);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "StarFall");
+        //Instantiate(_starfall, transform.position, Quaternion.identity);
     }
 
 }

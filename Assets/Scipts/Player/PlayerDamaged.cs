@@ -30,9 +30,11 @@ public class PlayerDamaged : MonoBehaviour
                 spawnSignal.SetValue(false);
                 gameOver.SetValue(true);
                 //instaniate the death explosion
-                Instantiate(damageDeath, transform.position, Quaternion.identity);
+                ObjectPool.SpawnObject(transform.position,Quaternion.identity, damageDeath.tag);
+                //Instantiate(damageDeath, transform.position, Quaternion.identity);
                 shakeSignal.SetValue(3f);
-                Destroy(this.gameObject);
+                ObjectPool.BackToPool(this.gameObject);
+                //Destroy(this.gameObject);
                 break;
             case 1:
                 damageRight.SetActive(true);

@@ -77,7 +77,6 @@ public class Player : MonoBehaviour
     private bool _repairing;
     private Coroutine RepairingIE;
     private float _extraWait = 3;
-    private GameObject obj;
 
 
     private void OnEnable()
@@ -233,25 +232,16 @@ public class Player : MonoBehaviour
         _audioSource.clip = _laserSound;
         if (_hasTripleShot)
         {
-            obj = ObjectPool.SharedInstance.GetPooledObject("TripleShotAttack");
-            obj.transform.position = transform.position;
-            obj.transform.rotation = Quaternion.identity;
-            obj.SetActive(true);
+            ObjectPool.SpawnObject(transform.position,Quaternion.identity, "TripleShotAttack");
         }
         else if (_hasSecondaryFire)
         {
-            obj = ObjectPool.SharedInstance.GetPooledObject("SuperAttack");
-            obj.transform.position = transform.position;
-            obj.transform.rotation = Quaternion.identity;
-            obj.SetActive(true);
+            ObjectPool.SpawnObject(transform.position,Quaternion.identity, "SuperAttack");
             ammoCount.Increment(1);
         }
         else 
         {
-            obj = ObjectPool.SharedInstance.GetPooledObject("Laser");
-            obj.transform.position = transform.position + _laserOffSet;
-            obj.transform.rotation = Quaternion.identity;
-            obj.SetActive(true);
+            ObjectPool.SpawnObject(transform.position,Quaternion.identity, "Laser");
         }
         _audioSource.Play(0);//play the audio clip.
         ammoCount.Increment(-1);
@@ -292,10 +282,7 @@ public class Player : MonoBehaviour
     private void MissileFire()
     {
         _canMissile = Time.time + 2f;
-        obj = ObjectPool.SharedInstance.GetPooledObject("MissileAttack");
-        obj.transform.position = transform.position;
-        obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
+        ObjectPool.SpawnObject(transform.position,Quaternion.identity, "MissileAttack");
         missileCount.Increment(-1);
     }
 

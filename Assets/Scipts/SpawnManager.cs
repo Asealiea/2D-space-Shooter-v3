@@ -37,13 +37,15 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private BoolSignal spawnSignal;
 
 
+
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        //_player = GameObject.Find("Player").GetComponent<Player>();
+        _player = FindObjectOfType<Player>();
         NullCheck();
         waveCooldown = cooldownBetweenWaves;
         StartCoroutine(SpawnPowerUpRoutine());
-        updateUI(waves[nextWave]);
+        UpdateUI(waves[nextWave]);
     }
 
     private void Update()
@@ -65,10 +67,12 @@ public class SpawnManager : MonoBehaviour
                 StartCoroutine(SpawnWave(waves[nextWave]));
         }
         else
+        {
             waveCooldown -= Time.deltaTime;
-    }   
+        }
+    }
 
-    IEnumerator SpawnPowerUpRoutine()
+    private IEnumerator SpawnPowerUpRoutine()
     {
         yield return new WaitForSeconds(3f);
         while (spawnSignal.Value)
@@ -78,29 +82,31 @@ public class SpawnManager : MonoBehaviour
             if (_randomID >= 850 && _total > 3 || _total == 10)// star burst
             {
                 _powerID = 7;
-                //TODO
-                Instantiate(_powerUpContainer[_powerUpContainer.Length - 1], randomX, Quaternion.identity); // star powerup                 
+                ObjectPool.SpawnObject(randomX,Quaternion.identity, "Super");
+                
+                //Instantiate(_powerUpContainer[_powerUpContainer.Length - 1], randomX, Quaternion.identity); // star powerup                 
                 _total = 1;
             }
             else if (_randomID < 850 && _randomID >= 550 && _total > 1) //extra lifes and extra Missiles.
             {
                 _powerID = Random.Range(4, 7);
-                //TODO
-                Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
+                ObjectPool.SpawnObject(randomX,Quaternion.identity, _powerUpContainer[_powerID].tag);
+                
+                //Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
                 _total = 0;
             }
             else
             {
                 _powerID = Random.Range(0, _powerUpContainer.Length - 4); // triple shot, speed, shields and Ammo;
-                //TODO
-                Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
+                ObjectPool.SpawnObject(randomX,Quaternion.identity, _powerUpContainer[_powerID].tag);
+
+                //Instantiate(_powerUpContainer[_powerID], randomX, Quaternion.identity);
                 _total++;
             }
             _randomWait = (Random.Range(5f, 10f));
             yield return new WaitForSeconds(_randomWait);
         }
     }
-
 
 
     private void NullCheck()
@@ -116,51 +122,46 @@ public class SpawnManager : MonoBehaviour
     }
 
     #region Spawn Waves System
-    void WaveCompleted()
-    {
-        if (spawnSignal.Value)
-        {           
-            state = SpawnState.Cooldown; 
-            waveCooldown = cooldownBetweenWaves;            
-            if (nextWave + 1 > waves.Length - 1)
-            {
-                nextWave = 0; // loops waves, will add in a Congrats on winnning later.  
-                updateUI(waves[nextWave]);
-            }
-            else
-            {
-                nextWave++;
-                updateUI(waves[nextWave]);
-                _player.LongerWaitTime(nextWave / 2 + 3);                
-            } 
-        }
-    }
 
-    bool EnemyIsAlive()
+    private void WaveCompleted()
     {
-        searchCooldown -= Time.deltaTime; 
-        if (searchCooldown <= 0f) 
+        if (!spawnSignal.Value) return;
+        
+        state = SpawnState.Cooldown; 
+        waveCooldown = cooldownBetweenWaves;            
+        if (nextWave + 1 > waves.Length - 1)
         {
-            searchCooldown = 1f; 
-            if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0) 
-            {
-                return false; 
-            }
+            nextWave = 0; // loops waves, will add in a Congrats on winnning later.  
+            UpdateUI(waves[nextWave]);
         }
-        return true; 
+        else
+        {
+            nextWave++;
+            UpdateUI(waves[nextWave]);
+            _player.LongerWaitTime(nextWave / 2 + 3);                
+        }
     }
 
-    IEnumerator SpawnWave(Wave _wave)
+    private bool EnemyIsAlive()
+    {
+        searchCooldown -= Time.deltaTime;
+        if (!(searchCooldown <= 0f)) return true;
+        searchCooldown = 1f; 
+            
+        return FindObjectsOfType<Enemy>().Length != 0;
+    }
+
+    private IEnumerator SpawnWave(Wave wave)
     {                
         state = SpawnState.Spawning;
         if (spawnSignal.Value)
         {
-            for (int q = 0; q < _wave._enemy.Length; q++)
+            for (int q = 0; q < wave._enemy.Length; q++)
             {
-                for (int i = 0; i < _wave._count[q]; i++)
+                for (int i = 0; i < wave._count[q]; i++)
                 {
-                    SpawnEnemy(_wave._enemy[q]);
-                    yield return new WaitForSeconds(1f / _wave.spawnRate);
+                    SpawnEnemy(wave._enemy[q]);
+                    yield return new WaitForSeconds(1f / wave.spawnRate);
                 }
             }
         }
@@ -168,25 +169,20 @@ public class SpawnManager : MonoBehaviour
         yield break;
     }
 
-    void SpawnEnemy(GameObject _enemy)
+    private void SpawnEnemy(GameObject enemy)
     {
-        if (spawnSignal.Value)
-        {
-            Vector3 random = new Vector3(Random.Range(-9f, 9f), 8, 0);
-            //TODO
-            GameObject newEnemy = Instantiate(_enemy, random , Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
+        if (!spawnSignal.Value) return;
+        Vector3 random = new Vector3(Random.Range(-9f, 9f), 8, 0);
 
-        }
+        ObjectPool.SpawnObject(random,Quaternion.identity, enemy.tag);
+        
+        //GameObject newEnemy = Instantiate(_enemy, random , Quaternion.identity);
+        //newEnemy.transform.parent = _enemyContainer.transform;
     }
 
-    private void updateUI(Wave _wave)
+    private void UpdateUI(Wave wave)
     {
-        _uiManager.UpdateWave(_wave.name);
+        _uiManager.UpdateWave(wave.name);
     }
     #endregion
-
-
-
-
 }
