@@ -103,7 +103,7 @@ PrefabInstance:
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_TagString
-      value: Triple Shot
+      value: TripleShotAttack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4add1f790a1854a81279c6dfcaae40, type: 3}
@@ -183,7 +183,7 @@ PrefabInstance:
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_TagString
-      value: Triple Shot
+      value: TripleShotAttack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4add1f790a1854a81279c6dfcaae40, type: 3}
@@ -263,7 +263,7 @@ PrefabInstance:
     - target: {fileID: 7349280921438142016, guid: 7f4add1f790a1854a81279c6dfcaae40,
         type: 3}
       propertyPath: m_TagString
-      value: Triple Shot
+      value: TripleShotAttack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4add1f790a1854a81279c6dfcaae40, type: 3}
